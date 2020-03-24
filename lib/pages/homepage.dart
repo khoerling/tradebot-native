@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage>
 
     _faders = allPages.map<AnimationController>((Page destination) {
       return AnimationController(
-          vsync: this, duration: Duration(milliseconds: 200));
+          vsync: this, duration: Duration(milliseconds: 250));
     }).toList();
     _faders[_currentIndex].value = 1.0;
     _pageKeys = List<Key>.generate(allPages.length, (int index) => GlobalKey())
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage>
             right: 0.0,
             child: ClipRect(
               child: SizeTransition(
-                sizeFactor: _hide,
+                sizeFactor: _hide.drive(CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
                 axisAlignment: -1.0,
                 child: Padding(
                     padding: EdgeInsets.only(top: 20),
@@ -148,7 +148,21 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox.expand(child: page.child),
+      body: SizedBox.expand(
+        child:
+
+        Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.03), BlendMode.dstATop),
+              image: AssetImage('assets/images/bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: page.child)),
     );
   }
 }

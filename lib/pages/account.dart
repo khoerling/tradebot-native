@@ -15,7 +15,7 @@ class Account extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         image: DecorationImage(
           colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.05), BlendMode.dstATop),
+              Colors.white.withOpacity(0.03), BlendMode.dstATop),
           image: AssetImage('assets/images/bg.png'),
           fit: BoxFit.cover,
         ),

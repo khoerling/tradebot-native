@@ -9,8 +9,8 @@ class CreateAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox.expand(child: Center(child: Text("Create Alert Screen"))),
+    return Container(
+      child: SizedBox.expand(child: Center(child: Text("Create Alert Screen"))),
     );
   }
 }
