@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage>
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
+    // show & hide bottom bar on scroll
     if (notification.depth == 0) {
       if (notification is UserScrollNotification) {
         final UserScrollNotification userScroll = notification;
@@ -139,19 +140,7 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(page.title),
-          backgroundColor: Theme.of(context).backgroundColor),
-      body: SizedBox.expand(
-        child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, "/list");
-          },
-          child: Center(
-            child: Text('tap here'),
-          ),
-        ),
-      ),
+      body: SizedBox.expand(child: page.child),
     );
   }
 }

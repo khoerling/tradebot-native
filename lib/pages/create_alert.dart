@@ -1,11 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tradebot_native/pages/pages.dart';
 
 // TODO Replace with object model.
 
 class CreateAlert extends StatelessWidget {
+  const CreateAlert({Key key, this.page}) : super(key: key);
+  final Page page;
+
   @override
   Widget build(BuildContext context) {
-    return Text("Create Alert Screen");
+    return Scaffold(
+      body: SizedBox.expand(child: Center(child: Text("Create Alert Screen"))),
+    );
   }
 }

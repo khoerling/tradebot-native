@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tradebot_native/pages/pages.dart';
 
@@ -24,9 +23,6 @@ class ListAlerts extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(page.title),
-      ),
       body: SizedBox.expand(
         child: ListView.builder(
           itemCount: shades.length,
@@ -34,14 +30,13 @@ class ListAlerts extends StatelessWidget {
             return SizedBox(
               height: 128,
               child: Card(
-                // color: page.color[shades[index]].withOpacity(0.25),
+                color: Colors.white.withOpacity(0.1),
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/text");
+                    Navigator.pushNamed(context, "/alert");
                   },
                   child: Center(
                     child: Text('Alert $index'),
-                    // style: Theme.of(context).primaryTextTheme.headline4),
                   ),
                 ),
               ),

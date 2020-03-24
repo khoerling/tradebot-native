@@ -4,7 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tradebot_native/routes.dart';
 
-// TODO refactor push out
+// TODO 1st, refactor push out
+// TODO 2nd, delete this file
 
 class Layout extends StatefulWidget {
   final Widget child;
