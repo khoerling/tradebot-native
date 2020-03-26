@@ -3,8 +3,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavigation extends StatefulWidget {
   final onTap;
+  final index;
 
-  const BottomNavigation({Key key, this.onTap}) : super(key: key);
+  const BottomNavigation({Key key, this.index, this.onTap}) : super(key: key);
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
@@ -15,10 +16,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
   GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _page = widget.index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       key: _bottomNavigationKey,
-      index: 0,
+      index: _page,
       height: 75.0,
       items: <Widget>[
         Icon(Icons.add, color: Colors.black, size: 33),
