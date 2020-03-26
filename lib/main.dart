@@ -11,9 +11,10 @@ void main() {
       theme: ThemeData(
         brightness: Brightness.dark,
         backgroundColor: beppuTerminalBlue,
-        scaffoldBackgroundColor: beppuTerminalBlue,
+        scaffoldBackgroundColor: beppuTerminalBlue.withOpacity(.98),
+        cardColor: beppuTerminalBlue.withOpacity(.85),
         primaryColor: beppuTerminalBlue,
-        accentColor: Colors.yellow[900],
+        accentColor: Colors.orange[600],
         textTheme: TextTheme(),
       ),
       home: HomePage()));

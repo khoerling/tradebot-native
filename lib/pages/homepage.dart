@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
@@ -32,7 +33,9 @@ class _HomePageState extends State<HomePage>
 
   bool _keyboardIsVisible() {
     // immediately show & hide based on keyboard position
-    return !(MediaQuery.of(context).viewInsets.bottom == 0.0);
+    bool isVisible = !(MediaQuery.of(context).viewInsets.bottom == 0.0);
+    if (!isVisible) HapticFeedback.lightImpact();
+    return isVisible;
   }
 
   @override

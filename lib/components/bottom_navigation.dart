@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -40,6 +41,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
       animationCurve: Curves.easeOutExpo,
       animationDuration: Duration(milliseconds: 500),
       onTap: (index) {
+        HapticFeedback.selectionClick();
+        Future.delayed(
+            Duration(milliseconds: 451), () => HapticFeedback.heavyImpact());
+        Future.delayed(
+            Duration(milliseconds: 556), () => HapticFeedback.selectionClick());
         setState(() {
           _page = index;
         });
