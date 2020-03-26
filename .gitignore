@@ -3,6 +3,8 @@
 # Files and directories created by pub
 .flutter-plugins-dependencies
 .flutter-plugins
+.firebaserc
+.log
 .dart_tool/
 .packages
 build/

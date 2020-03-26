@@ -1,0 +1,112 @@
+[debug] [2020-03-26T00:55:28.384Z] ----------------------------------------------------------------------
+[debug] [2020-03-26T00:55:28.386Z] Command:       /Users/keith/.nodebrew/node/v12.9.0/bin/node /Users/keith/.nodebrew/current/bin/firebase functions:shell
+[debug] [2020-03-26T00:55:28.386Z] CLI Version:   7.16.1
+[debug] [2020-03-26T00:55:28.386Z] Platform:      darwin
+[debug] [2020-03-26T00:55:28.386Z] Node Version:  v12.9.0
+[debug] [2020-03-26T00:55:28.387Z] Time:          Wed Mar 25 2020 17:55:28 GMT-0700 (Pacific Daylight Time)
+[debug] [2020-03-26T00:55:28.387Z] ----------------------------------------------------------------------
+[debug] [2020-03-26T00:55:28.387Z] 
+[debug] [2020-03-26T00:55:28.394Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-03-26T00:55:28.394Z] > authorizing via signed-in user
+[debug] [2020-03-26T00:55:28.394Z] [iam] checking project tradebot-bca01 for permissions ["firebase.projects.get"]
+[debug] [2020-03-26T00:55:28.396Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tradebot-bca01:testIamPermissions  
+
+[debug] [2020-03-26T00:55:28.917Z] <<< HTTP RESPONSE 200
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "12"
+[info] ✔  functions: functions emulator started at http://localhost:5000
+[debug] [2020-03-26T00:55:28.943Z] [functions] Watching "/Users/keith/projects/tradebot_native/functions" for Cloud Functions...
+[debug] [2020-03-26T00:55:28.954Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-03-26T00:55:28.954Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=1
+[debug] [2020-03-26T00:55:28.954Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-03-26T00:55:28.954Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: Assigning socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1430.sock
+[debug] [2020-03-26T00:55:28.955Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: BUSY
+[debug] [2020-03-26T00:55:29.153Z] DEBUG: [runtime-status] [1430] Functions runtime initialized. {"cwd":"/Users/keith/projects/tradebot_native/functions","node_version":"12.9.0"}
+[debug] [2020-03-26T00:55:29.153Z] DEBUG: [runtime-status] [1430] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true,"pubsub_emulator":true}
+[debug] [2020-03-26T00:55:29.155Z] DEBUG: [runtime-status] [1430] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2020-03-26T00:55:29.156Z] DEBUG: [runtime-status] [1430] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:55:29.157Z] DEBUG: [runtime-status] [1430] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:55:29.297Z] [functions[addUser]] http function initialized (http://localhost:5000/tradebot-bca01/us-central1/addUser).
+[debug] [2020-03-26T00:55:29.297Z] [functions[exchanges]] http function initialized (http://localhost:5000/tradebot-bca01/us-central1/exchanges).
+[debug] [2020-03-26T00:55:29.297Z] [functions[markets]] http function initialized (http://localhost:5000/tradebot-bca01/us-central1/markets).
+[info] i  functions: Loaded functions: addUser, exchanges, markets
+[debug] [2020-03-26T00:55:29.307Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: IDLE
+[debug] [2020-03-26T00:57:36.428Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2020-03-26T00:57:36.428Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2020-03-26T00:57:36.428Z] Accepted request POST /tradebot-bca01/us-central1/markets --> markets
+[debug] [2020-03-26T00:57:36.436Z] DEBUG: [worker-pool] addWorker(markets)
+[debug] [2020-03-26T00:57:36.436Z] DEBUG: [worker-pool] Adding worker with key markets, total=1
+[debug] [2020-03-26T00:57:36.436Z] DEBUG: [worker-pool] submitWork(triggerId=markets)
+[debug] [2020-03-26T00:57:36.436Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: Assigning socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1834.sock
+[debug] [2020-03-26T00:57:36.436Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: BUSY
+[debug] [2020-03-26T00:57:36.629Z] DEBUG: [runtime-status] [1834] Functions runtime initialized. {"cwd":"/Users/keith/projects/tradebot_native/functions","node_version":"12.9.0"}
+[debug] [2020-03-26T00:57:36.631Z] DEBUG: [runtime-status] [1834] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true,"pubsub_emulator":true}
+[debug] [2020-03-26T00:57:36.632Z] DEBUG: [runtime-status] [1834] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2020-03-26T00:57:36.633Z] DEBUG: [runtime-status] [1834] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:57:36.634Z] DEBUG: [runtime-status] [1834] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:57:36.770Z] DEBUG: [runtime-status] [1834] Trigger "markets" has been found, beginning invocation!
+[debug] [2020-03-26T00:57:36.770Z] [functions] Beginning execution of "markets"
+[debug] [2020-03-26T00:57:36.771Z] DEBUG: [runtime-status] [1834] triggerDefinition {"httpsTrigger":{},"labels":{"deployment-callable":"true"},"name":"markets","entryPoint":"markets"}
+[debug] [2020-03-26T00:57:36.771Z] DEBUG: [runtime-status] [1834] Running markets in mode HTTPS
+[debug] [2020-03-26T00:57:36.775Z] DEBUG: [runtime-status] [1834] Attempting to listen to socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1834.sock
+[debug] [2020-03-26T00:57:36.779Z] DEBUG: [functions] Runtime ready! Sending request!
+[debug] [2020-03-26T00:57:36.805Z] DEBUG: [runtime-status] [1834] Ephemeral server handling POST request
+[debug] [2020-03-26T00:57:36.811Z] DEBUG: [runtime-status] [1834] No callable functions auth found
+[debug] [2020-03-26T00:57:36.833Z] DEBUG: [runtime-status] [1834] Ephemeral server survived.
+[debug] [2020-03-26T00:57:37.138Z] [functions] Finished "markets" in ~1s
+[debug] [2020-03-26T00:57:37.138Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: IDLE
+[debug] [2020-03-26T00:57:37.138Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2020-03-26T00:58:00.309Z] DEBUG: File /Users/keith/projects/tradebot_native/functions/src/index.ts changed, reloading triggers
+[debug] [2020-03-26T00:58:01.312Z] DEBUG: [worker-pool] Shutting down IDLE worker (~diagnostic~)
+[debug] [2020-03-26T00:58:01.312Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: FINISHING
+[debug] [2020-03-26T00:58:01.312Z] DEBUG: [worker-pool] Shutting down IDLE worker (markets)
+[debug] [2020-03-26T00:58:01.312Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: FINISHING
+[debug] [2020-03-26T00:58:01.328Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-03-26T00:58:01.328Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=2
+[debug] [2020-03-26T00:58:01.328Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-03-26T00:58:01.328Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: Assigning socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1920.sock
+[debug] [2020-03-26T00:58:01.329Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: BUSY
+[debug] [2020-03-26T00:58:01.330Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: exited
+[debug] [2020-03-26T00:58:01.331Z] DEBUG: [worker-~diagnostic~-3502eed0-0645-44b1-aabf-b441bd657ec2]: FINISHED
+[debug] [2020-03-26T00:58:01.331Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: exited
+[debug] [2020-03-26T00:58:01.331Z] DEBUG: [worker-markets-2a809a84-3d78-463f-bcf2-ef3f7fd84f6c]: FINISHED
+[debug] [2020-03-26T00:58:01.418Z] DEBUG: File /Users/keith/projects/tradebot_native/functions/src/index.ts changed, reloading triggers
+[debug] [2020-03-26T00:58:01.553Z] DEBUG: [runtime-status] [1920] Functions runtime initialized. {"cwd":"/Users/keith/projects/tradebot_native/functions","node_version":"12.9.0"}
+[debug] [2020-03-26T00:58:01.555Z] DEBUG: [runtime-status] [1920] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true,"pubsub_emulator":true}
+[debug] [2020-03-26T00:58:01.556Z] DEBUG: [runtime-status] [1920] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2020-03-26T00:58:01.558Z] DEBUG: [runtime-status] [1920] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:01.558Z] DEBUG: [runtime-status] [1920] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:01.711Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: IDLE
+[debug] [2020-03-26T00:58:02.420Z] DEBUG: [worker-pool] Shutting down IDLE worker (~diagnostic~)
+[debug] [2020-03-26T00:58:02.420Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: FINISHING
+[debug] [2020-03-26T00:58:02.420Z] DEBUG: [worker-pool] Cleaned up workers for ~diagnostic~: 2 --> 1
+[debug] [2020-03-26T00:58:02.421Z] DEBUG: [worker-pool] Cleaned up workers for markets: 1 --> 0
+[debug] [2020-03-26T00:58:02.430Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-03-26T00:58:02.430Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=2
+[debug] [2020-03-26T00:58:02.430Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-03-26T00:58:02.430Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: Assigning socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1926.sock
+[debug] [2020-03-26T00:58:02.430Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: BUSY
+[debug] [2020-03-26T00:58:02.431Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: exited
+[debug] [2020-03-26T00:58:02.431Z] DEBUG: [worker-~diagnostic~-fa2f0ea2-87bc-4640-9ad2-2e9029d81577]: FINISHED
+[debug] [2020-03-26T00:58:02.657Z] DEBUG: [runtime-status] [1926] Functions runtime initialized. {"cwd":"/Users/keith/projects/tradebot_native/functions","node_version":"12.9.0"}
+[debug] [2020-03-26T00:58:02.658Z] DEBUG: [runtime-status] [1926] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true,"pubsub_emulator":true}
+[debug] [2020-03-26T00:58:02.660Z] DEBUG: [runtime-status] [1926] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2020-03-26T00:58:02.661Z] DEBUG: [runtime-status] [1926] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:02.662Z] DEBUG: [runtime-status] [1926] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:02.816Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: IDLE
+[debug] [2020-03-26T00:58:13.457Z] DEBUG: File /Users/keith/projects/tradebot_native/functions/src/index.ts changed, reloading triggers
+[debug] [2020-03-26T00:58:14.458Z] DEBUG: [worker-pool] Shutting down IDLE worker (~diagnostic~)
+[debug] [2020-03-26T00:58:14.458Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: FINISHING
+[debug] [2020-03-26T00:58:14.459Z] DEBUG: [worker-pool] Cleaned up workers for ~diagnostic~: 2 --> 1
+[debug] [2020-03-26T00:58:14.466Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-03-26T00:58:14.466Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=2
+[debug] [2020-03-26T00:58:14.466Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-03-26T00:58:14.466Z] DEBUG: [worker-~diagnostic~-5f883017-7491-402b-8f8b-1798c062f3a0]: Assigning socketPath: /var/folders/dl/09mvtqqx2k735svxsx4mh5zr0000gn/T/fire_emu_1966.sock
+[debug] [2020-03-26T00:58:14.466Z] DEBUG: [worker-~diagnostic~-5f883017-7491-402b-8f8b-1798c062f3a0]: BUSY
+[debug] [2020-03-26T00:58:14.467Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: exited
+[debug] [2020-03-26T00:58:14.467Z] DEBUG: [worker-~diagnostic~-92a81af0-2d8f-4dc1-81dd-5b26a98a4fdc]: FINISHED
+[debug] [2020-03-26T00:58:14.661Z] DEBUG: [runtime-status] [1966] Functions runtime initialized. {"cwd":"/Users/keith/projects/tradebot_native/functions","node_version":"12.9.0"}
+[debug] [2020-03-26T00:58:14.663Z] DEBUG: [runtime-status] [1966] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true,"pubsub_emulator":true}
+[debug] [2020-03-26T00:58:14.664Z] DEBUG: [runtime-status] [1966] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.10.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2020-03-26T00:58:14.665Z] DEBUG: [runtime-status] [1966] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:14.666Z] DEBUG: [runtime-status] [1966] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.5.0","resolution":"/Users/keith/projects/tradebot_native/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2020-03-26T00:58:14.802Z] DEBUG: [worker-~diagnostic~-5f883017-7491-402b-8f8b-1798c062f3a0]: IDLE
