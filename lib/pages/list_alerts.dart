@@ -22,27 +22,26 @@ class ListAlerts extends StatelessWidget {
       900
     ];
 
-    return 
-      SizedBox.expand(
-        child: ListView.builder(
-          itemCount: shades.length,
-          itemBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              height: 128,
-              child: Card(
-                color: Colors.white.withOpacity(0.075),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/alert");
-                  },
-                  child: Center(
-                    child: Text('Alert $index'),
-                  ),
+    return SizedBox.expand(
+      child: ListView.builder(
+        itemCount: shades.length,
+        itemBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            height: 128,
+            child: Card(
+              color: Colors.white.withOpacity(0.075),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, "/alert");
+                },
+                child: Center(
+                  child: Text('Alert $index'),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

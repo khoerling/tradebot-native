@@ -15,17 +15,16 @@ export const addUser = functions.https.onCall((data, _context) => {
 });
 
 export const exchanges = functions.https.onCall((_data, _context) => {
-  console.log(ccxt.exchanges);
   return ccxt.exchanges;
 });
 
 export const markets = functions.https.onCall(async (data, _context) => {
   const exchange = createExchange(data.exchange),
-    markets = await exchange.fetchMarkets(),
-    m = markets.filter((m: any) => m.id && m.active).map((m: any) => {
+    mkts = await exchange.fetchMarkets(),
+    mkt = mkts.filter((m: any) => m.id && m.active).map((m: any) => {
       return { id: m.id, name: m.name };
     });
-  return { timeframes: exchange.timeframes, markets: m };
+  return { timeframes: exchange.timeframes, markets: mkt };
 });
 
 // helpers

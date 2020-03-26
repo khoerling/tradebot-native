@@ -70,14 +70,12 @@ class Account extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child:
-                  Button(
-                  child: Text(
+                  child: Button(
+                      child: Text(
                     "LOGIN  or  SIGN UP",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   )),
                 ),
               ],

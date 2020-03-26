@@ -47,7 +47,6 @@ class _PageViewState extends State<PagesView> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
-            print(settings.name);
             switch (settings.name) {
               case '/':
                 return RootPage(page: widget.page);
