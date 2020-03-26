@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradebot_native/pages/pages.dart';
+import 'package:tradebot_native/components/button.dart';
 
 // TODO Replace with object model.
 
@@ -64,38 +65,20 @@ class Account extends StatelessWidget {
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 100.0),
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 75.0),
             alignment: Alignment.center,
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    color: Theme.of(context).backgroundColor,
-                    highlightedBorderColor: Colors.white,
-                    // onPressed: () => gotoSignup(),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 20.0,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              "LOGIN  or  SIGN UP",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child:
+                  Button(
+                  child: Text(
+                    "LOGIN  or  SIGN UP",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  )),
                 ),
               ],
             ),
