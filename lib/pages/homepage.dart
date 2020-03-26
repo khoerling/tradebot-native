@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
 
@@ -27,14 +26,13 @@ class _HomePageState extends State<HomePage>
     _faders[_currentIndex].value = 1.0;
     _pageKeys = List<Key>.generate(allPages.length, (int index) => GlobalKey())
         .toList();
-    _hide = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _hide =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
 
-    // show & hide based on keyboard position
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        visible ? _hide.reverse() : _hide.forward();
-      },
-    );
+  bool _keyboardIsVisible() {
+    // immediately show & hide based on keyboard position
+    return !(MediaQuery.of(context).viewInsets.bottom == 0.0);
   }
 
   @override
@@ -112,11 +110,15 @@ class _HomePageState extends State<HomePage>
             right: 0.0,
             child: ClipRect(
               child: SizeTransition(
-                sizeFactor: _hide.drive(CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
+                sizeFactor: _hide
+                    .drive(CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
                 axisAlignment: -1.0,
-                child: Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: BottomNavigation(onTap: selectPage)),
+                child: _keyboardIsVisible()
+                    ? null
+                    : Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: BottomNavigation(
+                            index: _currentIndex, onTap: selectPage)),
               ),
             ),
           )
@@ -149,20 +151,18 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox.expand(
-        child:
-
-        Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.03), BlendMode.dstATop),
-              image: AssetImage('assets/images/bg.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: page.child)),
+          child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.white.withOpacity(0.05), BlendMode.dstATop),
+                  image: AssetImage('assets/images/bg.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: page.child)),
     );
   }
 }
