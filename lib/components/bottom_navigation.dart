@@ -43,9 +43,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       onTap: (index) {
         HapticFeedback.selectionClick();
         Future.delayed(
-            Duration(milliseconds: 451), () => HapticFeedback.heavyImpact());
-        Future.delayed(
-            Duration(milliseconds: 556), () => HapticFeedback.selectionClick());
+            Duration(milliseconds: 351), () => HapticFeedback.heavyImpact());
         setState(() {
           _page = index;
         });
