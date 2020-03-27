@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
+import 'package:tradebot_native/components/background.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -153,19 +154,7 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox.expand(
-          child: Container(
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                      Colors.white.withOpacity(0.05), BlendMode.dstATop),
-                  image: AssetImage('assets/images/bg.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: page.child)),
+      body: Background(child: page.child),
     );
   }
 }
