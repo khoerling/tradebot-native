@@ -15,16 +15,24 @@ export const addUser = functions.https.onCall((data, _context) => {
 });
 
 export const exchanges = functions.https.onCall((_data, _context) => {
-  return ccxt.exchanges;
+  try {
+    return { success: true, exchanges: ccxt.exchanges };
+  } catch (error) {
+    return { success: false, error };
+  }
 });
 
 export const markets = functions.https.onCall(async (data, _context) => {
-  const exchange = createExchange(data.exchange),
-    mkts = await exchange.fetchMarkets(),
-    mkt = mkts.filter((m: any) => m.id && m.active).map((m: any) => {
-      return { id: m.id, name: m.name };
-    });
-  return { timeframes: exchange.timeframes, markets: mkt };
+  try {
+    const exchange = createExchange(data.exchange),
+      mkts = await exchange.fetchMarkets(),
+      mkt = mkts.filter((m: any) => m.id && m.active).map((m: any) => {
+        return { id: m.id, symbol: m.symbol, base: m.base, quote: m.quote };
+      });
+    return { success: true, timeframes: exchange.timeframes, markets: mkt };
+  } catch (error) {
+    return { success: false, error };
+  }
 });
 
 // helpers

@@ -26,6 +26,7 @@ class CreateAlert extends StatefulWidget {
 class _CreateAlert extends State<CreateAlert> {
   var exchanges = [], exchange;
   var markets = [], market;
+  var timeframes = {};
 
   @override
   void initState() {
@@ -34,11 +35,77 @@ class _CreateAlert extends State<CreateAlert> {
   }
 
   _fetchExchanges() async {
-    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+    // exchanges
+    final HttpsCallable fetchExchanges =
+        CloudFunctions.instance.getHttpsCallable(
       functionName: 'exchanges',
     );
-    final res = await callable.call();
-    setState(() => exchanges = res.data);
+    fetchExchanges.call().then((res) {
+      var data = res.data;
+      if (data['success'])
+        setState(() => exchanges = data['exchanges']);
+      else
+        _alert('Exchanges are Down', 'Try again later!');
+    }).timeout(Duration(seconds: 4),
+        onTimeout: () => _alert('Internet Connection', 'Are you online?',
+            error: 'Try again, later!'));
+  }
+
+  _fetchMarkets(String exchange) async {
+    if (exchange.isEmpty) return _clearMarket(); // guard
+    // markets
+    final HttpsCallable fetchMarkets = CloudFunctions.instance.getHttpsCallable(
+      functionName: 'markets',
+    );
+    fetchMarkets.call({'exchange': exchange}).then((res) {
+      var data = res.data;
+      if (data['success']) {
+        setState(() {
+          markets = data['markets'];
+          timeframes = data['timeframes'];
+        });
+        if (markets.length < 1) _alert(exchange.toUpperCase(), 'No active markets!');
+      } else {
+        var error = data['error'];
+        _alert(
+            "${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
+            error: error.containsKey('name') ? error['name'] : ''); // guard
+      }
+    });
+  }
+
+  _clearMarket() {
+    setState(() => market = ''); // reset
+  }
+
+  Future<void> _alert(title, msg, {error = ''}) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(msg),
+                Text('', style: TextStyle(fontSize: 5)),
+                Text(error,
+                    style: TextStyle(fontSize: 12, color: Colors.white54)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('GOT IT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -54,19 +121,42 @@ class _CreateAlert extends State<CreateAlert> {
                 SearchableDropdown.single(
                   items: exchanges
                       .map((e) => DropdownMenuItem(
-                          child: Text(e.toString()), value: e.toString()))
+                          child: Text(e.toString().toUpperCase()),
+                          value: e.toString()))
                       .toList(),
-                  value: "",
+                  value: exchange,
                   hint: Padding(
                     padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
                     child: Text("Select Exchange"),
                   ),
                   searchHint: "Select Exchange",
                   onChanged: (value) {
-                    setState(() => exchange = value);
+                    setState(() {
+                      exchange = value;
+                    });
+                    if (value != null) _fetchMarkets(value); else _clearMarket(); 
                   },
                   isExpanded: true,
                 ),
+                exchange != null
+                ? SearchableDropdown.single(
+                  items: markets
+                      // .where((m) => m && m['active'])
+                      .map((e) => DropdownMenuItem(
+                          child: Text(e['symbol'].toString()),
+                          value: e['id'].toString()))
+                      .toList(),
+                  value: market,
+                  hint: Padding(
+                    padding: const EdgeInsets.only(top: 25.0, bottom: 14.0),
+                    child: Text("Select Market"),
+                  ),
+                  searchHint: "Select Market",
+                  onChanged: (value) {
+                    setState(() => market = value);
+                  },
+                  isExpanded: true,
+                ) : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
                     child: Button(
