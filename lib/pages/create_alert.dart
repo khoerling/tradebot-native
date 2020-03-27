@@ -4,6 +4,7 @@ import 'package:tradebot_native/pages/pages.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/components/button.dart';
+import 'package:tradebot_native/components/params.dart';
 
 // TODO Replace with object model.
 // try firebase only, cache with ccxt for market & exchange
@@ -64,8 +65,10 @@ class _CreateAlert extends State<CreateAlert> {
           markets = data['markets'];
           timeframes = data['timeframes'];
         });
-        if (markets.length < 1) _alert(exchange.toUpperCase(), 'No active markets!');
+        if (markets.length < 1)
+          _alert(exchange.toUpperCase(), 'No active markets!');
       } else {
+        _clearMarket();
         var error = data['error'];
         _alert(
             "${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
@@ -110,6 +113,7 @@ class _CreateAlert extends State<CreateAlert> {
 
   @override
   Widget build(BuildContext context) {
+    print(market);
     return Container(
         child: SizedBox.expand(
       child: Padding(
@@ -134,29 +138,35 @@ class _CreateAlert extends State<CreateAlert> {
                     setState(() {
                       exchange = value;
                     });
-                    if (value != null) _fetchMarkets(value); else _clearMarket(); 
+                    if (value != null)
+                      _fetchMarkets(value);
+                    else
+                      _clearMarket();
                   },
                   isExpanded: true,
                 ),
                 exchange != null
-                ? SearchableDropdown.single(
-                  items: markets
-                      // .where((m) => m && m['active'])
-                      .map((e) => DropdownMenuItem(
-                          child: Text(e['symbol'].toString()),
-                          value: e['id'].toString()))
-                      .toList(),
-                  value: market,
-                  hint: Padding(
-                    padding: const EdgeInsets.only(top: 25.0, bottom: 14.0),
-                    child: Text("Select Market"),
-                  ),
-                  searchHint: "Select Market",
-                  onChanged: (value) {
-                    setState(() => market = value);
-                  },
-                  isExpanded: true,
-                ) : Container(),
+                    ? SearchableDropdown.single(
+                        items: markets
+                            // .where((m) => m && m['active'])
+                            .map((e) => DropdownMenuItem(
+                                child: Text(e['symbol'].toString()),
+                                value: e['id'].toString()))
+                            .toList(),
+                        value: market,
+                        hint: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 25.0, bottom: 14.0),
+                          child: Text("Select Market"),
+                        ),
+                        searchHint: "Select Market",
+                        onChanged: (value) {
+                          setState(() => market = value);
+                        },
+                        isExpanded: true,
+                      )
+                    : Container(),
+                market != null && market != '' ? Params() : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
                     child: Button(
