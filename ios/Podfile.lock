@@ -321,6 +321,8 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - Protobuf (3.11.2)
+  - search_choices (0.0.1):
+    - Flutter
   - searchable_dropdown (1.1.1):
     - Flutter
   - sensors (0.0.1):
@@ -339,6 +341,7 @@ DEPENDENCIES:
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - search_choices (from `.symlinks/plugins/search_choices/ios`)
   - searchable_dropdown (from `.symlinks/plugins/searchable_dropdown/ios`)
   - sensors (from `.symlinks/plugins/sensors/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -391,6 +394,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  search_choices:
+    :path: ".symlinks/plugins/search_choices/ios"
   searchable_dropdown:
     :path: ".symlinks/plugins/searchable_dropdown/ios"
   sensors:
@@ -433,6 +438,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: dd1aaea7140debfe4dd0683fb8ef208e527ae153
+  search_choices: b50731e8c425078048f681f39c34375c58d6ce8d
   searchable_dropdown: 5058be32fdc5e0481d300ff2087129072e71bd62
   sensors: 4bd31219c4bf9d7d4401b392a1701ee3adc1a296
   webview_flutter: bec7599de6bfbe8008a739aa3ebd7b364ea9d0cd
