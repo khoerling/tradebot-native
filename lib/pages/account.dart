@@ -7,7 +7,7 @@ import 'package:tradebot_native/components/button.dart';
 class Account extends StatelessWidget {
   const Account({Key key, this.page}) : super(key: key);
 
-  final Page page;
+  final TPage page;
   @override
   Widget build(BuildContext context) {
     return Column(

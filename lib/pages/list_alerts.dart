@@ -5,7 +5,7 @@ import 'package:tradebot_native/pages/pages.dart';
 class ListAlerts extends StatelessWidget {
   const ListAlerts({Key key, this.page}) : super(key: key);
 
-  final Page page;
+  final TPage page;
 
   @override
   Widget build(BuildContext context) {

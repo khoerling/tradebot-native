@@ -11,8 +11,8 @@ export 'homepage.dart';
 export 'list_alerts.dart';
 export 'alert.dart';
 
-class Page {
-  const Page(this.index, this.title, this.icon, this.color, this.child);
+class TPage {
+  const TPage(this.index, this.title, this.icon, this.color, this.child);
   final int index;
   final String title;
   final IconData icon;
@@ -20,16 +20,16 @@ class Page {
   final Widget child;
 }
 
-const List<Page> allPages = <Page>[
-  Page(0, 'CreateAlert', Icons.add, Colors.black, CreateAlert()),
-  Page(1, 'ListAlerts', Icons.list, Colors.black, ListAlerts()),
-  Page(2, '', Icons.perm_identity, Colors.black, Account()),
+const List<TPage> allPages = <TPage>[
+  TPage(0, 'CreateAlert', Icons.add, Colors.black, CreateAlert()),
+  TPage(1, 'ListAlerts', Icons.list, Colors.black, ListAlerts()),
+  TPage(2, '', Icons.perm_identity, Colors.black, Account()),
 ];
 
 class PagesView extends StatefulWidget {
   const PagesView({Key key, this.page, this.onNavigation}) : super(key: key);
 
-  final Page page;
+  final TPage page;
   final VoidCallback onNavigation;
 
   @override

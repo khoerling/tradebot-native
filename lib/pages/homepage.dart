@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
-    _faders = allPages.map<AnimationController>((Page destination) {
+    _faders = allPages.map<AnimationController>((TPage destination) {
       return AnimationController(
           vsync: this, duration: Duration(milliseconds: 250));
     }).toList();
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage>
           body: Stack(children: [
         Stack(
           fit: StackFit.expand,
-          children: allPages.map((Page destination) {
+          children: allPages.map((TPage destination) {
             final Widget view = FadeTransition(
               opacity: _faders[destination.index]
                   .drive(CurveTween(curve: Curves.fastOutSlowIn)),
@@ -149,7 +149,7 @@ class ViewNavigatorObserver extends NavigatorObserver {
 class RootPage extends StatelessWidget {
   const RootPage({Key key, this.page}) : super(key: key);
 
-  final Page page;
+  final TPage page;
 
   @override
   Widget build(BuildContext context) {
