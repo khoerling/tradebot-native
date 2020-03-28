@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:tradebot_native/pages/pages.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
@@ -27,7 +27,7 @@ class CreateAlert extends StatefulWidget {
 class _CreateAlert extends State<CreateAlert> {
   var exchanges = [], exchange;
   var markets = [], market;
-  var timeframes = {};
+  var timeframes = [], timeframe;
 
   @override
   void initState() {
@@ -61,9 +61,17 @@ class _CreateAlert extends State<CreateAlert> {
     fetchMarkets.call({'exchange': exchange}).then((res) {
       var data = res.data;
       if (data['success']) {
+        // translate timeframe into an array for selection
+        // print(data['timeframes']);
+        Map tf = data['timeframes'];
+        timeframes.clear();
+        tf.forEach((k, v) {
+          timeframes.add([k, v]);
+        });
+        print(timeframes?.last[0]);
         setState(() {
           markets = data['markets'];
-          timeframes = data['timeframes'];
+          timeframe = timeframes?.last[0] ?? '';
         });
         if (markets.length < 1)
           _alert(exchange.toUpperCase(), 'No active markets!');
@@ -113,7 +121,6 @@ class _CreateAlert extends State<CreateAlert> {
 
   @override
   Widget build(BuildContext context) {
-    print(market);
     return Container(
         child: SizedBox.expand(
       child: Padding(
@@ -122,7 +129,7 @@ class _CreateAlert extends State<CreateAlert> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SearchableDropdown.single(
+                SearchChoices.single(
                   items: exchanges
                       .map((e) => DropdownMenuItem(
                           child: Text(e.toString().toUpperCase()),
@@ -130,7 +137,7 @@ class _CreateAlert extends State<CreateAlert> {
                       .toList(),
                   value: exchange,
                   hint: Padding(
-                    padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
+                    padding: const EdgeInsets.only(top: 15.0, bottom: 14.0),
                     child: Text("Select Exchange"),
                   ),
                   searchHint: "Select Exchange",
@@ -146,25 +153,55 @@ class _CreateAlert extends State<CreateAlert> {
                   isExpanded: true,
                 ),
                 exchange != null
-                    ? SearchableDropdown.single(
-                        items: markets
-                            // .where((m) => m && m['active'])
-                            .map((e) => DropdownMenuItem(
-                                child: Text(e['symbol'].toString()),
-                                value: e['id'].toString()))
-                            .toList(),
-                        value: market,
-                        hint: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 25.0, bottom: 14.0),
-                          child: Text("Select Market"),
-                        ),
-                        searchHint: "Select Market",
-                        onChanged: (value) {
-                          setState(() => market = value);
-                        },
-                        isExpanded: true,
-                      )
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(child: 
+                            SearchChoices.single(
+                              items: markets
+                                  .map((e) => DropdownMenuItem(
+                                      child: Text(e['symbol'].toString()),
+                                      value: e['id'].toString()))
+                                  .toList(),
+                              value: market,
+                              hint: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 15.0, bottom: 14.0),
+                                child: Text("Select Market"),
+                              ),
+                              searchHint: "Select Market",
+                              onChanged: (value) {
+                                setState(() => market = value);
+                              },
+                              isExpanded: true,
+                            )),
+                            Container(
+                              width: 100,
+                              child:
+                            SearchChoices.single(
+                              items: timeframes
+                                  .map((t) => DropdownMenuItem(
+                                      child: Text(t[0].toString()),
+                                      value: t[0].toString()))
+                                  .toList(),
+                              value: timeframe,
+                              hint: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 15.0, bottom: 14.0),
+                                child: Text("Time"),
+                              ),
+                              searchHint: "Select Timeframe",
+                              displayClearIcon: false,
+                              onChanged: (value) {
+                                print('timeframe was $timeframe');
+                                print('set $value');
+                                setState(() => timeframe = value);
+                              },
+                              isExpanded: true,
+                            )
+                          )
+                          ])
                     : Container(),
                 market != null && market != '' ? Params() : Container(),
                 Padding(
