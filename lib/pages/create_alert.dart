@@ -61,14 +61,12 @@ class _CreateAlert extends State<CreateAlert> {
     fetchMarkets.call({'exchange': exchange}).then((res) {
       var data = res.data;
       if (data['success']) {
-        // translate timeframe into an array for selection
-        // print(data['timeframes']);
+        // reset & translate timeframe into an array for selection
         Map tf = data['timeframes'];
         timeframes.clear();
         tf.forEach((k, v) {
           timeframes.add([k, v]);
         });
-        print(timeframes?.last[0]);
         setState(() {
           markets = data['markets'];
           timeframe = timeframes?.last[0] ?? '';
@@ -157,8 +155,8 @@ class _CreateAlert extends State<CreateAlert> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Expanded(child: 
-                            SearchChoices.single(
+                            Expanded(
+                                child: SearchChoices.single(
                               items: markets
                                   .map((e) => DropdownMenuItem(
                                       child: Text(e['symbol'].toString()),
@@ -177,30 +175,25 @@ class _CreateAlert extends State<CreateAlert> {
                               isExpanded: true,
                             )),
                             Container(
-                              width: 100,
-                              child:
-                            SearchChoices.single(
-                              items: timeframes
-                                  .map((t) => DropdownMenuItem(
-                                      child: Text(t[0].toString()),
-                                      value: t[0].toString()))
-                                  .toList(),
-                              value: timeframe,
-                              hint: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 15.0, bottom: 14.0),
-                                child: Text("Time"),
-                              ),
-                              searchHint: "Select Timeframe",
-                              displayClearIcon: false,
-                              onChanged: (value) {
-                                print('timeframe was $timeframe');
-                                print('set $value');
-                                setState(() => timeframe = value);
-                              },
-                              isExpanded: true,
-                            )
-                          )
+                                width: 100,
+                                child: SearchChoices.single(
+                                  items: timeframes
+                                      .map((t) => DropdownMenuItem(
+                                          child: Text(t[0].toString()),
+                                          value: t[0].toString()))
+                                      .toList(),
+                                  value: timeframe,
+                                  hint: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 15.0, bottom: 14.0),
+                                    child: Text("Time"),
+                                  ),
+                                  searchHint: "Select Candle Timeframe",
+                                  displayClearIcon: false,
+                                  onChanged: (value) =>
+                                      setState(() => timeframe = value),
+                                  isExpanded: true,
+                                ))
                           ])
                     : Container(),
                 market != null && market != '' ? Params() : Container(),
