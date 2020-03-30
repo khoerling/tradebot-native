@@ -14,7 +14,7 @@ void main() {
         scaffoldBackgroundColor: beppuTerminalBlue.withOpacity(.97),
         cardColor: beppuTerminalBlue.withOpacity(.9),
         primaryColor: beppuTerminalBlue,
-        accentColor: Color.fromRGBO(88, 41, 74, 1),
+        accentColor: Colors.white,
         textTheme: TextTheme(),
       ),
       home: HomePage()));

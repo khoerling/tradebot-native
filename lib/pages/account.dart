@@ -86,7 +86,7 @@ class Account extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
-                          color: Color(0Xff3B5998),
+                          color: Color(0X2f3B5998),
                           onPressed: () => {},
                           child: Container(
                             child: Row(
@@ -133,7 +133,7 @@ class Account extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
-                          color: Color(0Xffdb3236),
+                          color: Color(0X2fdb3236),
                           onPressed: () => {},
                           child: Container(
                             child: Row(

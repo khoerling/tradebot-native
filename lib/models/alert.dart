@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 enum Horizon { greater, less }
 enum Name { price, divergence, guppy }
-enum Guppy {green,red, grey}
+enum Guppy { green, red, grey }
 
 class Alert {
   String key;
