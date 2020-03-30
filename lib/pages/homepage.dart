@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage>
 
   bool _handleScrollNotification(ScrollNotification notification) {
     // show & hide bottom bar on scroll
+    if (_currentIndex == 0) return false; // guard
     if (notification.depth == 0) {
       if (notification is UserScrollNotification) {
         final UserScrollNotification userScroll = notification;
