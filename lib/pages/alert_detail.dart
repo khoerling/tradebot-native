@@ -3,8 +3,8 @@ import 'package:tradebot_native/pages/pages.dart';
 
 // TODO Replace with object model.
 
-class Alert extends StatelessWidget {
-  const Alert({Key key, this.page}) : super(key: key);
+class AlertDetail extends StatelessWidget {
+  const AlertDetail({Key key, this.page}) : super(key: key);
   final TPage page;
 
   @override

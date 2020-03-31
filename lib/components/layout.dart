@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tradebot_native/routes.dart';
 
 // TODO 1st, refactor push out
 // TODO 2nd, delete this file

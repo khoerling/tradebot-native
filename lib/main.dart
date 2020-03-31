@@ -7,7 +7,7 @@ const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
 void main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {'/list': (context) => ListAlerts(page: allPages[0])},
+      routes: {'/list': (context) => AlertList(page: allPages[0])},
       theme: ThemeData(
         brightness: Brightness.dark,
         backgroundColor: beppuTerminalBlue,

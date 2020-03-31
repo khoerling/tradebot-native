@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tradebot_native/pages/list_alerts.dart';
-import 'package:tradebot_native/pages/create_alert.dart';
+import 'package:tradebot_native/pages/alert_list.dart';
+import 'package:tradebot_native/pages/alert_create.dart';
+import 'package:tradebot_native/pages/alert_detail.dart';
 import 'package:tradebot_native/pages/account.dart';
-import 'package:tradebot_native/pages/alert.dart';
 import 'package:tradebot_native/pages/homepage.dart';
 
 export 'account.dart';
-export 'create_alert.dart';
 export 'homepage.dart';
-export 'list_alerts.dart';
-export 'alert.dart';
+export 'alert_create.dart';
+export 'alert_list.dart';
+export 'alert_detail.dart';
 
 class TPage {
   const TPage(this.index, this.title, this.icon, this.color, this.child);
@@ -21,8 +21,8 @@ class TPage {
 }
 
 const List<TPage> allPages = <TPage>[
-  TPage(0, 'CreateAlert', Icons.add, Colors.black, CreateAlert()),
-  TPage(1, 'ListAlerts', Icons.list, Colors.black, ListAlerts()),
+  TPage(0, 'AlertCreate', Icons.add, Colors.black, AlertCreate()),
+  TPage(1, 'ALertList', Icons.list, Colors.black, AlertList()),
   TPage(2, '', Icons.perm_identity, Colors.black, Account()),
 ];
 
@@ -47,14 +47,16 @@ class _PageViewState extends State<PagesView> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
+            var root = RootPage(page: widget.page);
             switch (settings.name) {
               case '/':
-                return RootPage(page: widget.page);
+                return root;
               case '/alert':
-                return Alert(page: widget.page);
+                return AlertDetail(page: widget.page);
               case '/list':
-                return ListAlerts(page: widget.page);
+                return AlertList(page: widget.page);
             }
+            return root;
           },
         );
       },

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tradebot_native/pages/pages.dart';
 
 // TODO Replace with object model.
-class ListAlerts extends StatelessWidget {
-  const ListAlerts({Key key, this.page}) : super(key: key);
+class AlertList extends StatelessWidget {
+  const AlertList({Key key, this.page}) : super(key: key);
 
   final TPage page;
 

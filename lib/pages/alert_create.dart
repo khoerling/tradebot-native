@@ -16,15 +16,17 @@ import 'package:tradebot_native/components/params.dart';
 // - divergence, look for bullish or bearish + thresholds, --gap = 1 candle up to 50
 // -
 
-class CreateAlert extends StatefulWidget {
-  const CreateAlert({
+class AlertCreate extends StatefulWidget {
+  const AlertCreate({
     Key key,
   }) : super(key: key);
   @override
   _CreateAlert createState() => _CreateAlert();
 }
 
-class _CreateAlert extends State<CreateAlert> {
+class _CreateAlert extends State<AlertCreate> {
+  final _formKey = GlobalKey();
+  final _alert = Alert();
   var exchanges = [], exchange;
   var markets = [], market;
   var timeframes = [], timeframe;
@@ -46,9 +48,9 @@ class _CreateAlert extends State<CreateAlert> {
       if (data['success'])
         setState(() => exchanges = data['exchanges']);
       else
-        _alert('Exchanges are Down', 'Try again later!');
+        _renderAlert('Exchanges are Down', 'Try again later!');
     }).timeout(Duration(seconds: 4),
-        onTimeout: () => _alert('Internet Connection', 'Are you online?',
+        onTimeout: () => _renderAlert('Internet Connection', 'Are you online?',
             error: 'Try again, later!'));
   }
 
@@ -72,11 +74,11 @@ class _CreateAlert extends State<CreateAlert> {
           timeframe = timeframes?.last[0] ?? '';
         });
         if (markets.length < 1)
-          _alert(exchange.toUpperCase(), 'No active markets!');
+          _renderAlert(exchange.toUpperCase(), 'No active markets!');
       } else {
         _clearMarket();
         var error = data['error'];
-        _alert(
+        _renderAlert(
             "${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
             error: error.containsKey('name') ? error['name'] : ''); // guard
       }
@@ -87,7 +89,7 @@ class _CreateAlert extends State<CreateAlert> {
     setState(() => market = ''); // reset
   }
 
-  Future<void> _alert(title, msg, {error = ''}) async {
+  Future<void> _renderAlert(title, msg, {error = ''}) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
