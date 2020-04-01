@@ -198,7 +198,9 @@ class _CreateAlert extends State<AlertCreate> {
                                 ))
                           ])
                     : Container(),
-                market != null && market != '' ? Params() : Container(),
+                market != null && market != ''
+                    ? Params(alert: _alert)
+                    : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
                     child: Button(

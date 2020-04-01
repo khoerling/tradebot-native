@@ -1,26 +1,27 @@
 import 'package:firebase_database/firebase_database.dart';
 
-enum Horizon { greater, less }
-enum Name { price, divergence, guppy }
-enum Guppy { green, red, grey }
+enum AlertName { price, divergence, guppy }
+enum AlertPrice { greater, less }
+enum AlertGuppy { green, red, grey }
 
 class Alert {
-  String key;
-  String exchange;
-  String market;
-  String timeframe;
-  Name name;
-  Map<Name, dynamic> params = {
-    Name.price: {'horizon': Horizon, 'price': String},
-    Name.divergence: {
+  String key = '';
+  String exchange = '';
+  String market = '';
+  String timeframe = '';
+  AlertName name = AlertName.price;
+  Map<AlertName, dynamic> params = {
+    AlertName.price: {'horizon': AlertPrice, 'price': String},
+    AlertName.divergence: {
       'bearish': bool,
       'hidden': bool,
       'thresholds': {'age': int, 'gap': String, 'peak': double}
     },
-    Name.guppy: Guppy,
+    AlertName.guppy: AlertGuppy,
   };
 
-  Alert(this.exchange, this.market, this.timeframe, this.name, this.params);
+  // Alert(this.exchange, this.market, this.timeframe, this.name, this.params);
+  Alert() : super();
 
   Alert.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
