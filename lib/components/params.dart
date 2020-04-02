@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:tradebot_native/components/linked_label_checkbox.dart';
+import 'package:tradebot_native/components/linked_label_radio.dart';
 import 'package:tradebot_native/models/alert.dart';
 
 class Params extends StatefulWidget {
@@ -23,9 +24,10 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var tab = (String name) => Padding(
-        padding: EdgeInsets.only(top: 25, bottom: 15),
-        child: Text(name.toUpperCase(), style: TextStyle(fontSize: 12)));
+    var tabHeader = (String name) => Padding(
+            padding: EdgeInsets.only(top: 25, bottom: 15),
+            child: Text(name.toUpperCase(), style: TextStyle(fontSize: 12))),
+        params = widget.alert.params;
     return DefaultTabController(
         length: 3,
         child: SizedBox(
@@ -33,18 +35,18 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
             child: Column(children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.white30))),
+                    border: Border(bottom: BorderSide(color: Colors.white10))),
                 child: Padding(
                     padding: EdgeInsets.only(top: 35.0),
                     child: TabBar(
-                        indicatorColor: Colors.white30,
+                        indicatorColor: Colors.white10,
                         indicator: UnderlineTabIndicator(
                             borderSide:
                                 BorderSide(color: Colors.white, width: 1.0)),
                         tabs: [
-                          tab('Price'),
-                          tab('Divergence'),
-                          tab('Guppy'),
+                          tabHeader('Price'),
+                          tabHeader('Divergence'),
+                          tabHeader('Guppy'),
                         ])),
               ),
               Expanded(
@@ -52,22 +54,18 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                 padding: EdgeInsets.only(top: 25.0),
                 child: TabBarView(children: [
                   SizedBox(
-                    height: 400,
                     child: Column(
                       children: <Widget>[
-                        Expanded(child: Text('Alert on price movement')),
                         Expanded(
                             child: Row(children: <Widget>[
                           Expanded(
-                              child: ListTile(
-                            title: Text('Greater'),
-                            leading: Radio(
-                              // value: AlertPrice.greater,
-                              groupValue: widget.alert.params[AlertName.price]
-                                  ['horizon'],
-                              onChanged: (value) => setState(() => widget.alert
-                                  .params[AlertName.price]['horizon'] = value),
-                            ),
+                              child: LinkedLabelRadio(
+                            label: 'Greater',
+                            padding: EdgeInsets.symmetric(horizontal: 1.0),
+                            value: AlertPrice.greater,
+                            groupValue: params['price_horizon'],
+                            onChanged: (value) =>
+                                setState(() => params['price_horizon'] = value),
                           )),
                           Expanded(
                             child: Padding(
@@ -79,15 +77,19 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                             decimal: false))),
                           )
                         ])),
-                        //  ListTile(
-                        //   title: Text('Less'),
-                        //   leading: Radio(
-                        //     value: AlertPrice.less,
-                        //     groupValue: widget.alert.params[AlertName.price],
-                        //     onChanged: (value) => setState(() =>
-                        //         widget.alert.params[AlertName.price].horizon = value),
-                        //   ),
-                        // ),
+                        Expanded(
+                            child: Row(children: <Widget>[
+                          Expanded(
+                              child: LinkedLabelRadio(
+                            label: 'Less',
+                            padding: EdgeInsets.symmetric(horizontal: 1.0),
+                            value: AlertPrice.less,
+                            groupValue: params['price_horizon'],
+                            onChanged: (value) =>
+                                setState(() => params['price_horizon'] = value),
+                          )),
+                          Expanded(child: Container())
+                        ])),
                       ],
                     ),
                   ),
@@ -95,39 +97,27 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                     height: 400,
                     child: Column(
                       children: <Widget>[
-                        Expanded(child: Text('Alert on Divergence')),
                         Expanded(
                             child: Row(children: <Widget>[
-                          // Expanded(
-                          //   child:
-                          //     LinkedLabelCheckbox(
-                          //       label: 'Linked, tappable label text',
-                          //       padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          //       value: widget.alert.params[AlertName.divergence].hidden,
-                          //       onChanged: (value) => setState(() => widget.alert.params[AlertName.divergence].hidden = value),
-                          //       // onChanged: (bool newValue) {
-                          //       //   setState(() {
-                          //       //       _isSelected = newValue;
-                          //       //   });
-                          //       // },
-                          //     ),
-                          //   // ListTile(
-                          //   //   title: Text('Hidden Divergence'),
-                          //   //   // value: timeDilation != 1.0,
-                          //   //   // onChanged: (bool value) {
-                          //   //   //   setState(() { timeDilation = value ? 10.0 : 1.0; });
-                          //   //   // },
-                          //   // ),
-                          // ),
                           Expanded(
-                            child: ListTile(
-                              title: Text('Use Bearish (default: Bullish)'),
-                              // value: timeDilation != 1.0,
-                              // onChanged: (bool value) {
-                              //   setState(() { timeDilation = value ? 10.0 : 1.0; });
-                              // },
+                              child: LinkedLabelCheckbox(
+                            label: 'Bearish',
+                            subLabel: 'default: bullish',
+                            padding: EdgeInsets.symmetric(horizontal: 1.0),
+                            value: params['divergence_bearish'] ?? false,
+                            onChanged: (value) => setState(
+                                () => params['divergence_bearish'] = value),
+                          )),
+                          Expanded(
+                            child: LinkedLabelCheckbox(
+                              label: 'Hidden',
+                              subLabel: 'search hidden ∇',
+                              padding: EdgeInsets.symmetric(horizontal: 1.0),
+                              value: params['divergence_hidden'] ?? false,
+                              onChanged: (value) => setState(
+                                  () => params['divergence_hidden'] = value),
                             ),
-                          )
+                          ),
                         ])),
                       ],
                     ),
@@ -136,46 +126,37 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                       height: 400,
                       child: Column(
                         children: <Widget>[
-                          Expanded(child: Text('Alert When Guppy EMAs Change')),
                           Expanded(
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                    child: ListTile(
-                                  title: Text('Green'),
-                                  leading: Radio(
-                                    value: AlertGuppy.green,
-                                    groupValue:
-                                        widget.alert.params[AlertName.guppy],
-                                    onChanged: (value) => setState(() => widget
-                                        .alert.params[AlertName.guppy] = value),
-                                  ),
-                                )),
-                                Expanded(
-                                    child: ListTile(
-                                  title: Text('Grey'),
-                                  leading: Radio(
-                                    value: AlertGuppy.grey,
-                                    groupValue:
-                                        widget.alert.params[AlertName.guppy],
-                                    onChanged: (value) => setState(() => widget
-                                        .alert.params[AlertName.guppy] = value),
-                                  ),
-                                )),
-                                Expanded(
-                                    child: ListTile(
-                                  title: Text('Red'),
-                                  leading: Radio(
-                                    value: AlertGuppy.red,
-                                    groupValue:
-                                        widget.alert.params[AlertName.guppy],
-                                    onChanged: (value) => setState(() => widget
-                                        .alert.params[AlertName.guppy] = value),
-                                  ),
-                                )),
-                              ],
+                              child: Row(children: <Widget>[
+                            Expanded(
+                                child: LinkedLabelRadio(
+                              label: 'Green',
+                              padding: EdgeInsets.symmetric(horizontal: 1.0),
+                              value: AlertGuppy.green,
+                              groupValue: params['guppy'],
+                              onChanged: (value) =>
+                                  setState(() => params['guppy'] = value),
+                            )),
+                            Expanded(
+                                child: LinkedLabelRadio(
+                              label: 'Grey',
+                              padding: EdgeInsets.symmetric(horizontal: 1.0),
+                              value: AlertGuppy.grey,
+                              groupValue: params['guppy'],
+                              onChanged: (value) =>
+                                  setState(() => params['guppy'] = value),
+                            )),
+                            Expanded(
+                              child: LinkedLabelRadio(
+                                label: 'Red',
+                                padding: EdgeInsets.symmetric(horizontal: 1.0),
+                                value: AlertGuppy.red,
+                                groupValue: params['guppy'],
+                                onChanged: (value) =>
+                                    setState(() => params['guppy'] = value),
+                              ),
                             ),
-                          ),
+                          ])),
                         ],
                       )),
                 ]),
