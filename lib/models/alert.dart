@@ -10,17 +10,8 @@ class Alert {
   String market = '';
   String timeframe = '';
   AlertName name = AlertName.price;
-  Map<AlertName, dynamic> params = {
-    AlertName.price: {'horizon': AlertPrice, 'price': String},
-    AlertName.divergence: {
-      'bearish': bool,
-      'hidden': bool,
-      'thresholds': {'age': int, 'gap': String, 'peak': double}
-    },
-    AlertName.guppy: AlertGuppy,
-  };
+  Map<String, dynamic> params = {};
 
-  // Alert(this.exchange, this.market, this.timeframe, this.name, this.params);
   Alert() : super();
 
   Alert.fromSnapshot(DataSnapshot snapshot)
