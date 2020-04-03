@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:tradebot_native/pages/pages.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:search_choices/search_choices.dart';
-import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
+import 'package:tradebot_native/models/alert.dart';
+import 'package:tradebot_native/pages/pages.dart';
 
 // TODO Replace with object model.
 // try firebase only, cache with ccxt for market & exchange
@@ -27,6 +28,7 @@ class AlertCreate extends StatefulWidget {
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey();
   final _alert = Alert();
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
   var exchanges = [], exchange;
   var markets = [], market;
   var timeframes = [], timeframe;
@@ -49,7 +51,7 @@ class _CreateAlert extends State<AlertCreate> {
         setState(() => exchanges = data['exchanges']);
       else
         _renderAlert('Exchanges are Down', 'Try again later!');
-    }).timeout(Duration(seconds: 4),
+    }).timeout(Duration(seconds: 3),
         onTimeout: () => _renderAlert('Internet Connection', 'Are you online?',
             error: 'Try again, later!'));
   }
@@ -119,6 +121,20 @@ class _CreateAlert extends State<AlertCreate> {
     );
   }
 
+  _createAlert() {
+    // TODO push alert to firebase
+    // TODO add validation
+    print(_alert.toJson());
+    // print(
+    //   _database.reference().child('alerts').
+    // )
+    _database.reference().child("alerts").push().set(_alert.toJson()).then((r) {
+      // print(r);
+      print('after');
+    });
+    // print(a);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -145,6 +161,7 @@ class _CreateAlert extends State<AlertCreate> {
                     setState(() {
                       exchange = value;
                     });
+                    _alert.exchange = value;
                     if (value != null)
                       _fetchMarkets(value);
                     else
@@ -173,6 +190,7 @@ class _CreateAlert extends State<AlertCreate> {
                               searchHint: "Select Market",
                               onChanged: (value) {
                                 setState(() => market = value);
+                                _alert.market = value;
                               },
                               isExpanded: true,
                             )),
@@ -192,8 +210,10 @@ class _CreateAlert extends State<AlertCreate> {
                                   ),
                                   searchHint: "Select Candle Timeframe",
                                   displayClearIcon: false,
-                                  onChanged: (value) =>
-                                      setState(() => timeframe = value),
+                                  onChanged: (value) {
+                                    setState(() => timeframe = value);
+                                    _alert.timeframe = value;
+                                  },
                                   isExpanded: true,
                                 ))
                           ])
@@ -204,12 +224,13 @@ class _CreateAlert extends State<AlertCreate> {
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
                     child: Button(
+                        onPressed: _createAlert,
                         child: Text(
-                      "CREATE ALERT",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ))),
+                          "CREATE ALERT",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ))),
               ])),
     ));
   }

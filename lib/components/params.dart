@@ -43,6 +43,10 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                         indicator: UnderlineTabIndicator(
                             borderSide:
                                 BorderSide(color: Colors.white, width: 1.0)),
+                        onTap: (i) {
+                          // so we know which alert to create
+                          widget.alert.name = AlertName.values[i];
+                        },
                         tabs: [
                           tabHeader('Price'),
                           tabHeader('Divergence'),

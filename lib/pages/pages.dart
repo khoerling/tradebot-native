@@ -54,7 +54,7 @@ class _PageViewState extends State<PagesView> {
               case '/alert':
                 return AlertDetail(page: widget.page);
               case '/list':
-                return AlertList(page: widget.page);
+                return AlertList();
             }
             return root;
           },
