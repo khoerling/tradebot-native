@@ -32,41 +32,39 @@ class _LinkedLabelCheckbox extends State<LinkedLabelCheckbox> {
               minHeight: 40.0,
               maxHeight: 80.0,
             ),
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
                     height: 20,
-                    child: Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          text: widget.label,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              widget.onChanged(!(widget.value ?? false));
-                            },
-                        ),
+                    child: RichText(
+                      text: TextSpan(
+                        text: widget.label,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            widget.onChanged(!(widget.value ?? false));
+                          },
                       ),
                     ),
                   ),
-                  widget.subLabel.isNotEmpty
-                      ? Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: widget.subLabel,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.white54),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  widget.onChanged(!(widget.value ?? false));
-                                },
-                            ),
+                ),
+                widget.subLabel.isNotEmpty
+                    ? Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            text: widget.subLabel,
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.white54),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                widget.onChanged(!(widget.value ?? false));
+                              },
                           ),
-                        )
-                      : Container(),
-                ],
-              ),
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
           ),
           Switch(

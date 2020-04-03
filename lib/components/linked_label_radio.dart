@@ -36,15 +36,13 @@ class _LinkedLabelRadio extends State<LinkedLabelRadio> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        text: widget.label,
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            widget.onChanged(widget.value);
-                          },
-                      ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: widget.label,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          widget.onChanged(widget.value);
+                        },
                     ),
                   ),
                 ),
