@@ -1,45 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:tradebot_native/pages/pages.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-// TODO Replace with object model.
-class AlertList extends StatelessWidget {
-  const AlertList({Key key, this.page}) : super(key: key);
+class AlertList extends StatefulWidget {
+  const AlertList({
+    Key key,
+  }) : super(key: key);
+  @override
+  _AlertList createState() => _AlertList();
+}
 
-  final TPage page;
+// class _CreateAlert extends State<AlertCreate> {
+class _AlertList extends State<AlertList> {
+  FirebaseDatabase _database = FirebaseDatabase.instance;
+  List<int> shades = <int>[50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    const List<int> shades = <int>[
-      50,
-      100,
-      200,
-      300,
-      400,
-      500,
-      600,
-      700,
-      800,
-      900
-    ];
-
     return SizedBox.expand(
       child: ListView.builder(
         itemCount: shades.length,
         itemBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            height: 128,
-            child: Card(
-              color: Colors.white.withOpacity(0.075),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, "/alert");
-                },
-                child: Center(
-                  child: Text('Alert $index'),
+          final item = shades[index];
+          return Dismissible(
+              key: Key(item.toString()),
+              onDismissed: (direction) {
+                setState(() {
+                  shades.removeAt(index);
+                });
+              },
+              background: Container(color: Colors.red),
+              child: SizedBox(
+                height: 128,
+                child: Card(
+                  color: Colors.white.withOpacity(0.075),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/alert");
+                    },
+                    child: Center(
+                      child: Text('Alert ${item}'),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
+              ));
         },
       ),
     );
