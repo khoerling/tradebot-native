@@ -127,8 +127,8 @@ class _CreateAlert extends State<AlertCreate> {
   _createAlert() async {
     // TODO push alert to firebase
     // TODO add validation
-    DocumentReference ref = await db.collection("alerts").add(_alert.toJson());
-    print(ref.documentID);
+    // DocumentReference ref = await db.collection("alerts").add(_alert);
+    // print(ref.documentID);
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class AlertList extends StatefulWidget {
   const AlertList({
@@ -11,7 +10,6 @@ class AlertList extends StatefulWidget {
 
 // class _CreateAlert extends State<AlertCreate> {
 class _AlertList extends State<AlertList> {
-  FirebaseDatabase _database = FirebaseDatabase.instance;
   List<int> shades = <int>[50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
   @override
