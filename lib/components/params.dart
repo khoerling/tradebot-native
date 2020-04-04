@@ -27,7 +27,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
     var tabHeader = (String name) => Padding(
             padding: EdgeInsets.only(top: 25, bottom: 15),
             child: Text(name.toUpperCase(), style: TextStyle(fontSize: 12))),
-        params = widget.alert.params;
+        params = widget.alert.params ?? {};
     return DefaultTabController(
         length: 3,
         child: SizedBox(

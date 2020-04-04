@@ -9,7 +9,7 @@ class Alert {
   String exchange;
   String market;
   String timeframe;
-  Map<String, dynamic> params;
+  Map<String, dynamic> params = {};
 
   Alert(
       {this.id,
