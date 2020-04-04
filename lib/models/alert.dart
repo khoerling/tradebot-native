@@ -24,11 +24,11 @@ class Alert {
 
   toJson() {
     return {
-      exchange: exchange,
-      market: market,
-      timeframe: timeframe,
-      name: name,
-      params: params,
+      'exchange': exchange,
+      'market': market,
+      'timeframe': timeframe,
+      'name': name.index,
+      'params': params,
     };
   }
 }
