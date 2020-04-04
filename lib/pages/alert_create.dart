@@ -7,15 +7,8 @@ import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/alert.dart';
 
-// TODO Replace with object model.
-// try firebase only, cache with ccxt for market & exchange
-// timeframe:  1H, 1M, 5M, 2H, 1D, 4W, (integer:letter)
-// timeframe is not normalized, must come from exchange!  ccxt shows timeframes, use keys with api
-// 5 alerts
-// - horizontal, PRICE alert takes price input, can be directional, take up or down, > or <, run 2 alerts for both
-// - guppy, did it turn green, grey or red
+// TODO
 // - divergence, look for bullish or bearish + thresholds, --gap = 1 candle up to 50
-// -
 
 class AlertCreate extends StatefulWidget {
   const AlertCreate({
@@ -27,13 +20,9 @@ class AlertCreate extends StatefulWidget {
 
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey();
-  final _alert = Alert();
+  final alert = Alert();
   final db = Firestore.instance;
-  // TODO use alert for singles
-  var exchanges = [], exchange;
-  var markets = [], market;
-  var timeframes = [], timeframe;
-  var alerts;
+  var exchanges = [], markets = [], timeframes = [];
 
   @override
   void initState() {
@@ -52,9 +41,9 @@ class _CreateAlert extends State<AlertCreate> {
       if (data['success'])
         setState(() => exchanges = data['exchanges']);
       else
-        _renderAlert('Exchanges are Down', 'Try again later!');
+        warn('Exchanges are Down', 'Try again later!');
     }).timeout(Duration(seconds: 3),
-        onTimeout: () => _renderAlert('Internet Connection', 'Are you online?',
+        onTimeout: () => warn('Internet Connection', 'Are you online?',
             error: 'Try again, later!'));
   }
 
@@ -64,37 +53,35 @@ class _CreateAlert extends State<AlertCreate> {
     final HttpsCallable fetchMarkets = CloudFunctions.instance.getHttpsCallable(
       functionName: 'markets',
     );
-    fetchMarkets.call({'exchange': exchange}).then((res) {
+    fetchMarkets.call({'exchange': alert.exchange}).then((res) {
       var data = res.data;
       if (data['success']) {
         // reset & translate timeframe into an array for selection
-        Map tf = data['timeframes'];
         timeframes.clear();
-        tf.forEach((k, v) {
+        data['timeframes'].forEach((k, v) {
           timeframes.add([k, v]);
         });
         setState(() {
           markets = data['markets'];
-          timeframe = timeframes?.last[0] ?? '';
+          alert.timeframe = timeframes?.last[0] ?? '';
         });
-        _alert.timeframe = timeframe;
         if (markets.length < 1)
-          _renderAlert(exchange.toUpperCase(), 'No active markets!');
+          warn(alert.exchange.toUpperCase(), 'No active markets!');
       } else {
         _clearMarket();
-        var error = data['error'];
-        _renderAlert(
+        var err = data['error'];
+        warn(
             "${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
-            error: error.containsKey('name') ? error['name'] : ''); // guard
+            error: err.containsKey('name') ? err['name'] : ''); // guard
       }
     });
   }
 
   _clearMarket() {
-    setState(() => market = ''); // reset
+    setState(() => alert.market = ''); // reset
   }
 
-  Future<void> _renderAlert(title, msg, {error = ''}) async {
+  Future<void> warn(title, msg, {error = ''}) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -147,7 +134,7 @@ class _CreateAlert extends State<AlertCreate> {
                           child: Text(e.toString().toUpperCase()),
                           value: e.toString()))
                       .toList(),
-                  value: exchange,
+                  value: alert.exchange,
                   hint: Padding(
                     padding: const EdgeInsets.only(top: 15.0, bottom: 14.0),
                     child: Text("Select Exchange"),
@@ -155,9 +142,8 @@ class _CreateAlert extends State<AlertCreate> {
                   searchHint: "Select Exchange",
                   onChanged: (value) {
                     setState(() {
-                      exchange = value;
+                      alert.exchange = value;
                     });
-                    _alert.exchange = value;
                     if (value != null)
                       _fetchMarkets(value);
                     else
@@ -165,7 +151,7 @@ class _CreateAlert extends State<AlertCreate> {
                   },
                   isExpanded: true,
                 ),
-                exchange != null
+                alert.exchange != null
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +163,7 @@ class _CreateAlert extends State<AlertCreate> {
                                       child: Text(e['symbol'].toString()),
                                       value: e['id'].toString()))
                                   .toList(),
-                              value: market,
+                              value: alert.market,
                               hint: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 15.0, bottom: 14.0),
@@ -185,8 +171,8 @@ class _CreateAlert extends State<AlertCreate> {
                               ),
                               searchHint: "Select Market",
                               onChanged: (value) {
-                                setState(() => market = value);
-                                _alert.market = value;
+                                setState(() => alert.market = value);
+                                alert.market = value;
                               },
                               isExpanded: true,
                             )),
@@ -198,7 +184,7 @@ class _CreateAlert extends State<AlertCreate> {
                                           child: Text(t[0].toString()),
                                           value: t[0].toString()))
                                       .toList(),
-                                  value: timeframe,
+                                  value: alert.timeframe,
                                   hint: Padding(
                                     padding: const EdgeInsets.only(
                                         top: 15.0, bottom: 14.0),
@@ -207,15 +193,15 @@ class _CreateAlert extends State<AlertCreate> {
                                   searchHint: "Select Candle Timeframe",
                                   displayClearIcon: false,
                                   onChanged: (value) {
-                                    setState(() => timeframe = value);
-                                    _alert.timeframe = value;
+                                    setState(() => alert.timeframe = value);
+                                    alert.timeframe = value;
                                   },
                                   isExpanded: true,
                                 ))
                           ])
                     : Container(),
-                market != null && market != ''
-                    ? Params(alert: _alert)
+                alert.market != null && alert.market != ''
+                    ? Params(alert: alert)
                     : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
