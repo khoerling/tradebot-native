@@ -1,11 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/alert.dart';
-import 'package:tradebot_native/pages/pages.dart';
 
 // TODO Replace with object model.
 // try firebase only, cache with ccxt for market & exchange
@@ -28,10 +28,12 @@ class AlertCreate extends StatefulWidget {
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey();
   final _alert = Alert();
-  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  final db = Firestore.instance;
+  // TODO use alert for singles
   var exchanges = [], exchange;
   var markets = [], market;
   var timeframes = [], timeframe;
+  var alerts;
 
   @override
   void initState() {
@@ -75,6 +77,7 @@ class _CreateAlert extends State<AlertCreate> {
           markets = data['markets'];
           timeframe = timeframes?.last[0] ?? '';
         });
+        _alert.timeframe = timeframe;
         if (markets.length < 1)
           _renderAlert(exchange.toUpperCase(), 'No active markets!');
       } else {
@@ -121,18 +124,11 @@ class _CreateAlert extends State<AlertCreate> {
     );
   }
 
-  _createAlert() {
+  _createAlert() async {
     // TODO push alert to firebase
     // TODO add validation
-    print(_alert.toJson());
-    // print(
-    //   _database.reference().child('alerts').
-    // )
-    _database.reference().child("alerts").push().set(_alert.toJson()).then((r) {
-      // print(r);
-      print('after');
-    });
-    // print(a);
+    DocumentReference ref = await db.collection("alerts").add(_alert.toJson());
+    print(ref.documentID);
   }
 
   @override
