@@ -21,6 +21,7 @@ dependencies:
   cloud_firestore: ^0.13.4+2
   cloud_functions: ^0.4.2+3
   curved_navigation_bar: ^0.3.2
+  enum_to_string: ^1.0.9
   flutter_masked_text: ^0.8.0
   search_choices: ^1.0.13
   sensors: ^0.4.1+10

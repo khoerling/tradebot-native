@@ -1,6 +1,11 @@
+import 'package:enum_to_string/enum_to_string.dart';
+
 enum AlertGuppy { green, red, grey }
 enum AlertName { price, divergence, guppy }
 enum AlertPrice { greater, less }
+
+// used to enum -> string <- enum
+const enums = [AlertGuppy, AlertName, AlertPrice];
 
 class Alert {
   String id;
@@ -20,21 +25,15 @@ class Alert {
       this.timeframe,
       this.params});
 
-  static Alert fromMap(Map<String, dynamic> data, String id) {
-    return Alert(
-        id: id,
-        exchange: data['exchange'],
-        market: data['market'],
-        timeframe: data['timeframe'],
-        name: alertFrom(data['name']));
+  toJson() {
+    var ps = params.map((k, v) => MapEntry(k, enums.contains(v.runtimeType) ? EnumToString.parse(v) : v));
+    return {
+      'id': id,
+      'exchange': exchange,
+      'market': market,
+      'timeframe': timeframe,
+      'name': EnumToString.parse(name),
+      'params': ps,
+    };
   }
-}
-
-AlertName alertFrom(String alert) {
-  for (var a in AlertName.values) {
-    if (a.toString() == alert) {
-      return a;
-    }
-  }
-  return null;
 }
