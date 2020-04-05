@@ -20,7 +20,7 @@ class AlertCreate extends StatefulWidget {
 
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey();
-  final alert = Alert();
+  final alert = Alert(params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
 
