@@ -19,7 +19,8 @@ class AlertCreate extends StatefulWidget {
 }
 
 class _CreateAlert extends State<AlertCreate> {
-  final _formKey = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final alert = Alert(params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
@@ -70,8 +71,7 @@ class _CreateAlert extends State<AlertCreate> {
       } else {
         _clearMarket();
         var err = data['error'];
-        warn(
-            "${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
+        warn("${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
             error: err.containsKey('name') ? err['name'] : ''); // guard
       }
     });
@@ -112,16 +112,24 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   _createAlert() async {
-    // TODO push alert to firebase
-    // TODO add validation
-    // DocumentReference ref = await db.collection("alerts").add(_alert);
-    // print(ref.documentID);
+    // push alert to firebase
+    if (alert.market != null && _formKey.currentState.validate()) {
+      try {
+        DocumentReference ref =
+            await db.collection("alerts").add(alert.toJson());
+        print(ref.documentID);
+      } catch (e) {
+        print("Error creating alert $e");
+      }
+    } else {
+      print('Invalid form');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: SizedBox.expand(
+    return Form(
+      key: _formKey,
       child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
@@ -157,25 +165,37 @@ class _CreateAlert extends State<AlertCreate> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                             Expanded(
-                                child: SearchChoices.single(
-                              items: markets
-                                  .map((e) => DropdownMenuItem(
-                                      child: Text(e['symbol'].toString()),
-                                      value: e['id'].toString()))
-                                  .toList(),
-                              value: alert.market,
-                              hint: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 15.0, bottom: 14.0),
-                                child: Text("Select Market"),
-                              ),
-                              searchHint: "Select Market",
-                              onChanged: (value) {
-                                setState(() => alert.market = value);
-                                alert.market = value;
-                              },
-                              isExpanded: true,
-                            )),
+                                child: Padding(
+                                    padding: alert.market?.isEmpty == null
+                                        ? EdgeInsets.only(top: 17)
+                                        : EdgeInsets.only(top: 0),
+                                    child: SearchChoices.single(
+                                      validator: (value) {
+                                        print(value);
+                                        if (value?.isEmpty == null) {
+                                          return 'Choose market & candle timeframe';
+                                        }
+                                        return null;
+                                      },
+                                      items: markets
+                                          .map((e) => DropdownMenuItem(
+                                              child:
+                                                  Text(e['symbol'].toString()),
+                                              value: e['id'].toString()))
+                                          .toList(),
+                                      value: alert.market,
+                                      hint: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 15.0, bottom: 14.0),
+                                        child: Text("Select Market"),
+                                      ),
+                                      searchHint: "Select Market",
+                                      onChanged: (value) {
+                                        setState(() => alert.market = value);
+                                        alert.market = value;
+                                      },
+                                      isExpanded: true,
+                                    ))),
                             Container(
                                 width: 100,
                                 child: SearchChoices.single(
@@ -214,6 +234,6 @@ class _CreateAlert extends State<AlertCreate> {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ))),
               ])),
-    ));
+    );
   }
 }

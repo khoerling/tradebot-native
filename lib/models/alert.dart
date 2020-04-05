@@ -26,7 +26,8 @@ class Alert {
       this.params});
 
   toJson() {
-    var ps = params.map((k, v) => MapEntry(k, enums.contains(v.runtimeType) ? EnumToString.parse(v) : v));
+    var ps = params.map((k, v) =>
+        MapEntry(k, enums.contains(v.runtimeType) ? EnumToString.parse(v) : v));
     return {
       'id': id,
       'exchange': exchange,
