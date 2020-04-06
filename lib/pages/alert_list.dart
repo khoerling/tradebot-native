@@ -34,12 +34,12 @@ class _AlertList extends State<AlertList> {
             return new ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final item =
+                  final alert =
                       Alert.fromDocument(snapshot.data.documents[index]);
                   return Dismissible(
-                      key: Key(item.id),
+                      key: Key(alert.id),
                       onDismissed: (direction) {
-                        ref.document(item.id).delete();
+                        ref.document(alert.id).delete();
                       },
                       background: Container(color: Colors.red),
                       child: SizedBox(
@@ -47,13 +47,27 @@ class _AlertList extends State<AlertList> {
                         child: Card(
                           color: Colors.white.withOpacity(0.075),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/alert');
-                            },
-                            child: Center(
-                              child: Text("${Alert.nameFor(item.name)}"),
-                            ),
-                          ),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/alert');
+                              },
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child:
+                                          Text("${Alert.nameFor(alert.name)}"),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                          "${(alert.exchange.toUpperCase())}"),
+                                    ),
+                                    Center(
+                                      child: Text("${(alert.market)}"),
+                                    ),
+                                    Center(
+                                      child: Text("last alerted: never"),
+                                    ),
+                                  ])),
                         ),
                       ));
                 });

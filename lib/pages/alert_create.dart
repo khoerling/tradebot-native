@@ -121,6 +121,8 @@ class _CreateAlert extends State<AlertCreate> {
       try {
         DocumentReference ref =
             await db.collection("alerts").add(alert.toJson());
+        // success, so--
+        _clearMarket();
         print(ref.documentID);
       } catch (e) {
         print("Error creating alert $e");
