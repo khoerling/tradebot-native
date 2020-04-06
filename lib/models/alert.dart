@@ -26,13 +26,13 @@ class Alert {
       this.timeframe,
       this.params});
 
-  Alert.fromSnapshot(DocumentSnapshot json)
-      : id = json['id'],
-        name = json['name'],
-        exchange = json['exchange'],
-        market = json['market'],
-        timeframe = json['timeframe'],
-        params = json['params'];
+  Alert.fromDocument(DocumentSnapshot doc)
+      : id = doc.documentID,
+        name = EnumToString.fromString(AlertName.values, doc.data['name']),
+        exchange = doc.data['exchange'],
+        market = doc.data['market'],
+        timeframe = doc.data['timeframe'],
+        params = doc.data['params'];
 
   Alert.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -41,6 +41,17 @@ class Alert {
         market = json['market'],
         timeframe = json['timeframe'],
         params = json['params'];
+
+  static String nameFor(AlertName alertName) {
+    switch (alertName) {
+      case AlertName.guppy:
+        return "Guppy";
+      case AlertName.divergence:
+        return "Divergence";
+      case AlertName.price:
+        return "Price";
+    }
+  }
 
   toJson() {
     var ps = params.map((k, v) =>
