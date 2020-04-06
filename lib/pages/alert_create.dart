@@ -78,7 +78,11 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   _clearMarket() {
-    setState(() => alert.market = ''); // reset
+    // reset
+    setState(() {
+      alert.market = '';
+      alert.params = {};
+    });
   }
 
   Future<void> warn(title, msg, {error = ''}) async {
@@ -189,6 +193,7 @@ class _CreateAlert extends State<AlertCreate> {
                                             top: 15.0, bottom: 14.0),
                                         child: Text("Select Market"),
                                       ),
+                                      onClear: _clearMarket,
                                       searchHint: "Select Market",
                                       onChanged: (value) {
                                         setState(() => alert.market = value);
