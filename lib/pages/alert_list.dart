@@ -24,7 +24,7 @@ class _AlertList extends State<AlertList> {
   Widget build(BuildContext context) {
     return SizedBox.expand(
         child: StreamBuilder<QuerySnapshot>(
-      stream: ref.snapshots(),
+      stream: ref.orderBy('created', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
@@ -63,6 +63,10 @@ class _AlertList extends State<AlertList> {
                                     ),
                                     Center(
                                       child: Text("${(alert.market)}"),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                          "created: ${alert.created.toString()}"),
                                     ),
                                     Center(
                                       child: Text("last alerted: never"),

@@ -15,6 +15,9 @@ class Alert {
   String exchange;
   String market;
   String timeframe;
+  List<DateTime> alerted;
+  DateTime created;
+  DateTime updated;
   Map<String, dynamic> params = {};
 
   Alert(
@@ -24,6 +27,9 @@ class Alert {
       this.exchange,
       this.market,
       this.timeframe,
+      this.alerted,
+      this.created,
+      this.updated,
       this.params});
 
   Alert.fromDocument(DocumentSnapshot doc)
@@ -32,15 +38,16 @@ class Alert {
         exchange = doc.data['exchange'],
         market = doc.data['market'],
         timeframe = doc.data['timeframe'],
+        alerted = doc.data['alerted'] ?? [],
+        created = timeFor('created', doc.data),
+        updated = timeFor('updated', doc.data),
         params = doc.data['params'];
 
-  Alert.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = EnumToString.fromString(AlertName.values, json['name']),
-        exchange = json['exchange'],
-        market = json['market'],
-        timeframe = json['timeframe'],
-        params = json['params'];
+  static DateTime timeFor(String key, Map data) {
+    return data.containsKey(key) && data[key] != null
+        ? DateTime.parse(data[key])
+        : DateTime.fromMicrosecondsSinceEpoch(0);
+  }
 
   static String nameFor(AlertName alertName) {
     switch (alertName) {
@@ -61,6 +68,9 @@ class Alert {
       'exchange': exchange,
       'market': market,
       'timeframe': timeframe,
+      'alerted': alerted,
+      'created': created?.toIso8601String(),
+      'updated': updated?.toIso8601String(),
       'name': EnumToString.parse(name),
       'params': ps,
     };

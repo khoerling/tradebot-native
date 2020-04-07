@@ -18,7 +18,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   final FocusNode focusNode = FocusNode();
   final money =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
-      KeyboardActionsConfig _buildConfig(BuildContext context) {
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
       keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
       keyboardBarColor: Theme.of(context).backgroundColor,
@@ -94,17 +94,15 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                 setState(() => params['price_horizon'] = value),
                           )),
                           Expanded(
-                                child:
-                                KeyboardActions(
-                                  config: _buildConfig(context),
-                                  child: 
-                                TextField(
+                            child: KeyboardActions(
+                                config: _buildConfig(context),
+                                child: TextField(
                                     controller: money,
                                     focusNode: focusNode,
                                     textInputAction: TextInputAction.done,
                                     onEditingComplete: () {
                                       focusNode.unfocus();
-},
+                                    },
                                     keyboardType:
                                         TextInputType.numberWithOptions(
                                             decimal: false))),

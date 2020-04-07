@@ -20,8 +20,7 @@ class AlertCreate extends StatefulWidget {
 
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey<FormState>();
-  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final alert = Alert(params: {});
+  final alert = Alert(name: AlertName.price, params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
 
@@ -119,6 +118,7 @@ class _CreateAlert extends State<AlertCreate> {
     // push alert to firebase
     if (alert.market != null && _formKey.currentState.validate()) {
       try {
+        alert.created = DateTime.now();
         DocumentReference ref =
             await db.collection("alerts").add(alert.toJson());
         // success, so--
