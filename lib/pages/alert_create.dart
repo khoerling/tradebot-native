@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:search_choices/search_choices.dart';
@@ -48,7 +49,7 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   _fetchMarkets(String exchange) async {
-    if (exchange.isEmpty) return _clearMarket(); // guard
+    if (exchange.isEmpty) return _clearParams(); // guard
     // markets
     final HttpsCallable fetchMarkets = CloudFunctions.instance.getHttpsCallable(
       functionName: 'markets',
@@ -68,7 +69,7 @@ class _CreateAlert extends State<AlertCreate> {
         if (markets.length < 1)
           warn(alert.exchange.toUpperCase(), 'No active markets!');
       } else {
-        _clearMarket();
+        _clearParams();
         var err = data['error'];
         warn("${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
             error: err.containsKey('name') ? err['name'] : ''); // guard
@@ -76,10 +77,9 @@ class _CreateAlert extends State<AlertCreate> {
     });
   }
 
-  _clearMarket() {
+  _clearParams() {
     // reset
     setState(() {
-      alert.market = '';
       alert.params = {};
     });
   }
@@ -117,12 +117,14 @@ class _CreateAlert extends State<AlertCreate> {
   _createAlert() async {
     // push alert to firebase
     if (alert.market != null && _formKey.currentState.validate()) {
+      // TODO guards
+      HapticFeedback.lightImpact();
       try {
         alert.created = DateTime.now();
         DocumentReference ref =
             await db.collection("alerts").add(alert.toJson());
         // success, so--
-        _clearMarket();
+        _clearParams();
         print(ref.documentID);
       } catch (e) {
         print("Error creating alert $e");
@@ -161,7 +163,7 @@ class _CreateAlert extends State<AlertCreate> {
                     if (value != null)
                       _fetchMarkets(value);
                     else
-                      _clearMarket();
+                      _clearParams();
                   },
                   isExpanded: true,
                 ),
@@ -177,7 +179,6 @@ class _CreateAlert extends State<AlertCreate> {
                                         : EdgeInsets.only(top: 0),
                                     child: SearchChoices.single(
                                       validator: (value) {
-                                        print(value);
                                         if (value?.isEmpty == null) {
                                           return 'Choose market & candle timeframe';
                                         }
@@ -195,7 +196,7 @@ class _CreateAlert extends State<AlertCreate> {
                                             top: 15.0, bottom: 14.0),
                                         child: Text("Select Market"),
                                       ),
-                                      onClear: _clearMarket,
+                                      onClear: _clearParams,
                                       searchHint: "Select Market",
                                       onChanged: (value) {
                                         setState(() => alert.market = value);
