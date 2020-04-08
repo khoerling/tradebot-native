@@ -28,11 +28,20 @@ class _LinkedLabelRadio extends State<LinkedLabelRadio> {
     return Padding(
       padding: widget.padding,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
+            child: Radio(
+              value: widget.value,
+              groupValue: widget.groupValue,
+              onChanged: (newValue) {
+                widget.onChanged(newValue);
+              },
+            ),
+          ),
+          Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
@@ -62,15 +71,6 @@ class _LinkedLabelRadio extends State<LinkedLabelRadio> {
                       )
                     : Container(),
               ],
-            ),
-          ),
-          Expanded(
-            child: Radio(
-              value: widget.value,
-              groupValue: widget.groupValue,
-              onChanged: (newValue) {
-                widget.onChanged(newValue);
-              },
             ),
           ),
         ],

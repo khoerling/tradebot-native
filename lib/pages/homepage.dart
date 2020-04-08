@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage>
 
     _faders = allPages.map<AnimationController>((TPage destination) {
       return AnimationController(
-          vsync: this, duration: Duration(milliseconds: 250));
+          vsync: this, duration: Duration(milliseconds: 200));
     }).toList();
     _faders[_currentIndex].value = 1.0;
     _pageKeys = List<Key>.generate(allPages.length, (int index) => GlobalKey())

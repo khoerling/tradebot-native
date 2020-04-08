@@ -63,8 +63,9 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                     child: TabBar(
                         indicatorColor: Colors.white10,
                         indicator: UnderlineTabIndicator(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1.0)),
+                            borderSide: BorderSide(
+                                color: Colors.white.withOpacity(.3),
+                                width: 1.0)),
                         onTap: (i) {
                           // so we know which alert to create
                           widget.alert.name = AlertName.values[i];
@@ -87,6 +88,12 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                           Expanded(
                               child: LinkedLabelRadio(
                             label: 'Greater',
+                            validator: (value) {
+                              if (value?.isEmpty == null) {
+                                return 'Choose market & candle timeframe';
+                              }
+                              return null;
+                            },
                             padding: EdgeInsets.symmetric(horizontal: 1.0),
                             value: AlertPrice.greater,
                             groupValue: params['price_horizon'],
@@ -124,34 +131,33 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 400,
-                    child: Column(
-                      children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          child: Row(children: <Widget>[
                         Expanded(
-                            child: Row(children: <Widget>[
-                          Expanded(
-                              child: LinkedLabelCheckbox(
-                            label: 'Bearish',
-                            subLabel: 'default: bullish',
-                            padding: EdgeInsets.symmetric(horizontal: 1.0),
-                            value: params['divergence_bearish'] ?? false,
-                            onChanged: (value) => setState(
-                                () => params['divergence_bearish'] = value),
-                          )),
-                          Expanded(
                             child: LinkedLabelCheckbox(
-                              label: 'Hidden',
-                              subLabel: 'search hidden ∇',
-                              padding: EdgeInsets.symmetric(horizontal: 1.0),
-                              value: params['divergence_hidden'] ?? false,
-                              onChanged: (value) => setState(
-                                  () => params['divergence_hidden'] = value),
-                            ),
+                          label: 'Bearish',
+                          subLabel: 'Default: Bullish',
+                          padding: EdgeInsets.symmetric(horizontal: 1.0),
+                          value: params['divergence_bearish'] ?? false,
+                          onChanged: (value) => setState(
+                              () => params['divergence_bearish'] = value),
+                        )),
+                        Expanded(
+                          child: LinkedLabelCheckbox(
+                            label: 'Hidden',
+                            subLabel: 'Search Hidden ∇',
+                            padding: EdgeInsets.symmetric(horizontal: 1.0),
+                            value: params['divergence_hidden'] ?? false,
+                            onChanged: (value) => setState(
+                                () => params['divergence_hidden'] = value),
                           ),
-                        ])),
-                      ],
-                    ),
+                        ),
+                      ])),
+                    ],
                   ),
                   SizedBox(
                       height: 400,
