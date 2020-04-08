@@ -41,7 +41,20 @@ class _AlertList extends State<AlertList> {
                       onDismissed: (direction) {
                         ref.document(alert.id).delete();
                       },
-                      background: Container(color: Colors.red),
+                      secondaryBackground: Container(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            iconSize: 50,
+                            icon: Icon(Icons.delete),
+                          ),
+                          color: Colors.red),
+                      background: Container(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            iconSize: 50,
+                            icon: Icon(Icons.delete),
+                          ),
+                          color: Colors.red),
                       child: SizedBox(
                         height: 128,
                         child: Card(
