@@ -104,16 +104,13 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                 controller: amountFormatter,
                                 focusNode: focusNode,
                                 textInputAction: TextInputAction.done,
-                                validator: (value) {
-                                  if (!value.isEmpty && value != 0.00)
-                                    return 'Enter a Price.';
-                                },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 0.0),
                                 ),
-                                onChanged: (value) => setState(
-                                    () => params['price_amount'] = value),
+                                onChanged: (value) => setState(() =>
+                                    params['price_amount'] =
+                                        amountFormatter.numberValue),
                                 onEditingComplete: () {
                                   focusNode.unfocus();
                                 },
