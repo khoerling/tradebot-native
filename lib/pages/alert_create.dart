@@ -179,6 +179,7 @@ class _CreateAlert extends State<AlertCreate> {
                     child: Text("Select Exchange"),
                   ),
                   searchHint: "Select Exchange",
+                  onClear: () => setState(() => alert.market = null),
                   onChanged: (value) {
                     setState(() {
                       alert.exchange = value;
