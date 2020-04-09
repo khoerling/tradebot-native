@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
@@ -116,8 +117,30 @@ class _CreateAlert extends State<AlertCreate> {
 
   _createAlert() async {
     // push alert to firebase
-    if (alert.market != null && _formKey.currentState.validate()) {
-      // TODO guards
+    if (test(alert.exchange == null, 'Select an Exchange!',
+        'Which Exchange should this alert track?')) return;
+    if (test(alert.market == null, 'Select a Market!',
+        'We recommend also choosing a candle timeframe.')) return;
+    if (_formKey.currentState.validate()) {
+      var params = alert.params;
+      switch (alert.name) {
+        case AlertName.price:
+          {
+            var amount = params['price_amount'],
+                horizon = params['price_horizon'];
+            if (test(amount == null || amount == 0.0, 'Enter a Price!',
+                'Greater or Less than what price?')) return;
+            if (test(horizon == null, 'Select a Price Horizon!',
+                "Greater or Less than ${amount}?")) return;
+          }
+          break;
+        case AlertName.guppy:
+          {
+            if (test(params['guppy'] == null, 'Select a Color!',
+                'What color signal should be alerted?')) return;
+          }
+          break;
+      }
       HapticFeedback.lightImpact();
       try {
         alert.created = DateTime.now();
@@ -170,40 +193,29 @@ class _CreateAlert extends State<AlertCreate> {
                 alert.exchange != null
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                             Expanded(
-                                child: Padding(
-                                    padding: alert.market?.isEmpty == null
-                                        ? EdgeInsets.only(top: 17)
-                                        : EdgeInsets.only(top: 0),
-                                    child: SearchChoices.single(
-                                      validator: (value) {
-                                        if (value?.isEmpty == null) {
-                                          return 'Choose market & candle timeframe';
-                                        }
-                                        return null;
-                                      },
-                                      items: markets
-                                          .map((e) => DropdownMenuItem(
-                                              child:
-                                                  Text(e['symbol'].toString()),
-                                              value: e['id'].toString()))
-                                          .toList(),
-                                      value: alert.market,
-                                      hint: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15.0, bottom: 14.0),
-                                        child: Text("Select Market"),
-                                      ),
-                                      onClear: _clearParams,
-                                      searchHint: "Select Market",
-                                      onChanged: (value) {
-                                        setState(() => alert.market = value);
-                                        alert.market = value;
-                                      },
-                                      isExpanded: true,
-                                    ))),
+                                child: SearchChoices.single(
+                              items: markets
+                                  .map((e) => DropdownMenuItem(
+                                      child: Text(e['symbol'].toString()),
+                                      value: e['id'].toString()))
+                                  .toList(),
+                              value: alert.market,
+                              hint: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 15.0, bottom: 14.0),
+                                child: Text("Select Market"),
+                              ),
+                              onClear: _clearParams,
+                              searchHint: "Select Market",
+                              onChanged: (value) {
+                                setState(() => alert.market = value);
+                                alert.market = value;
+                              },
+                              isExpanded: true,
+                            )),
                             Container(
                                 width: 100,
                                 child: SearchChoices.single(
@@ -243,5 +255,41 @@ class _CreateAlert extends State<AlertCreate> {
                         ))),
               ])),
     );
+  }
+
+  bool test(condition, title, message) {
+    if (condition) return info(title, message);
+    return false;
+  }
+
+  bool info(title, message) {
+    Flushbar(
+      titleText: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16.0,
+          color: Colors.white.withOpacity(.95),
+        ),
+      ),
+      messageText: Text(
+        message,
+        style: TextStyle(
+          fontSize: 13.0,
+          color: Colors.white.withOpacity(.85),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      barBlur: 3,
+      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+      icon: Icon(
+        Icons.visibility,
+        color: Colors.white.withOpacity(.25),
+      ),
+      flushbarPosition: FlushbarPosition.TOP,
+      duration: Duration(seconds: 3),
+      isDismissible: true,
+    )..show(context);
+    return true;
   }
 }
