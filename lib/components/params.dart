@@ -16,7 +16,7 @@ class Params extends StatefulWidget {
 
 class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   final FocusNode focusNode = FocusNode();
-  final money =
+  final amountFormatter =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
@@ -49,11 +49,12 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
     var tabHeader = (String name) => Padding(
             padding: EdgeInsets.only(top: 25, bottom: 15),
             child: Text(name.toUpperCase(), style: TextStyle(fontSize: 12))),
-        params = widget.alert.params;
+        alert = widget.alert,
+        params = alert.params;
     return DefaultTabController(
         length: 3,
         child: SizedBox(
-            height: 200,
+            height: 150,
             child: Column(children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -68,7 +69,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                 width: 1.0)),
                         onTap: (i) {
                           // so we know which alert to create
-                          widget.alert.name = AlertName.values[i];
+                          alert.name = AlertName.values[i];
                         },
                         tabs: [
                           tabHeader('Price'),
@@ -78,126 +79,99 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
               ),
               Expanded(
                   child: Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: TabBarView(children: [
-                  SizedBox(
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                            child: Row(children: <Widget>[
-                          Expanded(
+                      padding: EdgeInsets.only(top: 25.0),
+                      child: TabBarView(children: [
+                        Row(children: <Widget>[
+                          // greater or less radios
+                          ...[
+                            ['Greater', AlertPrice.greater],
+                            ['Less', AlertPrice.less]
+                          ].map((radio) => SizedBox(
+                              width: 120,
+                              height: 120,
                               child: LinkedLabelRadio(
-                            label: 'Greater',
-                            validator: (value) {
-                              if (value?.isEmpty == null) {
-                                return 'Choose market & candle timeframe';
-                              }
-                              return null;
-                            },
-                            padding: EdgeInsets.symmetric(horizontal: 1.0),
-                            value: AlertPrice.greater,
-                            groupValue: params['price_horizon'],
-                            onChanged: (value) =>
-                                setState(() => params['price_horizon'] = value),
-                          )),
-                          Expanded(
-                            child: KeyboardActions(
-                                config: _buildConfig(context),
-                                child: TextField(
-                                    controller: money,
-                                    focusNode: focusNode,
-                                    textInputAction: TextInputAction.done,
-                                    onEditingComplete: () {
-                                      focusNode.unfocus();
-                                    },
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: false))),
-                          )
-                        ])),
-                        Expanded(
-                            child: Row(children: <Widget>[
-                          Expanded(
-                              child: LinkedLabelRadio(
-                            label: 'Less',
-                            padding: EdgeInsets.symmetric(horizontal: 1.0),
-                            value: AlertPrice.less,
-                            groupValue: params['price_horizon'],
-                            onChanged: (value) =>
-                                setState(() => params['price_horizon'] = value),
-                          )),
-                          Expanded(child: Container())
-                        ])),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                          child: Row(children: <Widget>[
-                        Expanded(
-                            child: LinkedLabelCheckbox(
-                          label: 'Bearish',
-                          subLabel: 'Default: Bullish',
-                          padding: EdgeInsets.symmetric(horizontal: 1.0),
-                          value: params['divergence_bearish'] ?? false,
-                          onChanged: (value) => setState(
-                              () => params['divergence_bearish'] = value),
-                        )),
-                        Expanded(
-                          child: LinkedLabelCheckbox(
-                            label: 'Hidden',
-                            subLabel: 'Search Hidden ∇',
-                            padding: EdgeInsets.symmetric(horizontal: 1.0),
-                            value: params['divergence_hidden'] ?? false,
-                            onChanged: (value) => setState(
-                                () => params['divergence_hidden'] = value),
-                          ),
-                        ),
-                      ])),
-                    ],
-                  ),
-                  SizedBox(
-                      height: 400,
-                      child: Column(
-                        children: <Widget>[
-                          Expanded(
-                              child: Row(children: <Widget>[
+                                label: radio[0],
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                value: radio[1],
+                                groupValue: params['price_horizon'],
+                                onChanged: (value) => setState(
+                                    () => params['price_horizon'] = value),
+                              ))),
+                          SizedBox(
+                              width: 100,
+                              height: 220,
+                              child: TextFormField(
+                                controller: amountFormatter,
+                                focusNode: focusNode,
+                                textInputAction: TextInputAction.done,
+                                validator: (value) {
+                                  if (!value.isEmpty && value != 0.00)
+                                    return 'Enter a Price.';
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 0.0),
+                                ),
+                                onChanged: (value) => setState(
+                                    () => params['price_amount'] = value),
+                                onEditingComplete: () {
+                                  focusNode.unfocus();
+                                },
+                              ))
+                        ]),
+                        // bearish and hidden checks
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
                             Expanded(
-                                child: LinkedLabelRadio(
-                              label: 'Green',
-                              padding: EdgeInsets.symmetric(horizontal: 1.0),
-                              value: AlertGuppy.green,
-                              groupValue: params['guppy'],
-                              onChanged: (value) =>
-                                  setState(() => params['guppy'] = value),
-                            )),
-                            Expanded(
-                                child: LinkedLabelRadio(
-                              label: 'Grey',
-                              padding: EdgeInsets.symmetric(horizontal: 1.0),
-                              value: AlertGuppy.grey,
-                              groupValue: params['guppy'],
-                              onChanged: (value) =>
-                                  setState(() => params['guppy'] = value),
-                            )),
-                            Expanded(
-                              child: LinkedLabelRadio(
-                                label: 'Red',
-                                padding: EdgeInsets.symmetric(horizontal: 1.0),
-                                value: AlertGuppy.red,
-                                groupValue: params['guppy'],
-                                onChanged: (value) =>
-                                    setState(() => params['guppy'] = value),
+                                child: Row(children: <Widget>[
+                              ...[
+                                [
+                                  'Bearish',
+                                  'Default: Bullish',
+                                  'divergence_bearish'
+                                ],
+                                [
+                                  'Hidden',
+                                  'Search Hidden ∇',
+                                  'divergence_hidden'
+                                ]
+                              ].map(
+                                (check) => Expanded(
+                                    child: LinkedLabelCheckbox(
+                                  label: check[0],
+                                  subLabel: check[1],
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 1.0),
+                                  value: params[check[2]] ?? false,
+                                  onChanged: (value) =>
+                                      setState(() => params[check[2]] = value),
+                                )),
                               ),
-                            ),
-                          ])),
-                        ],
-                      )),
-                ]),
-              ))
+                            ])),
+                          ],
+                        ),
+                        // guppy alert options
+                        Row(
+                          children: <Widget>[
+                            ...[
+                              ['Green', AlertGuppy.green],
+                              ['Grey', AlertGuppy.grey],
+                              ['Red', AlertGuppy.red]
+                            ].map((guppy) => Expanded(
+                                    child: LinkedLabelRadio(
+                                  label: guppy[0],
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  value: guppy[1],
+                                  groupValue: params['guppy'],
+                                  onChanged: (value) =>
+                                      setState(() => params['guppy'] = value),
+                                ))),
+                          ],
+                        ),
+                      ])))
             ])));
   }
 }
