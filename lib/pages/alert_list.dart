@@ -44,14 +44,14 @@ class _AlertList extends State<AlertList> {
                       secondaryBackground: Container(
                           alignment: Alignment.centerRight,
                           child: IconButton(
-                            iconSize: 50,
+                            iconSize: 35,
                             icon: Icon(Icons.delete),
                           ),
                           color: Colors.red),
                       background: Container(
                           alignment: Alignment.centerLeft,
                           child: IconButton(
-                            iconSize: 50,
+                            iconSize: 35,
                             icon: Icon(Icons.delete),
                           ),
                           color: Colors.red),

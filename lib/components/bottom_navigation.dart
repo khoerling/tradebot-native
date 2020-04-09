@@ -41,6 +41,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       animationCurve: Curves.easeOutExpo,
       animationDuration: Duration(milliseconds: 500),
       onTap: (index) {
+        if (_page == index) return; // guard
         HapticFeedback.selectionClick();
         Future.delayed(
             Duration(milliseconds: 351), () => HapticFeedback.heavyImpact());

@@ -30,7 +30,7 @@ class _LinkedLabelCheckbox extends State<LinkedLabelCheckbox> {
           ConstrainedBox(
             constraints: new BoxConstraints(
               minHeight: 40.0,
-              maxHeight: 80.0,
+              maxHeight: 45.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
