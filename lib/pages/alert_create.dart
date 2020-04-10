@@ -46,7 +46,7 @@ class _CreateAlert extends State<AlertCreate> {
         setState(() => exchanges = data['exchanges']);
       else
         warn('Exchanges are Down', 'Try again later!');
-    }).timeout(Duration(seconds: 3),
+    }).timeout(Duration(seconds: 4),
         onTimeout: () => warn('Internet Connection', 'Are you online?',
             error: 'Try again, later!'));
   }
@@ -269,11 +269,12 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   bool info(title, message) {
-    const displayFor = Duration(seconds: 3);
+    const displayFor = Duration(milliseconds: 200 + (2 * 1000));
     if (_isVisibleWith == null || _isVisibleWith != title) {
       // error, so--
       EventEmitter.publish('hideBottomNavigation', displayFor);
       _isVisibleWith = title;
+      Timer(Duration(milliseconds: 250), () =>
       Flushbar(
         titleText: Text(
           title,
@@ -323,7 +324,7 @@ class _CreateAlert extends State<AlertCreate> {
               }
           }
         }
-        ..show(context);
+        ..show(context));
     }
     return true;
   }

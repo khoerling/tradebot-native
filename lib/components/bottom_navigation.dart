@@ -35,7 +35,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Icon(Icons.list, color: Colors.black, size: 33),
         Icon(Icons.perm_identity, color: Colors.black, size: 33),
       ],
-      color: Colors.white,
+      color: Colors.white.withOpacity(.965),
       buttonBackgroundColor: Colors.white,
       backgroundColor: Colors.transparent,
       animationCurve: Curves.easeOutExpo,

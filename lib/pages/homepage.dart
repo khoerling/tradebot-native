@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage>
     tokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
     tokens.add(EventEmitter.subscribe('hideBottomNavigation', (duration)  {
       _hide.reverse();
-      Timer(duration + Duration(milliseconds: 750), () => _hide.forward());
+      Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
     }
     ));
   }
