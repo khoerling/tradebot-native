@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:tradebot_native/components/linked_label_checkbox.dart';
 import 'package:tradebot_native/components/linked_label_radio.dart';
 import 'package:tradebot_native/models/alert.dart';
@@ -18,26 +17,6 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   final FocusNode focusNode = FocusNode();
   final amountFormatter =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
-  KeyboardActionsConfig _buildConfig(BuildContext context) {
-    return KeyboardActionsConfig(
-      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-      keyboardBarColor: Theme.of(context).backgroundColor,
-      nextFocus: true,
-      actions: [
-        KeyboardAction(focusNode: focusNode, toolbarButtons: [
-          (node) {
-            return GestureDetector(
-              onTap: () => node.unfocus(),
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.close),
-              ),
-            );
-          }
-        ]),
-      ],
-    );
-  }
 
   @override
   void initState() {

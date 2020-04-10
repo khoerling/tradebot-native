@@ -174,6 +174,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_eventemitter:
+    dependency: "direct main"
+    description:
+      name: flutter_eventemitter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter_masked_text:
     dependency: "direct main"
     description:
@@ -219,13 +226,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
-  keyboard_actions:
-    dependency: "direct main"
-    description:
-      name: keyboard_actions
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.1"
   matcher:
     dependency: transitive
     description:
@@ -240,13 +240,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   path:
     dependency: transitive
     description:
@@ -275,13 +268,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  provider:
-    dependency: "direct main"
-    description:
-      name: provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.4"
   quiver:
     dependency: transitive
     description:
