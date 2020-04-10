@@ -28,6 +28,7 @@ dependencies:
   keyboard_actions: ^3.2.0
   search_choices: ^1.0.13
   sensors: ^0.4.1+10
+  provider: ^4.0.4
   flutter:
     sdk: flutter
 
