@@ -269,7 +269,10 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   bool info(title, message) {
+    const displayFor = Duration(seconds: 3);
     if (_isVisibleWith == null || _isVisibleWith != title) {
+      // error, so--
+      EventEmitter.publish('hideBottomNavigation', displayFor);
       _isVisibleWith = title;
       Flushbar(
         titleText: Text(
@@ -277,26 +280,25 @@ class _CreateAlert extends State<AlertCreate> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16.0,
-            color: Colors.white.withOpacity(.95),
+            color: Colors.black.withOpacity(.95),
           ),
         ),
         messageText: Text(
           message,
           style: TextStyle(
             fontSize: 13.0,
-            color: Colors.white.withOpacity(.85),
+            color: Colors.black.withOpacity(.85),
           ),
         ),
-        backgroundColor: Colors.transparent,
-        barBlur: 5,
+        backgroundColor: Colors.white,
         forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
         icon: Icon(
           Icons.visibility,
-          color: Colors.white.withOpacity(.25),
+          color: Colors.black,
         ),
-        flushbarPosition: FlushbarPosition.TOP,
+        flushbarPosition: FlushbarPosition.BOTTOM,
         flushbarStyle: FlushbarStyle.GROUNDED,
-        duration: Duration(seconds: 3),
+        duration: displayFor,
         isDismissible: true,
       )
         ..onStatusChanged = (FlushbarStatus status) {
