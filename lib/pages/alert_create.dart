@@ -25,6 +25,7 @@ class _CreateAlert extends State<AlertCreate> {
   final alert = Alert(name: AlertName.price, params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
+  String _isVisibleWith;
 
   @override
   void initState() {
@@ -266,33 +267,61 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   bool info(title, message) {
-    Flushbar(
-      titleText: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-          color: Colors.white.withOpacity(.95),
+    if (_isVisibleWith == null || _isVisibleWith != title) {
+      _isVisibleWith = title;
+
+      Flushbar(
+        titleText: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+            color: Colors.white.withOpacity(.95),
+          ),
         ),
-      ),
-      messageText: Text(
-        message,
-        style: TextStyle(
-          fontSize: 13.0,
-          color: Colors.white.withOpacity(.85),
+        messageText: Text(
+          message,
+          style: TextStyle(
+            fontSize: 13.0,
+            color: Colors.white.withOpacity(.85),
+          ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      barBlur: 3,
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      icon: Icon(
-        Icons.visibility,
-        color: Colors.white.withOpacity(.25),
-      ),
-      flushbarPosition: FlushbarPosition.TOP,
-      duration: Duration(seconds: 3),
-      isDismissible: true,
-    )..show(context);
+        backgroundColor: Colors.transparent,
+        barBlur: 5,
+        forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+        icon: Icon(
+          Icons.visibility,
+          color: Colors.white.withOpacity(.25),
+        ),
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.GROUNDED,
+        duration: Duration(seconds: 3),
+        isDismissible: true,
+      )
+        ..onStatusChanged = (FlushbarStatus status) {
+          switch (status) {
+            case FlushbarStatus.SHOWING:
+              {
+                break;
+              }
+            case FlushbarStatus.IS_APPEARING:
+              {
+                break;
+              }
+            case FlushbarStatus.IS_HIDING:
+              {
+                _isVisibleWith = null;
+                break;
+              }
+            case FlushbarStatus.DISMISSED:
+              {
+                _isVisibleWith = null;
+                break;
+              }
+          }
+        }
+        ..show(context);
+    }
     return true;
   }
 }
