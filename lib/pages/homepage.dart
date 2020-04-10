@@ -1,6 +1,10 @@
+import 'dart:math';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
+import 'package:confetti/confetti.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
 import 'package:tradebot_native/components/background.dart';
@@ -16,10 +20,14 @@ class _HomePageState extends State<HomePage>
   List<AnimationController> _faders;
   AnimationController _hide;
   int _currentIndex = 0;
+  ConfettiController _controllerBottomCenter;
 
   @override
   void initState() {
     super.initState();
+
+    _controllerBottomCenter =
+        ConfettiController(duration: const Duration(seconds: 2));
 
     _faders = allPages.map<AnimationController>((TPage destination) {
       return AnimationController(
@@ -30,6 +38,8 @@ class _HomePageState extends State<HomePage>
         .toList();
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+
+    String token = EventEmitter.subscribe('confetti', (data) => doConfetti());
   }
 
   bool _keyboardIsVisible() {
@@ -44,6 +54,7 @@ class _HomePageState extends State<HomePage>
     for (AnimationController controller in _faders) controller.dispose();
     _hide.dispose();
     super.dispose();
+    _controllerBottomCenter.dispose();
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -65,6 +76,24 @@ class _HomePageState extends State<HomePage>
       }
     }
     return false;
+  }
+
+  doConfetti() {
+    HapticFeedback.selectionClick();
+    _hide.reverse();
+    _controllerBottomCenter.play();
+    Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
+      HapticFeedback.heavyImpact();
+      Timer(Duration(milliseconds: 250), () {
+        HapticFeedback.lightImpact();
+        timer.cancel();
+      });
+    });
+    _faders[_currentIndex].reverse();
+    Future.delayed(Duration(seconds: 2), () {
+      _faders[_currentIndex].forward();
+      _hide.forward();
+    });
   }
 
   @override
@@ -109,6 +138,25 @@ class _HomePageState extends State<HomePage>
           }).toList(),
         ),
         Stack(children: [
+          // bottom center
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ConfettiWidget(
+              confettiController: _controllerBottomCenter,
+              blastDirection: -pi / 2,
+              emissionFrequency: 0.02,
+              numberOfParticles: 10,
+              maxBlastForce: 400,
+              minBlastForce: 50,
+              shouldLoop: false,
+              colors: [
+                Color.fromRGBO(38, 41, 74, 1),
+                Colors.grey,
+                Colors.white,
+              ],
+              gravity: 0.5,
+            ),
+          ),
           Positioned(
             bottom: 0.0,
             left: 0.0,
@@ -126,7 +174,7 @@ class _HomePageState extends State<HomePage>
                             index: _currentIndex, onTap: selectPage)),
               ),
             ),
-          )
+          ),
         ])
       ])),
     );

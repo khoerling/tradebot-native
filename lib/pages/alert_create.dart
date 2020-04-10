@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/params.dart';
@@ -143,6 +144,7 @@ class _CreateAlert extends State<AlertCreate> {
           break;
       }
       HapticFeedback.lightImpact();
+      EventEmitter.publish('confetti', 1);
       try {
         alert.created = DateTime.now();
         DocumentReference ref =
@@ -269,7 +271,6 @@ class _CreateAlert extends State<AlertCreate> {
   bool info(title, message) {
     if (_isVisibleWith == null || _isVisibleWith != title) {
       _isVisibleWith = title;
-
       Flushbar(
         titleText: Text(
           title,
