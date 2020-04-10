@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage>
   AnimationController _hide;
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
+  List<String> tokens = [];
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage>
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
-    String token = EventEmitter.subscribe('confetti', (data) => doConfetti());
+    tokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
   }
 
   bool _keyboardIsVisible() {
@@ -51,10 +52,11 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
-    for (AnimationController controller in _faders) controller.dispose();
+    _faders.forEach((controller) => controller.dispose());
+    tokens.forEach((token) => EventEmitter.unsubscribe(token));
     _hide.dispose();
-    super.dispose();
     _controllerBottomCenter.dispose();
+    super.dispose();
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
