@@ -121,6 +121,7 @@ class _HomePageState extends State<HomePage>
                 child: PagesView(
                   page: destination,
                   onNavigation: () {
+                    if (_currentIndex == destination.index) return; // guard
                     _hide.forward();
                   },
                 ),
