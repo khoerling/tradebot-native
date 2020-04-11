@@ -26,6 +26,7 @@ class _CreateAlert extends State<AlertCreate> {
   final alert = Alert(name: AlertName.price, params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
+  bool _isCreating = false;
   String _isVisibleWith;
 
   @override
@@ -144,6 +145,10 @@ class _CreateAlert extends State<AlertCreate> {
           break;
       }
       HapticFeedback.lightImpact();
+      if (_isCreating) return; // guard
+      _isCreating = true;
+      Timer(Duration(milliseconds: 2000),
+        () => _isCreating = false); // rate-limit creation
       EventEmitter.publish('confetti', 1);
       try {
         alert.created = DateTime.now();
@@ -274,57 +279,58 @@ class _CreateAlert extends State<AlertCreate> {
       // error, so--
       EventEmitter.publish('hideBottomNavigation', displayFor);
       _isVisibleWith = title;
-      Timer(Duration(milliseconds: 250), () =>
-      Flushbar(
-        titleText: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16.0,
-            color: Colors.black.withOpacity(.95),
-          ),
-        ),
-        messageText: Text(
-          message,
-          style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.black.withOpacity(.85),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-        icon: Icon(
-          Icons.visibility,
-          color: Colors.black,
-        ),
-        flushbarPosition: FlushbarPosition.BOTTOM,
-        flushbarStyle: FlushbarStyle.GROUNDED,
-        duration: displayFor,
-        isDismissible: true,
-      )
-        ..onStatusChanged = (FlushbarStatus status) {
-          switch (status) {
-            case FlushbarStatus.SHOWING:
-              {
-                break;
-              }
-            case FlushbarStatus.IS_APPEARING:
-              {
-                break;
-              }
-            case FlushbarStatus.IS_HIDING:
-              {
-                _isVisibleWith = null;
-                break;
-              }
-            case FlushbarStatus.DISMISSED:
-              {
-                _isVisibleWith = null;
-                break;
-              }
-          }
-        }
-        ..show(context));
+      Timer(
+          Duration(milliseconds: 250),
+          () => Flushbar(
+                titleText: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: Colors.black.withOpacity(.95),
+                  ),
+                ),
+                messageText: Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.black.withOpacity(.85),
+                  ),
+                ),
+                backgroundColor: Colors.white,
+                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+                icon: Icon(
+                  Icons.visibility,
+                  color: Colors.black,
+                ),
+                flushbarPosition: FlushbarPosition.BOTTOM,
+                flushbarStyle: FlushbarStyle.GROUNDED,
+                duration: displayFor,
+                isDismissible: true,
+              )
+                ..onStatusChanged = (FlushbarStatus status) {
+                  switch (status) {
+                    case FlushbarStatus.SHOWING:
+                      {
+                        break;
+                      }
+                    case FlushbarStatus.IS_APPEARING:
+                      {
+                        break;
+                      }
+                    case FlushbarStatus.IS_HIDING:
+                      {
+                        _isVisibleWith = null;
+                        break;
+                      }
+                    case FlushbarStatus.DISMISSED:
+                      {
+                        _isVisibleWith = null;
+                        break;
+                      }
+                  }
+                }
+                ..show(context));
     }
     return true;
   }
