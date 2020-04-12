@@ -29,6 +29,7 @@ dependencies:
   flushbar: ^1.10.0
   flutter_masked_text: ^0.8.0
   search_choices: ^1.0.13
+  shared_preferences: ^0.5.6+3
   sensors: ^0.4.1+10
   flutter:
     sdk: flutter
