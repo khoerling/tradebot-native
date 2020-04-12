@@ -148,12 +148,12 @@ class _CreateAlert extends State<AlertCreate> {
       if (_isCreating) return; // guard
       _isCreating = true;
       Timer(Duration(milliseconds: 2000),
-        () => _isCreating = false); // rate-limit creation
+          () => _isCreating = false); // rate-limit creation
       EventEmitter.publish('confetti', 1);
       try {
         alert.created = DateTime.now();
         DocumentReference ref =
-            await db.collection("alerts").add(alert.toJson());
+            await db.collection('alerts').add(alert.toJson());
         // success, so--
         _clearParams();
         print(ref.documentID);

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:confetti/confetti.dart';
+import 'package:device_id/device_id.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
+import 'package:tradebot_native/push_notifications.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
 import 'package:tradebot_native/components/background.dart';
@@ -21,15 +23,15 @@ class _HomePageState extends State<HomePage>
   AnimationController _hide;
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
-  List<String> tokens = [];
+  List<String> _tokens = [];
 
   @override
   void initState() {
     super.initState();
-
+    print('trying to boot push');
+    PushNotifications(); // boot
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 2));
-
     _faders = allPages.map<AnimationController>((TPage destination) {
       return AnimationController(
           vsync: this, duration: Duration(milliseconds: 200));
@@ -39,9 +41,13 @@ class _HomePageState extends State<HomePage>
         .toList();
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-
-    tokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
-    tokens.add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
+    _tokens.add(EventEmitter.subscribe('pushToken', (token) {
+          // TODO figure userid as key
+          // TODO save push token locally
+          print("token $token");
+    }));
+    _tokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
+    _tokens.add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
       _hide.reverse();
       Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
     }));
@@ -57,7 +63,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _faders.forEach((controller) => controller.dispose());
-    tokens.forEach((token) => EventEmitter.unsubscribe(token));
+    _tokens.forEach((token) => EventEmitter.unsubscribe(token));
     _hide.dispose();
     _controllerBottomCenter.dispose();
     super.dispose();
