@@ -23,6 +23,7 @@ dependencies:
   confetti: ^0.4.0
   curved_navigation_bar: ^0.3.2
   enum_to_string: ^1.0.9
+  firebase_messaging: ^6.0.13
   flutter_eventemitter: ^0.1.1
   flushbar: ^1.10.0
   flutter_masked_text: ^0.8.0
