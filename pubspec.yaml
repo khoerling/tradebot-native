@@ -25,12 +25,13 @@ dependencies:
   device_id: ^0.2.0
   enum_to_string: ^1.0.9
   firebase_messaging: ^6.0.13
-  flutter_eventemitter: ^0.1.1
   flushbar: ^1.10.0
+  flutter_eventemitter: ^0.1.1
   flutter_masked_text: ^0.8.0
+  provider: ^4.0.5
   search_choices: ^1.0.13
-  shared_preferences: ^0.5.6+3
   sensors: ^0.4.1+10
+  shared_preferences: ^0.5.6+3
   flutter:
     sdk: flutter
 
