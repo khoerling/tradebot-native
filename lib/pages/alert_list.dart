@@ -43,17 +43,13 @@ class _AlertList extends State<AlertList> {
                       },
                       secondaryBackground: Container(
                           alignment: Alignment.centerRight,
-                          child: IconButton(
-                            iconSize: 35,
-                            icon: Icon(Icons.delete),
-                          ),
+                          child:
+                              Icon(Icons.delete, color: Colors.white, size: 35),
                           color: Colors.red),
                       background: Container(
                           alignment: Alignment.centerLeft,
-                          child: IconButton(
-                            iconSize: 35,
-                            icon: Icon(Icons.delete),
-                          ),
+                          child:
+                              Icon(Icons.delete, color: Colors.white, size: 35),
                           color: Colors.red),
                       child: SizedBox(
                         height: 128,

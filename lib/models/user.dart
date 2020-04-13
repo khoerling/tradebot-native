@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tradebot_native/models/alert.dart';
+import 'package:provider/provider.dart';
 
 const storageKey = 'tradebot:user';
 
-class User {
+class User with ChangeNotifier {
   String id;
   String key;
   String email;
   String deviceId;
-  List<Alerts> alerts;
+  List<Alert> alerts;
   DateTime created;
   DateTime updated;
 

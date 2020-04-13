@@ -3,7 +3,7 @@ import 'package:tradebot_native/pages/alert_list.dart';
 import 'package:tradebot_native/pages/alert_create.dart';
 import 'package:tradebot_native/pages/alert_detail.dart';
 import 'package:tradebot_native/pages/account.dart';
-import 'package:tradebot_native/pages/homepage.dart';
+import 'package:tradebot_native/components/background.dart';
 
 export 'account.dart';
 export 'homepage.dart';
@@ -61,5 +61,30 @@ class _PageViewState extends State<PagesView> {
         );
       },
     );
+  }
+}
+
+class RootPage extends StatelessWidget {
+  const RootPage({Key key, this.page}) : super(key: key);
+  final TPage page;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Background(child: page.child),
+    );
+  }
+}
+
+class ViewNavigatorObserver extends NavigatorObserver {
+  ViewNavigatorObserver(this.onNavigation);
+  final VoidCallback onNavigation;
+
+  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+    onNavigation();
+  }
+
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+    onNavigation();
   }
 }

@@ -134,13 +134,18 @@ class _CreateAlert extends State<AlertCreate> {
             if (test(amount == null || amount == 0.0, 'Enter a Price!',
                 'Greater or Less than what price?')) return;
             if (test(horizon == null, 'Select a Price Horizon!',
-                "Greater or Less than ${amount}?")) return;
+                "Greater or Less than $amount?")) return;
           }
           break;
         case AlertName.guppy:
           {
             if (test(params['guppy'] == null, 'Select a Color!',
                 'What color signal should be alerted?')) return;
+          }
+          break;
+        case AlertName.divergence:
+          {
+            // no test needs to happen
           }
           break;
       }

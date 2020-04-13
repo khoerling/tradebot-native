@@ -58,6 +58,7 @@ class Alert {
       case AlertName.price:
         return "Price";
     }
+    return "Price";
   }
 
   toJson() {
