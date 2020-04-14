@@ -3,7 +3,7 @@ import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 
 class PushNotifications {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  String _pushToken;
+  // String _pushToken;
 
   PushNotifications() {
     print('+ push notice');
@@ -24,11 +24,12 @@ class PushNotifications {
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      _pushToken = token;
-      EventEmitter.publish('pushToken', token);
-      print(_pushToken);
-    });
+    _firebaseMessaging.getToken();
+    // _firebaseMessaging.getToken().then((String token) {
+    //   assert(token != null);
+    //   _pushToken = token;
+    //   EventEmitter.publish('pushToken', token);
+    //   print(_pushToken);
+    // });
   }
 }

@@ -6,10 +6,11 @@ import 'package:flutter/rendering.dart';
 import 'package:confetti/confetti.dart';
 import 'package:device_id/device_id.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
+import 'package:provider/provider.dart';
 import 'package:tradebot_native/push_notifications.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
-import 'package:tradebot_native/components/background.dart';
+import 'package:tradebot_native/models/user.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,18 +19,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin<HomePage> {
+  String _deviceId;
   List<Key> _pageKeys;
   List<AnimationController> _faders;
   AnimationController _hide;
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
-  List<String> _tokens = [];
+  List<String> _emitterTokens = [];
 
   @override
   void initState() {
-    super.initState();
-    print('trying to boot push');
-    PushNotifications(); // boot
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 2));
     _faders = allPages.map<AnimationController>((TPage destination) {
@@ -41,16 +40,38 @@ class _HomePageState extends State<HomePage>
         .toList();
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _tokens.add(EventEmitter.subscribe('pushToken', (token) {
-          // TODO figure userid as key
-          // TODO save push token locally
-          print("token $token");
+    _emitterTokens.add(EventEmitter.subscribe('pushToken', (token) {
+      // TODO figure userid as key
+      // TODO save push token locally
+      print("token $token");
     }));
-    _tokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
-    _tokens.add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
+    _emitterTokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
+    _emitterTokens
+        .add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
       _hide.reverse();
       Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
     }));
+    WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
+    super.initState();
+  }
+
+  void initAsyncState(Duration _) async {
+    // TODO get:  device id, user & push token
+    // WidgetsBinding.instance.addPostFrameCallback((_) => initDeviceId());
+    // WidgetsBinding.instance.addPostFrameCallback((_) => PushNotifications());
+    // Future.wait([initDeviceId]).then((List res) {
+    //   // fetch and setup user with id, etc...
+    //   // then, set state
+    // });
+  }
+
+  Future<dynamic> initDeviceId(_a) async {
+    // String deviceId = await DeviceId.getID;
+    // print("device $deviceId");
+    // setState(() {
+    //   _deviceId = deviceId;
+    // });
+    return DeviceId.getID;
   }
 
   bool _keyboardIsVisible() {
@@ -63,7 +84,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _faders.forEach((controller) => controller.dispose());
-    _tokens.forEach((token) => EventEmitter.unsubscribe(token));
+    _emitterTokens.forEach((token) => EventEmitter.unsubscribe(token));
     _hide.dispose();
     _controllerBottomCenter.dispose();
     super.dispose();
@@ -94,6 +115,8 @@ class _HomePageState extends State<HomePage>
     HapticFeedback.selectionClick();
     _hide.reverse();
     _controllerBottomCenter.play();
+    // TODO play success icon animation
+    // Icon(Icons.cloud_done, color: Colors.white, size: 60),
     Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
       HapticFeedback.heavyImpact();
       Timer(Duration(milliseconds: 250), () {
@@ -108,14 +131,14 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  selectPage(index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    selectPage(index) {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: Scaffold(
@@ -190,33 +213,6 @@ class _HomePageState extends State<HomePage>
           ),
         ])
       ])),
-    );
-  }
-}
-
-class ViewNavigatorObserver extends NavigatorObserver {
-  ViewNavigatorObserver(this.onNavigation);
-
-  final VoidCallback onNavigation;
-
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    onNavigation();
-  }
-
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    onNavigation();
-  }
-}
-
-class RootPage extends StatelessWidget {
-  const RootPage({Key key, this.page}) : super(key: key);
-
-  final TPage page;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Background(child: page.child),
     );
   }
 }

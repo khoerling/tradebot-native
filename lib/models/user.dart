@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradebot_native/models/alert.dart';
-import 'package:provider/provider.dart';
 
 const storageKey = 'tradebot:user';
 
-class User with ChangeNotifier {
+class User {
   String id;
   String key;
   String email;
