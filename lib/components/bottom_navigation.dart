@@ -33,7 +33,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       items: <Widget>[
         Icon(Icons.add, color: Colors.black, size: 33),
         Icon(Icons.list, color: Colors.black, size: 33),
-        Icon(Icons.perm_identity, color: Colors.black, size: 33),
+        // Icon(Icons.perm_identity, color: Colors.black, size: 33),
       ],
       color: Colors.white.withOpacity(.965),
       buttonBackgroundColor: Colors.white,
