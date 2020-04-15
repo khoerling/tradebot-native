@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:confetti/confetti.dart';
 import 'package:device_id/device_id.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
-import 'package:provider/provider.dart';
 import 'package:tradebot_native/push_notifications.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
@@ -19,13 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin<HomePage> {
-  String _deviceId;
   List<Key> _pageKeys;
   List<AnimationController> _faders;
   AnimationController _hide;
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
+  PushNotifications _pushNotifications = PushNotifications();
 
   @override
   void initState() {
@@ -40,38 +39,31 @@ class _HomePageState extends State<HomePage>
         .toList();
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _emitterTokens.add(EventEmitter.subscribe('pushToken', (token) {
-      // TODO figure userid as key
-      // TODO save push token locally
-      print("token $token");
-    }));
-    _emitterTokens.add(EventEmitter.subscribe('confetti', (_) => doConfetti()));
     _emitterTokens
-        .add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
-      _hide.reverse();
-      Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
-    }));
+      ..add(EventEmitter.subscribe('confetti', (_) => doConfetti()))
+      ..add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
+        _hide.reverse();
+        Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
+      }));
     WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
     super.initState();
   }
 
   void initAsyncState(Duration _) async {
-    // TODO get:  device id, user & push token
-    // WidgetsBinding.instance.addPostFrameCallback((_) => initDeviceId());
-    // WidgetsBinding.instance.addPostFrameCallback((_) => PushNotifications());
-    // Future.wait([initDeviceId]).then((List res) {
-    //   // fetch and setup user with id, etc...
-    //   // then, set state
-    // });
+    return Future.wait([_pushNotifications.getToken(), initDeviceId()])
+        .then((List res) {
+      // TODO setup User with id & token
+      // TODO save push token locally
+      // TODO add token to firebase
+      User user = User();
+      user.pushToken = res[0];
+      user.deviceId = res[1];
+      print(user.toString());
+    });
   }
 
-  Future<dynamic> initDeviceId(_a) async {
-    // String deviceId = await DeviceId.getID;
-    // print("device $deviceId");
-    // setState(() {
-    //   _deviceId = deviceId;
-    // });
-    return DeviceId.getID;
+  Future<dynamic> initDeviceId() async {
+    return await DeviceId.getID;
   }
 
   bool _keyboardIsVisible() {

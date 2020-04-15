@@ -10,6 +10,7 @@ class User {
   String key;
   String email;
   String deviceId;
+  String pushToken;
   List<Alert> alerts;
   DateTime created;
   DateTime updated;
@@ -19,6 +20,7 @@ class User {
     this.key,
     this.email,
     this.deviceId,
+    this.pushToken,
     this.alerts,
     this.created,
     this.updated,
@@ -28,6 +30,7 @@ class User {
       : id = doc.documentID,
         email = doc.data['email'],
         deviceId = doc.data['deviceId'],
+        pushToken = doc.data['pushToken'],
         alerts = doc.data['alerts'] ?? [],
         created = timeFor('created', doc.data),
         updated = timeFor('updated', doc.data);
@@ -43,6 +46,7 @@ class User {
       'id': id,
       'email': email,
       'deviceId': deviceId,
+      'pushToken': pushToken,
       'alerts': alerts.map((a) => a.toJson()),
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
