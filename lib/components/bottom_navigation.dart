@@ -44,7 +44,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         if (_page == index) return; // guard
         HapticFeedback.selectionClick();
         Future.delayed(
-            Duration(milliseconds: 351), () => HapticFeedback.heavyImpact());
+            Duration(milliseconds: 351), () => HapticFeedback.mediumImpact());
         setState(() {
           _page = index;
         });

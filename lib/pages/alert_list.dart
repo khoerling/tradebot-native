@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tradebot_native/models/alert.dart';
 
@@ -39,6 +40,7 @@ class _AlertList extends State<AlertList> {
                   return Dismissible(
                       key: Key(alert.id),
                       onDismissed: (direction) {
+                        HapticFeedback.selectionClick();
                         ref.document(alert.id).delete();
                       },
                       secondaryBackground: Container(
