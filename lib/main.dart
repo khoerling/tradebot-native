@@ -10,7 +10,7 @@ void main() {
       theme: ThemeData(
         brightness: Brightness.dark,
         backgroundColor: beppuTerminalBlue,
-        scaffoldBackgroundColor: beppuTerminalBlue.withOpacity(.87),
+        scaffoldBackgroundColor: beppuTerminalBlue.withOpacity(.985),
         errorColor: Colors.white,
         hintColor: Colors.white,
         toggleableActiveColor: Colors.white,
