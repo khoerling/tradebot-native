@@ -105,10 +105,11 @@ class _HomePageState extends State<HomePage>
 
   doConfetti() {
     HapticFeedback.selectionClick();
-    _hide.reverse();
     _controllerBottomCenter.play();
-    // TODO play success icon animation
-    // Icon(Icons.cloud_done, color: Colors.white, size: 60),
+    Future.delayed(Duration(milliseconds: 800), () {
+      _faders[_currentIndex].reverse();
+      _hide.reverse();
+    });
     Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
       HapticFeedback.heavyImpact();
       Timer(Duration(milliseconds: 250), () {
@@ -116,8 +117,7 @@ class _HomePageState extends State<HomePage>
         timer.cancel();
       });
     });
-    _faders[_currentIndex].reverse();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(milliseconds: 2250), () {
       _faders[_currentIndex].forward();
       _hide.forward();
     });

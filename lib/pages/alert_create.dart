@@ -7,6 +7,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
+import 'package:tradebot_native/components/sparkle_button.dart';
 import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/alert.dart';
 
@@ -118,12 +119,12 @@ class _CreateAlert extends State<AlertCreate> {
     );
   }
 
-  _createAlert() async {
+  Future<bool> _createAlert() async {
     // push alert to firebase
     if (test(alert.exchange == null, 'Select an Exchange!',
-        'Which Exchange should this alert track?')) return;
+        'Which Exchange should this alert track?')) return false;
     if (test(alert.market == null, 'Select a Market!',
-        'We recommend also choosing a candle timeframe.')) return;
+        'We recommend also choosing a candle timeframe.')) return false;
     if (_formKey.currentState.validate()) {
       var params = alert.params;
       switch (alert.name) {
@@ -132,15 +133,15 @@ class _CreateAlert extends State<AlertCreate> {
             var amount = params['price_amount'],
                 horizon = params['price_horizon'];
             if (test(amount == null || amount == 0.0, 'Enter a Price!',
-                'Greater or Less than what price?')) return;
+                'Greater or Less than what price?')) return false;
             if (test(horizon == null, 'Select a Price Horizon!',
-                "Greater or Less than $amount?")) return;
+                "Greater or Less than $amount?")) return false;
           }
           break;
         case AlertName.guppy:
           {
             if (test(params['guppy'] == null, 'Select a Color!',
-                'What color signal should be alerted?')) return;
+                'What color signal should be alerted?')) return false;
           }
           break;
         case AlertName.divergence:
@@ -150,7 +151,7 @@ class _CreateAlert extends State<AlertCreate> {
           break;
       }
       HapticFeedback.lightImpact();
-      if (_isCreating) return; // guard
+      if (_isCreating) return false; // guard
       _isCreating = true;
       Timer(Duration(milliseconds: 2000),
           () => _isCreating = false); // rate-limit creation
@@ -168,6 +169,7 @@ class _CreateAlert extends State<AlertCreate> {
     } else {
       print('Invalid form');
     }
+    return true;
   }
 
   @override
@@ -261,14 +263,16 @@ class _CreateAlert extends State<AlertCreate> {
                     : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),
-                    child: Button(
-                        onPressed: _createAlert,
-                        child: Text(
-                          "CREATE ALERT",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ))),
+                    child: SparkleButton(
+                      onPressed: _createAlert,
+                      title: 'CREATE ALERT',
+                    )),
+                // child: Text(
+                //   "CREATE ALERT",
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //       color: Colors.white, fontWeight: FontWeight.bold),
+                // ))),
               ])),
     );
   }
