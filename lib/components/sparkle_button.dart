@@ -170,7 +170,7 @@ class _SparkleButtonState extends State<SparkleButton>
             height: 50.0 + extraSize,
             width: 50.0 + extraSize,
             child: Center(
-              child: Icon(Icons.cloud_done, color: Colors.white, size: 50),
+              child: Icon(Icons.visibility, color: Colors.white, size: 50),
             ))));
 
     var elm = Positioned(

@@ -17,6 +17,7 @@ void registerPlugins(PluginRegistry registry) {
   FirestoreWeb.registerWith(registry.registrarFor(FirestoreWeb));
   CloudFunctionsWeb.registerWith(registry.registrarFor(CloudFunctionsWeb));
   FirebaseCoreWeb.registerWith(registry.registrarFor(FirebaseCoreWeb));
-  SharedPreferencesPlugin.registerWith(registry.registrarFor(SharedPreferencesPlugin));
+  SharedPreferencesPlugin.registerWith(
+      registry.registrarFor(SharedPreferencesPlugin));
   registry.registerMessageHandler();
 }

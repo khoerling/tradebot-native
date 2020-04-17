@@ -267,12 +267,6 @@ class _CreateAlert extends State<AlertCreate> {
                       onPressed: _createAlert,
                       title: 'CREATE ALERT',
                     )),
-                // child: Text(
-                //   "CREATE ALERT",
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(
-                //       color: Colors.white, fontWeight: FontWeight.bold),
-                // ))),
               ])),
     );
   }
