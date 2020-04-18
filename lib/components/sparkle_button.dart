@@ -64,7 +64,7 @@ class _SparkleButtonState extends State<SparkleButton>
     });
 
     sparklesAnimationController =
-        AnimationController(vsync: this, duration: duration);
+        AnimationController(value: 1, vsync: this, duration: duration);
     sparklesAnimation = CurvedAnimation(
         parent: sparklesAnimationController, curve: Curves.easeIn);
     sparklesAnimation.addListener(() {
