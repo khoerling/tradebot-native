@@ -9,10 +9,12 @@ import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/sparkle_button.dart';
 import 'package:tradebot_native/components/params.dart';
+import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
 
 // TODO
 // - divergence, look for bullish or bearish + thresholds, --gap = 1 candle up to 50
+const confettiTimer = Duration(milliseconds: 2000);
 
 class AlertCreate extends StatefulWidget {
   const AlertCreate({
@@ -153,19 +155,22 @@ class _CreateAlert extends State<AlertCreate> {
       HapticFeedback.lightImpact();
       if (_isCreating) return false; // guard
       _isCreating = true;
-      Timer(Duration(milliseconds: 2000),
-          () => _isCreating = false); // rate-limit creation
+      Timer(confettiTimer, () => _isCreating = false); // rate-limit creation
       EventEmitter.publish('confetti', 1);
-      try {
-        alert.created = DateTime.now();
-        DocumentReference ref =
-            await db.collection('alerts').add(alert.toJson());
-        // success, so--
-        _clearParams();
-        print(ref.documentID);
-      } catch (e) {
-        print("Error creating alert $e");
-      }
+      Future.delayed(Duration(milliseconds: 0), () async {
+        try {
+          // DocumentReference ref =
+          // await db.collection('users').add(alert.toJson());
+          alert.created = DateTime.now();
+          DocumentReference ref =
+              await db.collection('alerts').add(alert.toJson());
+          // success, so--
+          _clearParams();
+          print(ref.documentID);
+        } catch (e) {
+          print("Error creating alert $e");
+        }
+      });
     } else {
       print('Invalid form');
     }
@@ -277,13 +282,14 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   bool info(title, message) {
-    const displayFor = Duration(milliseconds: 200 + (2 * 1000));
+    const displayIconFor = 100;
+    var displayFor = Duration(milliseconds: displayIconFor) + confettiTimer;
     if (_isVisibleWith == null || _isVisibleWith != title) {
       // error, so--
       EventEmitter.publish('hideBottomNavigation', displayFor);
       _isVisibleWith = title;
       Timer(
-          Duration(milliseconds: 250),
+          Duration(milliseconds: displayIconFor),
           () => Flushbar(
                 titleText: Text(
                   title,

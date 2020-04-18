@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:confetti/confetti.dart';
 import 'package:device_id/device_id.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
+import 'package:provider/provider.dart';
 import 'package:tradebot_native/push_notifications.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage>
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
   PushNotifications _pushNotifications = PushNotifications();
+  final _random = new Random();
 
   @override
   void initState() {
@@ -49,6 +51,15 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _faders.forEach((controller) => controller.dispose());
+    _emitterTokens.forEach((token) => EventEmitter.unsubscribe(token));
+    _hide.dispose();
+    _controllerBottomCenter.dispose();
+    super.dispose();
+  }
+
   void initAsyncState(Duration _) async {
     return Future.wait([_pushNotifications.getToken(), initDeviceId()])
         .then((List res) {
@@ -58,7 +69,7 @@ class _HomePageState extends State<HomePage>
       User user = User();
       user.pushToken = res[0];
       user.deviceId = res[1];
-      print(user.toString());
+      // print(user.toString());
     });
   }
 
@@ -66,20 +77,13 @@ class _HomePageState extends State<HomePage>
     return await DeviceId.getID;
   }
 
+  int _next(int min, int max) => min + _random.nextInt(max - min);
+
   bool _keyboardIsVisible() {
     // immediately show & hide based on keyboard position
     bool isVisible = !(MediaQuery.of(context).viewInsets.bottom == 0.0);
     if (!isVisible) HapticFeedback.lightImpact();
     return isVisible;
-  }
-
-  @override
-  void dispose() {
-    _faders.forEach((controller) => controller.dispose());
-    _emitterTokens.forEach((token) => EventEmitter.unsubscribe(token));
-    _hide.dispose();
-    _controllerBottomCenter.dispose();
-    super.dispose();
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -105,14 +109,15 @@ class _HomePageState extends State<HomePage>
 
   doConfetti() {
     HapticFeedback.selectionClick();
+    _hide.reverse();
     _controllerBottomCenter.play();
-    Future.delayed(Duration(milliseconds: 800), () {
+    Future.delayed(Duration(milliseconds: 500), () {
       _faders[_currentIndex].reverse();
-      _hide.reverse();
+      HapticFeedback.lightImpact();
     });
-    Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
+    Timer.periodic(Duration(milliseconds: _next(25, 150)), (Timer timer) {
       HapticFeedback.heavyImpact();
-      Timer(Duration(milliseconds: 250), () {
+      Timer(Duration(milliseconds: _next(100, 400)), () {
         HapticFeedback.lightImpact();
         timer.cancel();
       });
