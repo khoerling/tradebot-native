@@ -8,6 +8,8 @@ functions/firebase-debug.log
 .log
 .dart_tool/
 .packages
+ios/Flutter/.last_build_id
+lib/generated_plugin_registrant.dart
 build/
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
