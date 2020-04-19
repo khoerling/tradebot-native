@@ -188,11 +188,12 @@ class _CreateAlert extends State<AlertCreate> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SearchChoices.single(
-                  items: exchanges
-                      .map((e) => DropdownMenuItem(
+                  items: [
+                    for (var e in exchanges)
+                      DropdownMenuItem(
                           child: Text(e.toString().toUpperCase()),
-                          value: e.toString()))
-                      .toList(),
+                          value: e.toString())
+                  ],
                   value: alert.exchange,
                   hint: Padding(
                     padding: const EdgeInsets.only(top: 15.0, bottom: 14.0),
@@ -218,11 +219,11 @@ class _CreateAlert extends State<AlertCreate> {
                         children: <Widget>[
                             Expanded(
                                 child: SearchChoices.single(
-                              items: markets
-                                  .map((e) => DropdownMenuItem(
-                                      child: Text(e['symbol'].toString()),
-                                      value: e['id'].toString()))
-                                  .toList(),
+                              items: [
+                                for (var m in markets)
+                                  DropdownMenuItem(
+                                      child: Text(m['symbol']), value: m['id'])
+                              ],
                               value: alert.market,
                               hint: Padding(
                                 padding: const EdgeInsets.only(
@@ -240,11 +241,11 @@ class _CreateAlert extends State<AlertCreate> {
                             Container(
                                 width: 100,
                                 child: SearchChoices.single(
-                                  items: timeframes
-                                      .map((t) => DropdownMenuItem(
-                                          child: Text(t[0].toString()),
-                                          value: t[0].toString()))
-                                      .toList(),
+                                  items: [
+                                    for (var t in timeframes)
+                                      DropdownMenuItem(
+                                          child: Text(t[0]), value: t[0])
+                                  ],
                                   value: alert.timeframe,
                                   hint: Padding(
                                     padding: const EdgeInsets.only(

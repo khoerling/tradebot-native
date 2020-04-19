@@ -32,10 +32,10 @@ class _HomePageState extends State<HomePage>
   void initState() {
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 2));
-    _faders = allPages.map<AnimationController>((TPage destination) {
-      return AnimationController(
-          vsync: this, duration: Duration(milliseconds: 200));
-    }).toList();
+    _faders = [
+      for (TPage destination in allPages)
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200))
+    ];
     _faders[_currentIndex].value = 1.0;
     _pageKeys = List<Key>.generate(allPages.length, (int index) => GlobalKey())
         .toList();
