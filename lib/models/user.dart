@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradebot_native/models/alert.dart';
 import 'package:provider/provider.dart';
 
-const storageKey = 'tradebot:user';
+const storageKey = 'tradebot:user2';
 
 class User with ChangeNotifier {
   String id;
@@ -17,6 +17,7 @@ class User with ChangeNotifier {
   List<Alert> alerts;
   DateTime created;
   DateTime updated;
+  final Firestore _db = Firestore.instance;
 
   User({
     this.id,
@@ -29,14 +30,26 @@ class User with ChangeNotifier {
     this.updated,
   });
 
-  User.fromDocument(DocumentSnapshot doc)
-      : id = doc.documentID,
-        email = doc.data['email'],
-        deviceId = doc.data['deviceId'],
-        pushToken = doc.data['pushToken'],
-        alerts = doc.data['alerts'] ?? [],
-        created = timeFor('created', doc.data),
-        updated = timeFor('updated', doc.data);
+  factory User.fromMap(Map data) {
+    return User(
+        email: data['email'],
+        deviceId: data['deviceId'],
+        pushToken: data['pushToken'],
+        alerts: data['alerts']
+            .map((alert) => Alert.fromMap(alert))
+            .toList()
+            .cast<Alert>(),
+        created: timeFor('created', data),
+        updated: timeFor('updated', data));
+  }
+
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    print('from firestare');
+    Map data = doc.data ?? {};
+    User user = User.fromMap(doc.data);
+    user.id = doc.documentID;
+    return user;
+  }
 
   static DateTime timeFor(String key, Map data) {
     return data.containsKey(key) && data[key] != null
@@ -44,30 +57,71 @@ class User with ChangeNotifier {
         : DateTime.fromMicrosecondsSinceEpoch(0);
   }
 
+  User.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        email = json['email'];
+
   toJson() {
     return {
       'id': id,
       'email': email,
       'deviceId': deviceId,
       'pushToken': pushToken,
-      'alerts': alerts.map((a) => a.toJson()),
+      'alerts': alerts,
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
     };
   }
 
   toString() {
-    return json.encode(toJson());
+    return json.encode(this);
+  }
+
+  Stream<User> stream(String id) {
+    return _db
+        .collection('users')
+        .document(id)
+        .snapshots()
+        .map((snap) => User.fromMap(snap.data));
+  }
+
+  Future<void> create() {
+    created = updated = DateTime.now();
+    var future = _db.collection('users').document(id).setData(toJson());
+    future.then((_) => save());
+    return future;
+  }
+
+  Stream<List<Alert>> streamAlerts(User user) {
+    return _db
+        .collection('users')
+        .document(user.id)
+        .collection('alerts')
+        .snapshots()
+        .map((list) =>
+            list.documents.map((doc) => Alert.fromDocument(doc)).toList());
+  }
+
+  Future<void> createAlert(Alert alert) {
+    alert.created = alert.updated = DateTime.now();
+    var future = _db
+        .collection('users')
+        .document(id)
+        .collection('alerts')
+        .add(alert.toJson());
+    // .document()
+    // .set
+    // .setData(alert.toMap());
+    future.then((_) => save());
+    return future;
+  }
+
+  static Future<User> restore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return User.fromMap(json.decode(prefs.getString(storageKey) ?? '{}'));
   }
 
   save() async {
-    // TODO firestore
-    final prefs = await SharedPreferences.getInstance();
-    json.decode(prefs.getString(storageKey));
-  }
-
-  restore() async {
-    // TODO firestore
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(storageKey, toString());
   }

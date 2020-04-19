@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
+import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/sparkle_button.dart';
@@ -122,6 +123,7 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   Future<bool> _createAlert() async {
+    // TODO all validations should happen in model
     // push alert to firebase
     if (test(alert.exchange == null, 'Select an Exchange!',
         'Which Exchange should this alert track?')) return false;
@@ -159,14 +161,12 @@ class _CreateAlert extends State<AlertCreate> {
       EventEmitter.publish('confetti', 1);
       Future.delayed(Duration(milliseconds: 0), () async {
         try {
-          // DocumentReference ref =
-          // await db.collection('users').add(alert.toJson());
-          alert.created = DateTime.now();
-          DocumentReference ref =
-              await db.collection('alerts').add(alert.toJson());
+          // add alert
+          User user = Provider.of<User>(context, listen: false);
+          user.createAlert(alert);
           // success, so--
           _clearParams();
-          print(ref.documentID);
+          // print(ref.documentID);
         } catch (e) {
           print("Error creating alert $e");
         }

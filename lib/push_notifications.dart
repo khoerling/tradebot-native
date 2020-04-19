@@ -5,7 +5,6 @@ class PushNotifications {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   PushNotifications() {
-    print('+ push notice');
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -26,8 +25,6 @@ class PushNotifications {
   }
 
   Future<dynamic> getToken() async {
-    String token = await _firebaseMessaging.getToken();
-    EventEmitter.publish('pushToken', token);
-    return token;
+    return await _firebaseMessaging.getToken();
   }
 }

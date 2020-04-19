@@ -32,6 +32,18 @@ class Alert {
       this.updated,
       this.params});
 
+  factory Alert.fromMap(Map data) {
+    return Alert(
+        id: data['id'],
+        name: data['name'],
+        exchange: data['exchange'],
+        market: data['market'],
+        timeframe: data['timeframe'],
+        alerted: data['alerted'] ?? [],
+        created: timeFor('created', data),
+        updated: timeFor('updated', data));
+  }
+
   Alert.fromDocument(DocumentSnapshot doc)
       : id = doc.documentID,
         name = EnumToString.fromString(AlertName.values, doc.data['name']),
@@ -41,7 +53,7 @@ class Alert {
         alerted = doc.data['alerted'] ?? [],
         created = timeFor('created', doc.data),
         updated = timeFor('updated', doc.data),
-        params = doc.data['params'];
+        params = doc.data['params'] ?? {};
 
   static DateTime timeFor(String key, Map data) {
     return data.containsKey(key) && data[key] != null

@@ -62,14 +62,29 @@ class _HomePageState extends State<HomePage>
 
   void initAsyncState(Duration _) async {
     return Future.wait([_pushNotifications.getToken(), initDeviceId()])
-        .then((List res) {
+        .then((List res) async {
       // TODO setup User with id & token
       // TODO save push token locally
       // TODO add token to firebase
-      User user = User();
-      user.pushToken = res[0];
-      user.deviceId = res[1];
-      // print(user.toString());
+      // User user = User();
+      try {
+        User user = Provider.of<User>(context, listen: false);
+        User rUser = await User.restore();
+        if (rUser.id == null) {
+          // initial user creation
+          print('new user');
+          rUser.pushToken = res[0];
+          rUser.id = rUser.deviceId = res[1];
+          print(rUser.alerts.length);
+          rUser.create();
+          user = rUser;
+        } else {
+          print('restored');
+        }
+        print(user.toString());
+      } catch (err) {
+        print('error! $err');
+      }
     });
   }
 
