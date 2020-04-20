@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/models/user.dart';
-import 'package:provider/provider.dart';
 
 const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
 
-void main() {
-  runApp(MaterialApp(
+Future<void> main() async {
+  // provide cached user object to all widgets
+  WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
+  var user = await User.restore();
+  print(user);
+  return runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -22,7 +26,7 @@ void main() {
         accentColor: Colors.white,
         textTheme: TextTheme(),
       ),
-      home: MultiProvider(providers: [
-        ListenableProvider<User>(create: (_) => User(alerts: [])),
-      ], child: HomePage())));
+      home: MultiProvider(
+          providers: [ListenableProvider<User>(create: (_) => User())],
+          child: HomePage())));
 }

@@ -26,14 +26,15 @@ class _HomePageState extends State<HomePage>
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
   PushNotifications _pushNotifications = PushNotifications();
-  final _random = new Random();
+  User _user;
+  Random _random = Random();
 
   @override
   void initState() {
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 2));
     _faders = [
-      for (TPage destination in allPages)
+      for (TPage _ in allPages)
         AnimationController(vsync: this, duration: Duration(milliseconds: 200))
     ];
     _faders[_currentIndex].value = 1.0;
@@ -63,25 +64,22 @@ class _HomePageState extends State<HomePage>
   void initAsyncState(Duration _) async {
     return Future.wait([_pushNotifications.getToken(), initDeviceId()])
         .then((List res) async {
-      // TODO setup User with id & token
-      // TODO save push token locally
-      // TODO add token to firebase
-      // User user = User();
       try {
-        User user = Provider.of<User>(context, listen: false);
-        User rUser = await User.restore();
-        if (rUser.id == null) {
+        // setup User with id & token
+        _user = Provider.of<User>(context, listen: false);
+        if (_user.id == null) {
           // initial user creation
           print('new user');
-          rUser.pushToken = res[0];
-          rUser.id = rUser.deviceId = res[1];
-          print(rUser.alerts.length);
-          rUser.create();
-          user = rUser;
+          _user.pushToken = res[0];
+          _user.id = _user.deviceId = res[1];
+          print(_user.alerts.length);
+          // save remote & locally
+          _user.create();
+          _user = _user;
         } else {
           print('restored');
         }
-        print(user.toString());
+        print(_user.toString());
       } catch (err) {
         print('error! $err');
       }
