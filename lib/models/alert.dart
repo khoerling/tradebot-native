@@ -73,6 +73,42 @@ class Alert {
     return "Price";
   }
 
+  bool validate(onError) {
+    var tester = (condition, title, message, onError) {
+      if (condition) return onError(title, message);
+      return false;
+    };
+    var test = (c, t, m) => tester(c, t, m, onError);
+    if (test(exchange == null, 'Select an Exchange!',
+        'Which Exchange should this alert track?')) return false;
+    if (test(market == null, 'Select a Market!',
+        'We recommend also choosing a candle timeframe.')) return false;
+    switch (name) {
+      case AlertName.price:
+        {
+          var amount = params['price_amount'],
+              horizon = params['price_horizon'];
+          if (test(amount == null || amount == 0.0, 'Enter a Price!',
+              'Greater or Less than what price?')) return false;
+          if (test(horizon == null, 'Select a Price Horizon!',
+              "Greater or Less than $amount?")) return false;
+        }
+        break;
+      case AlertName.guppy:
+        {
+          if (test(params['guppy'] == null, 'Select a Color!',
+              'What color signal should be alerted?')) return false;
+        }
+        break;
+      case AlertName.divergence:
+        {
+          // no test needs to happen
+        }
+        break;
+    }
+    return true;
+  }
+
   toJson() {
     var ps = params.map((k, v) =>
         MapEntry(k, enums.contains(v.runtimeType) ? EnumToString.parse(v) : v));

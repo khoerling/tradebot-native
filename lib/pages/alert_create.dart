@@ -124,35 +124,8 @@ class _CreateAlert extends State<AlertCreate> {
   Future<bool> _createAlert() async {
     // TODO all validations should happen in model
     // push alert to firebase
-    if (test(alert.exchange == null, 'Select an Exchange!',
-        'Which Exchange should this alert track?')) return false;
-    if (test(alert.market == null, 'Select a Market!',
-        'We recommend also choosing a candle timeframe.')) return false;
     if (_formKey.currentState.validate()) {
-      var params = alert.params;
-      switch (alert.name) {
-        case AlertName.price:
-          {
-            var amount = params['price_amount'],
-                horizon = params['price_horizon'];
-            if (test(amount == null || amount == 0.0, 'Enter a Price!',
-                'Greater or Less than what price?')) return false;
-            if (test(horizon == null, 'Select a Price Horizon!',
-                "Greater or Less than $amount?")) return false;
-          }
-          break;
-        case AlertName.guppy:
-          {
-            if (test(params['guppy'] == null, 'Select a Color!',
-                'What color signal should be alerted?')) return false;
-          }
-          break;
-        case AlertName.divergence:
-          {
-            // no test needs to happen
-          }
-          break;
-      }
+      if (!alert.validate(info)) return false; // guard
       HapticFeedback.lightImpact();
       if (_isCreating) return false; // guard
       _isCreating = true;
@@ -274,11 +247,6 @@ class _CreateAlert extends State<AlertCreate> {
                     )),
               ])),
     );
-  }
-
-  bool test(condition, title, message) {
-    if (condition) return info(title, message);
-    return false;
   }
 
   bool info(title, message) {
