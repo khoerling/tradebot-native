@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 
 class PushNotifications {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();

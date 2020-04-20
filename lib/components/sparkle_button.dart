@@ -186,34 +186,16 @@ class _SparkleButtonState extends State<SparkleButton>
   Widget getClapButton() {
     // Using custom gesture detector because we want to keep increasing the claps
     // when user holds the button.
-
-    var extraSize = 0.0;
-    if (_scoreWidgetStatus == ScoreWidgetStatus.VISIBLE ||
-        _scoreWidgetStatus == ScoreWidgetStatus.BECOMING_VISIBLE) {
-      extraSize = scoreSizeAnimationController.value * 3;
-    }
     return GestureDetector(
       onTapUp: onTapUp,
       onTapDown: onTapDown,
-      child:
-          // Container(
-          //   height: 60.0 + extraSize ,
-          //   width: 60.0 + extraSize,
-          //   padding:  EdgeInsets.all(10.0),
-          //   decoration:  BoxDecoration(
-          //       border:  Border.all(color: Colors.pink, width: 1.0),
-          //       color: Colors.white,
-          //   ),
-          //   )
-          //   child:
-          Button(
-              onPressed: () => true,
-              child: Text(
-                "CREATE ALERT",
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              )),
+      child: Button(
+          onPressed: () => true,
+          child: Text(
+            "CREATE ALERT",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          )),
     );
   }
 

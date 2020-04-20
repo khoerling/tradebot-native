@@ -7,7 +7,6 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
-import 'package:tradebot_native/components/button.dart';
 import 'package:tradebot_native/components/sparkle_button.dart';
 import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/user.dart';
@@ -162,7 +161,7 @@ class _CreateAlert extends State<AlertCreate> {
       Future.delayed(Duration(milliseconds: 0), () async {
         try {
           // add alert
-          User user = Provider.of<User>(context, listen: false);
+          var user = Provider.of<User>(context, listen: false);
           user.createAlert(alert);
           // success, so--
           _clearParams();
