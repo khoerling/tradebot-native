@@ -7,11 +7,11 @@ import 'package:tradebot_native/models/user.dart';
 const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
 
 Future<void> main() async {
-  // provide cached user object to all widgets
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
+  // provide cached user object to all widgets
   var user = await User.restore();
-  print(user);
-  return runApp(MaterialApp(
+  print("restored user: $user");
+  runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -27,6 +27,6 @@ Future<void> main() async {
         textTheme: TextTheme(),
       ),
       home: MultiProvider(
-          providers: [ListenableProvider<User>(create: (_) => User())],
+          providers: [ListenableProvider<User>(create: (_) => user)],
           child: HomePage())));
 }
