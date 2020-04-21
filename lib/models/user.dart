@@ -24,7 +24,7 @@ class User with ChangeNotifier {
     this.email,
     this.deviceId,
     this.pushToken,
-    this.alerts = const [],
+    this.alerts,
     this.created,
     this.updated,
   });
@@ -70,7 +70,7 @@ class User with ChangeNotifier {
       'email': email,
       'deviceId': deviceId,
       'pushToken': pushToken,
-      'alerts': alerts,
+      'alerts': alerts.map((a) => a.toJson()).toList(),
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
     };
@@ -89,32 +89,26 @@ class User with ChangeNotifier {
   }
 
   Future<void> create() {
-    created = updated = DateTime.now();
-    var future = _db.collection('users').document(id).setData(toJson());
-    future.then((_) => save());
-    return future;
-  }
-
-  Stream<List<Alert>> streamAlerts(User user) {
-    return _db
-        .collection('users')
-        .document(user.id)
-        .collection('alerts')
-        .snapshots()
-        .map((list) =>
-            list.documents.map((doc) => Alert.fromDocument(doc)).toList());
+    try {
+      created = updated = DateTime.now();
+      var future = _db.collection('users').document(id).setData(toJson());
+      future
+          .then((_) => save())
+          .catchError((e) => print("Error creating User: $e"));
+      return future;
+    } catch (e) {
+      print("Error creating User: $e");
+    }
   }
 
   Future<void> createAlert(Alert alert) {
     alert.created = alert.updated = DateTime.now();
-    var future = _db
-        .collection('users')
-        .document(id)
-        .collection('alerts')
-        .add(alert.toJson());
-    // .document()
-    // .set
-    // .setData(alert.toMap());
+    if (alerts != null)
+      alerts += [alert];
+    else
+      alerts = [alert];
+    print(toJson());
+    var future = _db.collection('users').document(id).setData(toJson());
     future.then((_) => save());
     return future;
   }
