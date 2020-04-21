@@ -72,7 +72,6 @@ class _HomePageState extends State<HomePage>
           print('new user');
           _user.pushToken = res[0];
           _user.id = _user.deviceId = res[1];
-          print(_user.alerts.length);
           // save remote & locally
           _user.create();
           _user = _user;

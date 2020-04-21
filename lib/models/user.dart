@@ -30,14 +30,15 @@ class User with ChangeNotifier {
   });
 
   factory User.fromMap(Map data) {
+    var alerts = data['alerts'];
     return User(
         email: data['email'],
         deviceId: data['deviceId'],
         pushToken: data['pushToken'],
-        alerts: data['alerts']
-            .map((alert) => Alert.fromMap(alert))
+        alerts: alerts != null ?
+            alerts.map((alert) => Alert.fromMap(alert))
             .toList()
-            .cast<Alert>(),
+            .cast<Alert>() : [],
         created: timeFor('created', data),
         updated: timeFor('updated', data));
   }
@@ -70,7 +71,7 @@ class User with ChangeNotifier {
       'email': email,
       'deviceId': deviceId,
       'pushToken': pushToken,
-      'alerts': alerts.map((a) => a.toJson()).toList(),
+      'alerts': alerts != null ? alerts.map((a) => a.toJson()).toList() : [],
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
     };
@@ -97,7 +98,7 @@ class User with ChangeNotifier {
           .catchError((e) => print("Error creating User: $e"));
       return future;
     } catch (e) {
-      print("Error creating User: $e");
+      print("Exception creating User: $e");
     }
   }
 
