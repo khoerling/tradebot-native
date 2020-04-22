@@ -15,7 +15,7 @@ class Alert {
   String exchange;
   String market;
   String timeframe;
-  List<DateTime> alerted;
+  List alerted = [];
   DateTime created;
   DateTime updated;
   Map<String, dynamic> params = {};
