@@ -1,5 +1,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tradebot_native/models/user.dart';
 
 enum AlertGuppy { green, red, grey }
 enum AlertName { price, divergence, guppy }
@@ -41,8 +42,8 @@ class Alert {
         market: data['market'],
         timeframe: data['timeframe'],
         alerted: data['alerted'] ?? [],
-        created: timeFor('created', data),
-        updated: timeFor('updated', data),
+        created: User.timeFor('created', data),
+        updated: User.timeFor('updated', data),
         params: data['params'] ?? {});
   }
 
@@ -53,15 +54,9 @@ class Alert {
         market = doc.data['market'],
         timeframe = doc.data['timeframe'],
         alerted = doc.data['alerted'] ?? [],
-        created = timeFor('created', doc.data),
-        updated = timeFor('updated', doc.data),
+        created = User.timeFor('created', doc.data),
+        updated = User.timeFor('updated', doc.data),
         params = doc.data['params'] ?? {};
-
-  static DateTime timeFor(String key, Map data) {
-    return data.containsKey(key) && data[key] != null
-        ? DateTime.parse(data[key])
-        : DateTime.fromMicrosecondsSinceEpoch(0);
-  }
 
   static String nameFor(AlertName alertName) {
     switch (alertName) {
