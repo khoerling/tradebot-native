@@ -32,6 +32,7 @@ dependencies:
   search_choices: ^1.0.13
   sensors: ^0.4.1+10
   shared_preferences: ^0.5.6+3
+  uuid: 2.0.4
   flutter:
     sdk: flutter
 
