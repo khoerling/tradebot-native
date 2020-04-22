@@ -114,7 +114,7 @@ class Alert {
       'exchange': exchange,
       'market': market,
       'timeframe': timeframe,
-      'alerted': alerted,
+      'alerted': alerted ?? [],
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
       'name': EnumToString.parse(name),

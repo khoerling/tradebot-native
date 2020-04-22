@@ -34,18 +34,22 @@ class User with ChangeNotifier {
     if (data == null) return User(); // guard
     var alerts = data['alerts'];
     try {
-    return User(
-        email: data['email'],
-        deviceId: data['deviceId'],
-        pushToken: data['pushToken'],
-        alerts: alerts != null
-            ? alerts.map((alert) => Alert.fromMap(alert)).toList().cast<Alert>()
-            : [],
-        created: timeFor('created', data),
-        updated: timeFor('updated', data));
-      } catch (e) {
-        print("Error User.fromMap $e");
-      }
+      return User(
+          email: data['email'],
+          deviceId: data['deviceId'],
+          pushToken: data['pushToken'],
+          alerts: alerts != null
+              ? alerts
+                  .map((alert) => Alert.fromMap(alert))
+                  .toList()
+                  .cast<Alert>()
+              : [],
+          created: timeFor('created', data),
+          updated: timeFor('updated', data));
+    } catch (e) {
+      print("Error User.fromMap $e");
+    }
+    return User();
   }
 
   factory User.fromFirestore(DocumentSnapshot doc) {
@@ -57,23 +61,18 @@ class User with ChangeNotifier {
   static Future<User> restore() async {
     final prefs = await SharedPreferences.getInstance();
     String user = prefs.getString(storageKey);
+    print('RESTORED $user');
     return user == null ? User() : User.fromMap(json.decode(user));
   }
 
   static DateTime timeFor(String key, Map data) {
-    return data.containsKey(key) && data[key] != null
-        ? DateTime.parse(data[key])
-        : DateTime.fromMicrosecondsSinceEpoch(0);
+    var epoch = DateTime.fromMicrosecondsSinceEpoch(0);
+    try {
+      return DateTime.parse(data[key]) ?? epoch;
+    } catch (e) {
+      return epoch;
+    }
   }
-
-  // User.fromJson(Map<String, dynamic> json)
-  //     : id = json['id'],
-  //       email = json['email'],
-  //       deviceId = json['deviceId'],
-  //       pushToken = json['pushToken'],
-  //       alerts = json['alerts'],
-  //       created = json['created'],
-  //       updated = json['updated'];
 
   toJson() {
     return {
@@ -113,6 +112,8 @@ class User with ChangeNotifier {
   }
 
   Future<void> createAlert(Alert alert) {
+    print('+ alert');
+    if (alert == null) return Future.value(false); // guard
     alert.id = Uuid().v4();
     alert.created = alert.updated = DateTime.now();
     if (alerts != null)
