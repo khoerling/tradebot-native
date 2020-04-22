@@ -31,6 +31,7 @@ class _CreateAlert extends State<AlertCreate> {
   var exchanges = [], markets = [], timeframes = [];
   bool _isCreating = false;
   String _isVisibleWith;
+  User _user;
 
   @override
   void initState() {
@@ -121,9 +122,18 @@ class _CreateAlert extends State<AlertCreate> {
     );
   }
 
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = Provider.of<User>(context);
+    // _user = Provider.of<User>(context) ?? User();
+    if (user != _user) {
+      _user = user;
+      print("USER CHANGED $_user");
+    }
+  }
+
   Future<bool> _createAlert() async {
-    // TODO all validations should happen in model
-    // push alert to firebase
     if (_formKey.currentState.validate()) {
       if (!alert.validate(info)) return false; // guard
       HapticFeedback.lightImpact();
@@ -134,11 +144,9 @@ class _CreateAlert extends State<AlertCreate> {
       Future.delayed(Duration(milliseconds: 0), () async {
         try {
           // add alert
-          var user = Provider.of<User>(context, listen: false);
-          user.createAlert(alert);
+          _user.createAlert(alert);
           // success, so--
           _clearParams();
-          // print(ref.documentID);
         } catch (e) {
           print("Error creating alert $e");
         }

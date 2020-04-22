@@ -51,17 +51,15 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-
   @override
   var _hasLoaded = false;
   didChangeDependencies() {
     super.didChangeDependencies();
     final user = Provider.of<User>(context);
-    // _user = Provider.of<User>(context) ?? User();
     if (user != _user) {
       _user = user;
       print("USER CHANGED $_user");
-      if (!_hasLoaded){
+      if (!_hasLoaded) {
         _hasLoaded = true;
         WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
       }
