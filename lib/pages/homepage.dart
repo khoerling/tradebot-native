@@ -67,16 +67,16 @@ class _HomePageState extends State<HomePage>
       try {
         // setup User with id & token
         _user = Provider.of<User>(context, listen: false);
+        _user.pushToken = res[0];
+        _user.deviceId = res[1];
         if (_user.id == null) {
           // initial user creation
+          _user.id = _user.deviceId;
           print('new user');
-          _user.pushToken = res[0];
-          _user.id = _user.deviceId = res[1];
           // save remote & locally
           _user.create();
-          _user = _user;
         } else {
-          print('restored');
+          print("restored $_user");
         }
         print(_user.toString());
       } catch (err) {

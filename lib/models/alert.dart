@@ -33,15 +33,17 @@ class Alert {
       this.params});
 
   factory Alert.fromMap(Map data) {
+    if (data == null) return Alert(); // guard
     return Alert(
         id: data['id'],
-        name: data['name'],
+        name: EnumToString.fromString(AlertName.values, data['name']),
         exchange: data['exchange'],
         market: data['market'],
         timeframe: data['timeframe'],
         alerted: data['alerted'] ?? [],
         created: timeFor('created', data),
-        updated: timeFor('updated', data));
+        updated: timeFor('updated', data),
+        params: data['params'] ?? {});
   }
 
   Alert.fromDocument(DocumentSnapshot doc)

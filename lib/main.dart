@@ -10,7 +10,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
   // provide cached user object to all widgets
   var user = await User.restore();
-  print("restored user: $user");
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

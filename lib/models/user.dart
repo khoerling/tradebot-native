@@ -3,9 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'package:tradebot_native/models/alert.dart';
 
-const storageKey = 'tradebot:user5';
+const storageKey = 'tradebot:user6';
 
 class User with ChangeNotifier {
   String id;
@@ -29,18 +30,22 @@ class User with ChangeNotifier {
     this.updated,
   });
 
-  factory User.fromMap(Map data) {
+  factory User.fromMap(Map<String, dynamic> data) {
+    if (data == null) return User(); // guard
     var alerts = data['alerts'];
+    try {
     return User(
         email: data['email'],
         deviceId: data['deviceId'],
         pushToken: data['pushToken'],
-        alerts: alerts != null ?
-            alerts.map((alert) => Alert.fromMap(alert))
-            .toList()
-            .cast<Alert>() : [],
+        alerts: alerts != null
+            ? alerts.map((alert) => Alert.fromMap(alert)).toList().cast<Alert>()
+            : [],
         created: timeFor('created', data),
         updated: timeFor('updated', data));
+      } catch (e) {
+        print("Error User.fromMap $e");
+      }
   }
 
   factory User.fromFirestore(DocumentSnapshot doc) {
@@ -52,7 +57,7 @@ class User with ChangeNotifier {
   static Future<User> restore() async {
     final prefs = await SharedPreferences.getInstance();
     String user = prefs.getString(storageKey);
-    return user == null ? User() : User.fromJson(json.decode(user));
+    return user == null ? User() : User.fromMap(json.decode(user));
   }
 
   static DateTime timeFor(String key, Map data) {
@@ -61,9 +66,14 @@ class User with ChangeNotifier {
         : DateTime.fromMicrosecondsSinceEpoch(0);
   }
 
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        email = json['email'];
+  // User.fromJson(Map<String, dynamic> json)
+  //     : id = json['id'],
+  //       email = json['email'],
+  //       deviceId = json['deviceId'],
+  //       pushToken = json['pushToken'],
+  //       alerts = json['alerts'],
+  //       created = json['created'],
+  //       updated = json['updated'];
 
   toJson() {
     return {
@@ -103,12 +113,12 @@ class User with ChangeNotifier {
   }
 
   Future<void> createAlert(Alert alert) {
+    alert.id = Uuid().v4();
     alert.created = alert.updated = DateTime.now();
     if (alerts != null)
       alerts += [alert];
     else
       alerts = [alert];
-    print(toJson());
     var future = _db.collection('users').document(id).setData(toJson());
     future.then((_) => save());
     return future;
