@@ -48,8 +48,24 @@ class _HomePageState extends State<HomePage>
         _hide.reverse();
         Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
       }));
-    WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
     super.initState();
+  }
+
+
+  @override
+  var _hasLoaded = false;
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = Provider.of<User>(context);
+    // _user = Provider.of<User>(context) ?? User();
+    if (user != _user) {
+      _user = user;
+      print("USER CHANGED $_user");
+      if (!_hasLoaded){
+        _hasLoaded = true;
+        WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
+      }
+    }
   }
 
   @override
@@ -66,19 +82,22 @@ class _HomePageState extends State<HomePage>
         .then((List res) async {
       try {
         // setup User with id & token
-        _user = Provider.of<User>(context, listen: false);
-        _user.pushToken = res[0];
-        _user.deviceId = res[1];
-        if (_user.id == null) {
-          // initial user creation
-          _user.id = _user.deviceId;
-          print('new user');
-          // save remote & locally
-          _user.create();
-        } else {
-          print("restored $_user");
-        }
-        print(_user.toString());
+        setState(() {
+          _user.pushToken = res[0];
+          _user.deviceId = res[1];
+          print("_user $_user");
+          if (_user?.id == null) {
+            // initial user creation
+            print('new user');
+            _user.id = _user.deviceId;
+            print('set id');
+            // save remote & locally
+            _user.create();
+          } else {
+            print("restored $_user");
+          }
+          print(_user.toString());
+        });
       } catch (err) {
         print('error! $err');
       }
