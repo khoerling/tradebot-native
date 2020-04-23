@@ -26,12 +26,12 @@ class AlertCreate extends StatefulWidget {
 
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey<FormState>();
-  Alert _alert = Alert(name: AlertName.price, params: {});
   final db = Firestore.instance;
-  var exchanges = [], markets = [], timeframes = [];
+  User _user;
+  Alert _alert = Alert(name: AlertName.price, params: {});
+  List exchanges = [], markets = [], timeframes = [];
   bool _isCreating = false;
   String _isVisibleWith;
-  User _user;
 
   @override
   void initState() {

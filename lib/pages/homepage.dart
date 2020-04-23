@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage>
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _emitterTokens
       ..add(EventEmitter.subscribe('confetti', (_) => doConfetti()))
+      ..add(EventEmitter.subscribe('selectPage', (i) => selectPage(i)))
       ..add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
         _hide.reverse();
         Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());

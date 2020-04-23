@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
 import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
@@ -30,6 +31,8 @@ class _AlertList extends State<AlertList> {
                     _user.alerts =
                         _user.alerts.where((a) => a.id != alert.id).toList();
                     _user.save();
+                    if (_user.alerts.length < 1)
+                      EventEmitter.publish('selectPage', 0);
                   },
                   secondaryBackground: Container(
                       alignment: Alignment.centerRight,
