@@ -99,16 +99,16 @@ class User with ChangeNotifier {
   }
 
   Future<void> create() {
+    var future = _db.collection('users').document(id).setData(toJson());
     try {
       created = updated = DateTime.now();
-      var future = _db.collection('users').document(id).setData(toJson());
       future
           .then((_) => save())
           .catchError((e) => print("Error creating User: $e"));
-      return future;
     } catch (e) {
       print("Exception creating User: $e");
     }
+    return future;
   }
 
   Future<void> createAlert(Alert alert) {
@@ -128,5 +128,6 @@ class User with ChangeNotifier {
   save() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(storageKey, toString());
+    notifyListeners();
   }
 }
