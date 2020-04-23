@@ -26,7 +26,7 @@ class AlertCreate extends StatefulWidget {
 
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey<FormState>();
-  final alert = Alert(name: AlertName.price, params: {});
+  Alert _alert = Alert(name: AlertName.price, params: {});
   final db = Firestore.instance;
   var exchanges = [], markets = [], timeframes = [];
   bool _isCreating = false;
@@ -62,7 +62,7 @@ class _CreateAlert extends State<AlertCreate> {
     final HttpsCallable fetchMarkets = CloudFunctions.instance.getHttpsCallable(
       functionName: 'markets',
     );
-    fetchMarkets.call({'exchange': alert.exchange}).then((res) {
+    fetchMarkets.call({'exchange': _alert.exchange}).then((res) {
       var data = res.data;
       if (data['success']) {
         // reset & translate timeframe into an array for selection
@@ -72,10 +72,10 @@ class _CreateAlert extends State<AlertCreate> {
         });
         setState(() {
           markets = data['markets'];
-          alert.timeframe = timeframes?.last[0] ?? '';
+          _alert.timeframe = timeframes?.last[0] ?? '';
         });
         if (markets.length < 1)
-          warn(alert.exchange.toUpperCase(), 'No active markets!');
+          warn(_alert.exchange.toUpperCase(), 'No active markets!');
       } else {
         _clearParams();
         var err = data['error'];
@@ -88,7 +88,7 @@ class _CreateAlert extends State<AlertCreate> {
   _clearParams() {
     // reset
     setState(() {
-      alert.params = {};
+      _alert.params = {};
     });
   }
 
@@ -135,7 +135,7 @@ class _CreateAlert extends State<AlertCreate> {
 
   Future<bool> _createAlert() async {
     if (_formKey.currentState.validate()) {
-      if (!alert.validate(info)) return false; // guard
+      if (!_alert.validate(info)) return false; // guard
       HapticFeedback.lightImpact();
       if (_isCreating) return false; // guard
       _isCreating = true;
@@ -144,9 +144,13 @@ class _CreateAlert extends State<AlertCreate> {
       Future.delayed(Duration(milliseconds: 0), () async {
         try {
           // add alert
-          _user.createAlert(alert);
+          _user.createAlert(_alert);
           // success, so--
-          _clearParams();
+          _alert = Alert(
+              name: _alert.name,
+              exchange: _alert.exchange,
+              market: _alert.market,
+              params: {});
         } catch (e) {
           print("Error creating alert $e");
         }
@@ -174,16 +178,16 @@ class _CreateAlert extends State<AlertCreate> {
                           child: Text(e.toString().toUpperCase()),
                           value: e.toString())
                   ],
-                  value: alert.exchange,
+                  value: _alert.exchange,
                   hint: Padding(
                     padding: const EdgeInsets.only(top: 15.0, bottom: 14.0),
                     child: Text("Select Exchange"),
                   ),
                   searchHint: "Select Exchange",
-                  onClear: () => setState(() => alert.market = null),
+                  onClear: () => setState(() => _alert.market = null),
                   onChanged: (value) {
                     setState(() {
-                      alert.exchange = value;
+                      _alert.exchange = value;
                     });
                     if (value != null)
                       _fetchMarkets(value);
@@ -192,7 +196,7 @@ class _CreateAlert extends State<AlertCreate> {
                   },
                   isExpanded: true,
                 ),
-                alert.exchange != null
+                _alert.exchange != null
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +208,7 @@ class _CreateAlert extends State<AlertCreate> {
                                   DropdownMenuItem(
                                       child: Text(m['symbol']), value: m['id'])
                               ],
-                              value: alert.market,
+                              value: _alert.market,
                               hint: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 15.0, bottom: 14.0),
@@ -213,8 +217,8 @@ class _CreateAlert extends State<AlertCreate> {
                               onClear: _clearParams,
                               searchHint: "Select Market",
                               onChanged: (value) {
-                                setState(() => alert.market = value);
-                                alert.market = value;
+                                setState(() => _alert.market = value);
+                                _alert.market = value;
                               },
                               isExpanded: true,
                             )),
@@ -226,7 +230,7 @@ class _CreateAlert extends State<AlertCreate> {
                                       DropdownMenuItem(
                                           child: Text(t[0]), value: t[0])
                                   ],
-                                  value: alert.timeframe,
+                                  value: _alert.timeframe,
                                   hint: Padding(
                                     padding: const EdgeInsets.only(
                                         top: 15.0, bottom: 14.0),
@@ -235,17 +239,17 @@ class _CreateAlert extends State<AlertCreate> {
                                   searchHint: "Select Candle Timeframe",
                                   displayClearIcon: false,
                                   onChanged: (value) {
-                                    setState(() => alert.timeframe = value);
-                                    alert.timeframe = value;
+                                    setState(() => _alert.timeframe = value);
+                                    _alert.timeframe = value;
                                   },
                                   isExpanded: true,
                                 ))
                           ])
                     : Container(),
-                alert.exchange != null &&
-                        alert.market != null &&
-                        alert.market != ''
-                    ? Params(alert: alert)
+                _alert.exchange != null &&
+                        _alert.market != null &&
+                        _alert.market != ''
+                    ? Params(alert: _alert)
                     : Container(),
                 Padding(
                     padding: EdgeInsets.only(top: 75.0),

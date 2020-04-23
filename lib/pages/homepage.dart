@@ -51,11 +51,12 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  @override
   var _hasLoaded = false;
+  @override
   didChangeDependencies() {
     super.didChangeDependencies();
     final user = Provider.of<User>(context);
+    print('inside did change');
     if (user != _user) {
       _user = user;
       print("USER CHANGED $_user");
