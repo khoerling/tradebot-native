@@ -206,7 +206,7 @@ class _CreateAlert extends State<AlertCreate> {
                               items: [
                                 for (var m in markets)
                                   DropdownMenuItem(
-                                      child: Text(m['symbol']), value: m['id'])
+                                      child: Text(m['symbol']), value: m)
                               ],
                               value: _alert.market,
                               hint: Padding(

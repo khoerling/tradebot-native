@@ -14,7 +14,7 @@ class Alert {
   String key;
   AlertName name;
   String exchange;
-  String market;
+  Map market;
   String timeframe;
   List alerted = [];
   DateTime created;
