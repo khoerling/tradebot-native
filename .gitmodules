@@ -1,0 +1,3 @@
+[submodule "assets/cryptofont"]
+	path = assets/cryptofont
+	url = git@github.com:monzanifabio/cryptofont.git
