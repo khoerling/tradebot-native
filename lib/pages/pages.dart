@@ -44,6 +44,7 @@ class _PageViewState extends State<PagesView> {
         ViewNavigatorObserver(widget.onNavigation),
       ],
       onGenerateRoute: (RouteSettings settings) {
+        final arguments = settings.arguments;
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
@@ -52,7 +53,7 @@ class _PageViewState extends State<PagesView> {
               case '/':
                 return root;
               case '/alert':
-                return AlertDetail(page: widget.page);
+                return AlertDetail(page: widget.page, alert: arguments);
               case '/list':
                 return AlertList();
             }

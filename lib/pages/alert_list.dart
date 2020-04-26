@@ -50,7 +50,8 @@ class _AlertList extends State<AlertList> {
                       child: Icon(Icons.delete, color: Colors.white, size: 35),
                       color: Colors.red),
                   child: ListTile(
-                    onTap: () => Navigator.pushNamed(context, '/alert'),
+                    onTap: () => Navigator.pushNamed(context, '/alert',
+                        arguments: alert),
                     isThreeLine: true,
                     leading: SvgPicture.asset(
                         assets.containsKey(base)
