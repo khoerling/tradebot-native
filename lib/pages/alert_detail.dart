@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradebot_native/models/alert.dart';
+import 'package:tradebot_native/components/crypto_icon.dart';
 import 'package:tradebot_native/pages/pages.dart';
 
 class AlertDetail extends StatelessWidget {
@@ -9,6 +10,7 @@ class AlertDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String base = alert.market['base'].toLowerCase();
     return Scaffold(
       body: Stack(children: [
         SafeArea(
@@ -20,6 +22,7 @@ class AlertDetail extends StatelessWidget {
               alignment: FractionalOffset.center,
               overflow: Overflow.visible,
               children: [
+                CryptoIcon(name: alert.market),
                 Center(child: Text("TODO Alert ${alert.name} Details Screen")),
               ],
             )),
