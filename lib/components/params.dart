@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:tradebot_native/components/linked_label_checkbox.dart';
 import 'package:tradebot_native/components/linked_label_radio.dart';
@@ -14,6 +15,7 @@ class Params extends StatefulWidget {
 }
 
 class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
+  String _token;
   final FocusNode focusNode = FocusNode();
   final amountFormatter =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
@@ -21,6 +23,20 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _token = EventEmitter.subscribe(
+        'didClearParams', (_) => amountFormatter.updateValue(0.0));
+  }
+
+  @override
+  void dispose() {
+    EventEmitter.unsubscribe(_token);
+    super.dispose();
+  }
+
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    print('did change params ${widget.alert.params}');
   }
 
   @override
@@ -81,6 +97,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                               height: 220,
                               child: TextFormField(
                                 controller: amountFormatter,
+                                onSaved: (_) => print('saved'),
                                 focusNode: focusNode,
                                 textInputAction: TextInputAction.done,
                                 decoration: InputDecoration(

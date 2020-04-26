@@ -90,6 +90,7 @@ class _CreateAlert extends State<AlertCreate> {
     setState(() {
       _alert.params = {};
     });
+    EventEmitter.publish('didClearParams', true);
   }
 
   Future<void> warn(title, msg, {error = ''}) async {
@@ -152,6 +153,7 @@ class _CreateAlert extends State<AlertCreate> {
               market: _alert.market,
               timeframe: _alert.timeframe,
               params: {});
+          _clearParams();
         } catch (e) {
           print("Error creating alert $e");
         }
