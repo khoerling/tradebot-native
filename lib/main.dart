@@ -5,6 +5,7 @@ import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/models/user.dart';
 
 const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
+final withOpacity = beppuTerminalBlue.withOpacity(.97);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
@@ -15,12 +16,12 @@ Future<void> main() async {
       theme: ThemeData(
         brightness: Brightness.dark,
         backgroundColor: beppuTerminalBlue,
-        scaffoldBackgroundColor: beppuTerminalBlue.withOpacity(.985),
+        scaffoldBackgroundColor: withOpacity,
         errorColor: Colors.white,
         hintColor: Colors.white,
         toggleableActiveColor: Colors.white,
         highlightColor: Colors.white,
-        cardColor: beppuTerminalBlue.withOpacity(.9),
+        cardColor: withOpacity,
         primaryColor: beppuTerminalBlue,
         accentColor: Colors.white,
         textTheme: TextTheme(),
