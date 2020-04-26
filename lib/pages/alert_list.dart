@@ -75,7 +75,12 @@ class _AlertList extends State<AlertList> {
   subtitleFor(AlertName name, params) {
     switch (name) {
       case AlertName.guppy:
-        return "Guppy is ${params['guppy']}";
+        try {
+          return "Guppy is " + EnumToString.parse(params['guppy']);
+        } catch (e) {
+          return "Guppy is ${params['guppy']}";
+        }
+        break;
       case AlertName.divergence:
         return "${params['divergence_bearish'] != null ? 'Bearish' : 'Bullish'} ${params['divergence_hidden'] != null ? 'Hidden ' : ''}Divergence";
       case AlertName.price:
