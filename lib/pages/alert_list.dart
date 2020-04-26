@@ -62,6 +62,8 @@ class _AlertList extends State<AlertList> {
                     title: Text(
                         "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}"),
                     subtitle: Text(subtitleFor(alert.name, alert.params) +
+                        ', ' +
+                        alert.timeframe.toString() +
                         "\n" +
                         (alert.alerted != null && alert.alerted.isNotEmpty
                             ? "Alerted ${alert.alerted[0].millisecondsSinceEpoch}"

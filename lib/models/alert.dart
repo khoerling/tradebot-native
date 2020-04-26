@@ -80,6 +80,8 @@ class Alert {
         'Which Exchange should this alert track?')) return false;
     if (test(market == null, 'Select a Market!',
         'We recommend also choosing a candle timeframe.')) return false;
+    if (test(timeframe == null, 'Select a Timeframe!',
+        'Select a candle timeframe for this alert.')) return false;
     switch (name) {
       case AlertName.price:
         {
