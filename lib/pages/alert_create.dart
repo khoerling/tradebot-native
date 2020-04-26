@@ -150,6 +150,7 @@ class _CreateAlert extends State<AlertCreate> {
               name: _alert.name,
               exchange: _alert.exchange,
               market: _alert.market,
+              timeframe: _alert.timeframe,
               params: {});
         } catch (e) {
           print("Error creating alert $e");
