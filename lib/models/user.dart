@@ -127,6 +127,15 @@ class User with ChangeNotifier {
 
   save() async {
     final prefs = await SharedPreferences.getInstance();
+    // sort alerts alerted desc, created desc
+    alerts.sort((a, b) {
+      // TODO alerted sort to top
+      if (a.created.microsecondsSinceEpoch < b.created.microsecondsSinceEpoch)
+        return 1;
+      if (a.created.microsecondsSinceEpoch > b.created.microsecondsSinceEpoch)
+        return -1;
+      return 0;
+    });
     prefs.setString(storageKey, toString());
     notifyListeners();
   }
