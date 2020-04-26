@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage>
   didChangeDependencies() {
     super.didChangeDependencies();
     final user = Provider.of<User>(context);
-    print('inside did change');
     if (user != _user) {
       _user = user;
       print("USER CHANGED $_user");

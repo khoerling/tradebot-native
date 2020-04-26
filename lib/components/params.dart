@@ -34,12 +34,6 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   }
 
   @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
-    print('did change params ${widget.alert.params}');
-  }
-
-  @override
   Widget build(BuildContext context) {
     var tabHeader = (String name) => Padding(
             padding: EdgeInsets.only(top: 25, bottom: 15),

@@ -10,7 +10,8 @@ class AlertDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox.expand(child: Center(child: Text("Alert Details Screen"))),
+      body: SizedBox.expand(
+          child: Center(child: Text("TODO Alert Details Screen"))),
     );
   }
 }
