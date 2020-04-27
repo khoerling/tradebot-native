@@ -41,6 +41,7 @@ class _PageViewState extends State<PagesView> {
   Widget build(BuildContext context) {
     return Navigator(
       observers: <NavigatorObserver>[
+        HeroController(),
         ViewNavigatorObserver(widget.onNavigation),
       ],
       onGenerateRoute: (RouteSettings settings) {

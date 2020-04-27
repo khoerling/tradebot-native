@@ -51,20 +51,22 @@ class _AlertList extends State<AlertList> {
                       child: Icon(Icons.delete, color: Colors.white, size: 35),
                       color: Colors.red),
                   child: ListTile(
-                    onTap: () => Navigator.pushNamed(context, '/alert',
-                        arguments: alert),
-                    isThreeLine: true,
-                    leading: CryptoIcon(name: base),
-                    title: Text(
-                        "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}"),
-                    subtitle: Text(subtitleFor(alert.name, alert.params) +
-                        ', ' +
-                        alert.timeframe.toString() +
-                        "\n" +
-                        (alert.alerted != null && alert.alerted.isNotEmpty
-                            ? "Alerted ${alert.alerted[0].millisecondsSinceEpoch}"
-                            : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}")),
-                  ));
+                      onTap: () => Navigator.pushNamed(context, '/alert',
+                          arguments: alert),
+                      isThreeLine: true,
+                      leading:
+                          Hero(tag: alert.id, child: CryptoIcon(name: base)),
+                      title: Text(
+                          "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}"),
+                      subtitle: Text(subtitleFor(alert.name, alert.params) +
+                          ', ' +
+                          alert.timeframe.toString() +
+                          "\n" +
+                          (alert.alerted != null && alert.alerted.isNotEmpty
+                              ? "Alerted ${alert.alerted[0].millisecondsSinceEpoch}"
+                              : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}")),
+                      trailing: Icon(Icons.keyboard_arrow_right,
+                          color: Colors.white.withOpacity(.1), size: 30.0)));
             }));
   }
 

@@ -14,18 +14,29 @@ class AlertDetail extends StatelessWidget {
     return Scaffold(
       body: Stack(children: [
         SafeArea(
-          child: BackButton(),
-        ),
-        Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Stack(
-              alignment: FractionalOffset.center,
-              overflow: Overflow.visible,
-              children: [
-                CryptoIcon(name: alert.market),
-                Center(child: Text("TODO Alert ${alert.name} Details Screen")),
-              ],
-            )),
+            child: Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: [
+                    Positioned(
+                      top: 25,
+                      child: BackButton(),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 50,
+                      child: Hero(
+                          tag: alert.id,
+                          child: CryptoIcon(
+                              height: 100.0,
+                              width: 100.0,
+                              name: alert.market['base'].toLowerCase())),
+                    ),
+                    Center(
+                        child: Text("TODO Alert ${alert.name} Details Screen")),
+                  ],
+                ))),
       ]),
     );
   }
