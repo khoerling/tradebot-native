@@ -47,9 +47,17 @@ class _BackgroundState extends State<Background> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment(
+                  0.8, 0.0), // 10% of the width, so there are ten blinds
+              colors: [const Color(0x20FFFFFF), const Color(0x00FFFFFF)],
+            ),
+          ),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: new Stack(
+          child: Stack(
             children: <Widget>[
               parallax(),
             ],
@@ -58,24 +66,23 @@ class _BackgroundState extends State<Background> {
   }
 
   Widget parallax() {
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Positioned(
+        Positioned(
             left: xIc1,
             bottom: 0,
             top: 0,
-            child: new Container(
+            child: Container(
               width: MediaQuery.of(context).size.width + 250,
               height: MediaQuery.of(context).size.height,
-              decoration: new BoxDecoration(
-                  image: new DecorationImage(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
                       colorFilter: ColorFilter.mode(
                           Colors.white.withOpacity(0.015), BlendMode.dstATop),
                       fit: BoxFit.cover,
-                      image: new AssetImage('assets/images/bg.png'))),
+                      image: AssetImage('assets/images/bg.png'))),
             )),
-        new Positioned(
-            right: 0, left: 0, bottom: 0, top: 0, child: widget.child)
+        Positioned(right: 0, left: 0, bottom: 0, top: 0, child: widget.child)
       ],
     );
   }
