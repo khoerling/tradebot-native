@@ -1,3 +1,6 @@
 [submodule "assets/cryptofont"]
 	path = assets/cryptofont
 	url = git@github.com:monzanifabio/cryptofont.git
+[submodule "curved_navigation_bar"]
+	path = curved_navigation_bar
+	url = git@github.com:rafalbednarczuk/curved_navigation_bar.git

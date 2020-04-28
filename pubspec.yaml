@@ -21,7 +21,6 @@ dependencies:
   cloud_firestore: ^0.13.4+2
   cloud_functions: ^0.4.2+3
   confetti: ^0.4.0
-  curved_navigation_bar: ^0.3.2
   device_id: ^0.2.0
   enum_to_string: ^1.0.9
   firebase_messaging: ^6.0.13
@@ -36,6 +35,8 @@ dependencies:
   sensors: ^0.4.1+10
   shared_preferences: ^0.5.6+3
   uuid: 2.0.4
+  curved_navigation_bar:
+    path: ./curved_navigation_bar
   flutter:
     sdk: flutter
 

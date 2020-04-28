@@ -116,9 +116,9 @@ packages:
   curved_navigation_bar:
     dependency: "direct main"
     description:
-      name: curved_navigation_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: curved_navigation_bar
+      relative: true
+    source: path
     version: "0.3.2"
   device_id:
     dependency: "direct main"
