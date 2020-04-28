@@ -14,7 +14,7 @@ import 'package:tradebot_native/models/alert.dart';
 
 // TODO
 // - divergence, look for bullish or bearish + thresholds, --gap = 1 candle up to 50
-const confettiTimer = Duration(milliseconds: 1000);
+const confettiTimer = Duration(milliseconds: 2000);
 
 class AlertCreate extends StatefulWidget {
   const AlertCreate({
@@ -279,21 +279,21 @@ class _CreateAlert extends State<AlertCreate> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
-                    color: Colors.black.withOpacity(.95),
+                    color: Colors.white.withOpacity(.95),
                   ),
                 ),
                 messageText: Text(
                   message,
                   style: TextStyle(
                     fontSize: 13.0,
-                    color: Colors.black.withOpacity(.85),
+                    color: Colors.white.withOpacity(.85),
                   ),
                 ),
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
                 icon: Icon(
                   Icons.visibility,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 flushbarPosition: FlushbarPosition.BOTTOM,
                 flushbarStyle: FlushbarStyle.GROUNDED,
