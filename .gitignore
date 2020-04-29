@@ -1,7 +1,9 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
+firebase-debug.log
 functions/firebase-debug.log
+functions/service-account.json
 .flutter-plugins-dependencies
 .flutter-plugins
 .firebaserc
