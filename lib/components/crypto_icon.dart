@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/avd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CryptoIcon extends StatelessWidget {
@@ -16,7 +14,7 @@ class CryptoIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
         assets.containsKey(name)
-            ? "assets/cryptofont/SVG/${name}.svg"
+            ? "assets/cryptofont/SVG/$name.svg"
             : "assets/cryptofont/SVG/btc.svg",
         color: Colors.white,
         height: height ?? 50.0,

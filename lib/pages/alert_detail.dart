@@ -31,7 +31,7 @@ class AlertDetail extends StatelessWidget {
                           child: CryptoIcon(
                               height: 100.0,
                               width: 100.0,
-                              name: alert.market['base'].toLowerCase())),
+                              name: base)),
                     ),
                     Center(
                         child: Text("TODO Alert ${alert.name} Details Screen")),

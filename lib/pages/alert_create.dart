@@ -250,8 +250,7 @@ class _CreateAlert extends State<AlertCreate> {
                           ])
                     : Container(),
                 _alert.exchange != null &&
-                        _alert.market != null &&
-                        _alert.market != ''
+                        _alert.market != null
                     ? Params(alert: _alert)
                     : Container(),
                 Padding(
