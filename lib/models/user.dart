@@ -35,6 +35,7 @@ class User with ChangeNotifier {
     var alerts = data['alerts'];
     try {
       return User(
+          id: data['id'],
           email: data['email'],
           deviceId: data['deviceId'],
           pushToken: data['pushToken'],
@@ -52,17 +53,17 @@ class User with ChangeNotifier {
     return User();
   }
 
-  factory User.fromFirestore(DocumentSnapshot doc) {
-    User user = User.fromMap(doc.data);
-    user.id = doc.documentID;
-    return user;
+  static Future<User> fromFirestore(id) async {
+    Firestore db = Firestore.instance;
+    DocumentSnapshot doc = await db.collection('users').document(id).get();
+    return User.fromMap(doc.data);
   }
 
   static Future<User> restore() async {
     final prefs = await SharedPreferences.getInstance();
     String user = prefs.getString(storageKey);
     print('RESTORED $user');
-    return user == null ? User() : User.fromMap(json.decode(user));
+    return user == null ? User.fromFirestore(storageKey) : User.fromMap(json.decode(user));
   }
 
   static DateTime timeFor(String key, Map data) {

@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage>
     final user = Provider.of<User>(context);
     if (user != _user) {
       _user = user;
-      print("USER CHANGED $_user");
+      // print("USER CHANGED $_user");
       if (!_hasLoaded) {
         _hasLoaded = true;
         WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
@@ -80,20 +80,20 @@ class _HomePageState extends State<HomePage>
     return Future.wait([_pushNotifications.getToken(), initDeviceId()])
         .then((List res) async {
       try {
-        // setup User with id & token
+        String id = res[1];
+        // fetch latest User from remote
+        _user = await User.fromFirestore(id);
         setState(() {
           _user.pushToken = res[0];
-          _user.deviceId = res[1];
-          print("_user $_user");
+          _user.deviceId = id;
           if (_user?.id == null) {
             // initial user creation
-            print('new user');
+            print('NEW User');
             _user.id = _user.deviceId;
-            print('set id');
             // save remote & locally
             _user.create();
           } else {
-            print("restored $_user");
+            print("RESTORED $_user");
           }
           print(_user.toString());
         });

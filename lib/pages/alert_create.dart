@@ -127,11 +127,8 @@ class _CreateAlert extends State<AlertCreate> {
   didChangeDependencies() {
     super.didChangeDependencies();
     final user = Provider.of<User>(context);
-    // _user = Provider.of<User>(context) ?? User();
-    if (user != _user) {
-      _user = user;
-      print("USER CHANGED $_user");
-    }
+    // update ourselves
+    if (user != _user) _user = user;
   }
 
   Future<bool> _createAlert() async {
