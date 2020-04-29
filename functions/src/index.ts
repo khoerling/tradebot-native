@@ -1,12 +1,33 @@
 import * as functions from "firebase-functions";
+import { DocumentSnapshot } from "@firebase/firestore-types";
+
+type Alert = {
+  id: string;
+  name: string;
+  exchange: string;
+  market: object;
+  timeframe: string;
+  alerted: Date;
+  created: Date;
+  updated: Date;
+  params: Map<string, any>;
+};
 
 const admin = require("firebase-admin"),
-  ccxt = require("ccxt");
+  ccxt = require("ccxt"),
+  serviceAccount = require("../service-account.json"),
+  adminConfig = JSON.parse(process.env.FIREBASE_CONFIG || "");
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
+// init
+// ---------
+adminConfig.credential = admin.credential.cert(serviceAccount);
+admin.initializeApp(adminConfig);
 
+// fns
+// ---------
 export const addUser = functions.https.onCall((data, _context) => {
+  // XXX currently happens directly via firestore db in app
+  // - implement this if needed externally, eg. from cr0n
   const users = admin.firestore().collection("users");
   return users.add({
     name: data["name"],
@@ -15,6 +36,7 @@ export const addUser = functions.https.onCall((data, _context) => {
 });
 
 export const exchanges = functions.https.onCall((_data, _context) => {
+  // TODO limit and cache exchanges on apiKeys
   try {
     return { success: true, exchanges: ccxt.exchanges };
   } catch (error) {
@@ -30,6 +52,23 @@ export const markets = functions.https.onCall(async (data, _context) => {
         return { id: m.id, symbol: m.symbol, base: m.base, quote: m.quote };
       });
     return { success: true, timeframes: exchange.timeframes, markets: mkt };
+  } catch (error) {
+    return { success: false, error };
+  }
+});
+
+export const alerts = functions.https.onCall(async (_data, _context) => {
+  try {
+    const _alerts: Array<Alert> = [],
+      snapshot = await admin
+        .firestore()
+        .collection("users")
+        .get();
+    snapshot.forEach((doc: DocumentSnapshot) =>
+      _alerts.push(doc.get("alerts"))
+    );
+    console.log("snap is: ", snapshot);
+    return { success: true, alerts: _alerts };
   } catch (error) {
     return { success: false, error };
   }
