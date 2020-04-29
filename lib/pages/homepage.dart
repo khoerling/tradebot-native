@@ -88,14 +88,11 @@ class _HomePageState extends State<HomePage>
           _user.deviceId = id;
           if (_user?.id == null) {
             // initial user creation
-            print('NEW User');
+            print('+ User');
             _user.id = _user.deviceId;
             // save remote & locally
             _user.create();
-          } else {
-            print("RESTORED $_user");
           }
-          print(_user.toString());
         });
       } catch (err) {
         print('error! $err');

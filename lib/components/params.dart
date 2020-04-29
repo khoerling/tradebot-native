@@ -68,7 +68,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
               ),
               Expanded(
                   child: Padding(
-                      padding: EdgeInsets.only(top: 25.0),
+                      padding: EdgeInsets.only(top: 15.0),
                       child: TabBarView(children: [
                         Row(children: <Widget>[
                           // greater or less radios

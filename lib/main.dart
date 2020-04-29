@@ -21,7 +21,7 @@ Future<void> main() async {
         hintColor: Colors.white,
         toggleableActiveColor: Colors.white,
         highlightColor: Colors.white,
-        cardColor: Colors.black,
+        cardColor: beppuTerminalBlue,
         primaryColor: beppuTerminalBlue,
         accentColor: Colors.white,
         textTheme: TextTheme(),
