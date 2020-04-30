@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import { DocumentSnapshot } from "@firebase/firestore-types";
 
-type Alert = {
+export type Alert = {
   id: string;
   name: string;
   exchange: string;
@@ -13,7 +13,7 @@ type Alert = {
   params: Map<string, any>;
 };
 
-const admin = require("firebase-admin"),
+export const admin = require("firebase-admin"),
   ccxt = require("ccxt"),
   serviceAccount = require("../service-account.json"),
   adminConfig = JSON.parse(process.env.FIREBASE_CONFIG || "");
@@ -59,16 +59,8 @@ export const markets = functions.https.onCall(async (data, _context) => {
 
 export const alerts = functions.https.onCall(async (_data, _context) => {
   try {
-    const _alerts: Array<Alert> = [],
-      snapshot = await admin
-        .firestore()
-        .collection("users")
-        .get();
-    snapshot.forEach((doc: DocumentSnapshot) =>
-      _alerts.push(doc.get("alerts"))
-    );
-    console.log("snap is: ", snapshot);
-    return { success: true, alerts: _alerts };
+    const userAlerts = await getAlerts();
+    return { success: true, alerts: userAlerts };
   } catch (error) {
     return { success: false, error };
   }
@@ -79,3 +71,14 @@ export const alerts = functions.https.onCall(async (_data, _context) => {
 function createExchange(e: string) {
   return e ? new ccxt[e]() : null;
 }
+
+export const getAlerts = async () => {
+  const userAlerts: Array<Alert> = [],
+    snapshot = await admin
+      .firestore()
+      .collection("users")
+      .get();
+  snapshot.forEach((doc: DocumentSnapshot) =>
+    userAlerts.push(doc.get("alerts"))
+  );
+};

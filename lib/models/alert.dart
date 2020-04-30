@@ -96,7 +96,7 @@ class Alert {
       case AlertName.guppy:
         {
           if (test(params['guppy'] == null, 'Select a Color!',
-              'What color signal should be alerted?')) return false;
+              'Which color signal should be alerted?')) return false;
         }
         break;
       case AlertName.divergence:
