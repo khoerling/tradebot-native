@@ -1,6 +1,16 @@
 import * as functions from "firebase-functions";
 import { DocumentSnapshot } from "@firebase/firestore-types";
 
+export type User = {
+  id: string;
+  pushToken: string;
+  deviceId: string;
+  email: string;
+  alerts: Array<Alert>;
+  created: Date;
+  updated: Date;
+};
+
 export type Alert = {
   id: string;
   name: string;
@@ -8,20 +18,15 @@ export type Alert = {
   market: object;
   timeframe: string;
   alerted: Date;
+  params: Map<string, any>;
   created: Date;
   updated: Date;
-  params: Map<string, any>;
 };
-
-export const admin = require("firebase-admin"),
-  ccxt = require("ccxt");
-// serviceAccount = require("../service-account.json"),
-// adminConfig = JSON.parse(process.env.FIREBASE_CONFIG || "");
 
 // init
 // ---------
-// adminConfig.credential = admin.credential.cert(serviceAccount);
-// admin.initializeApp(adminConfig);
+export const admin = require("firebase-admin"),
+  ccxt = require("ccxt");
 
 // fns
 // ---------
@@ -72,12 +77,19 @@ function createExchange(e: string) {
   return e ? new ccxt[e]() : null;
 }
 
-export const getAlerts = async () => {
-  const userAlerts: Array<Alert> = [],
+export const getUsers = async () => {
+  const users: Array<any> = [],
     snapshot = await admin
       .firestore()
       .collection("users")
       .get();
+  snapshot.forEach((doc: DocumentSnapshot) => users.push(doc.data()));
+  return users;
+};
+
+export const getAlerts = async () => {
+  const userAlerts: Array<Alert> = [],
+    snapshot = await getUsers();
   snapshot.forEach((doc: DocumentSnapshot) =>
     userAlerts.push(...doc.get("alerts"))
   );

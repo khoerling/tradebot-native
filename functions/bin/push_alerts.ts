@@ -1,4 +1,4 @@
-import { admin, getAlerts } from "../src/index";
+import { admin, getUsers } from "../src/index";
 
 // init
 // ---------
@@ -7,4 +7,4 @@ admin.initializeApp({ credential: admin.credential.cert(adminConfig) });
 
 // main
 // ---------
-getAlerts().then(res => console.log(JSON.stringify(res)));
+getUsers().then(res => console.log(JSON.stringify(res)));
