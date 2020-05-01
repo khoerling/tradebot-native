@@ -14,14 +14,14 @@ export type Alert = {
 };
 
 export const admin = require("firebase-admin"),
-  ccxt = require("ccxt"),
-  serviceAccount = require("../service-account.json"),
-  adminConfig = JSON.parse(process.env.FIREBASE_CONFIG || "");
+  ccxt = require("ccxt");
+// serviceAccount = require("../service-account.json"),
+// adminConfig = JSON.parse(process.env.FIREBASE_CONFIG || "");
 
 // init
 // ---------
-adminConfig.credential = admin.credential.cert(serviceAccount);
-admin.initializeApp(adminConfig);
+// adminConfig.credential = admin.credential.cert(serviceAccount);
+// admin.initializeApp(adminConfig);
 
 // fns
 // ---------
@@ -79,6 +79,7 @@ export const getAlerts = async () => {
       .collection("users")
       .get();
   snapshot.forEach((doc: DocumentSnapshot) =>
-    userAlerts.push(doc.get("alerts"))
+    userAlerts.push(...doc.get("alerts"))
   );
+  return userAlerts;
 };
