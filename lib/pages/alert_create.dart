@@ -285,7 +285,7 @@ class _CreateAlert extends State<AlertCreate> {
                     color: Colors.white.withOpacity(.85),
                   ),
                 ),
-                backgroundColor: Colors.transparent,
+                backgroundColor: Color.fromRGBO(38, 41, 74, 1),
                 forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
                 icon: Icon(
                   Icons.visibility,
