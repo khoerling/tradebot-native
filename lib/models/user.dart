@@ -63,7 +63,7 @@ class User with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     String user = prefs.getString(storageKey);
     print('RESTORED $user');
-    return user == null ? User.fromFirestore(storageKey) : User.fromMap(json.decode(user));
+    return user == null ? User() : User.fromMap(json.decode(user));
   }
 
   static DateTime timeFor(String key, Map data) {
