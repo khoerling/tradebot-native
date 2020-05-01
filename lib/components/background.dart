@@ -51,7 +51,7 @@ class _BackgroundState extends State<Background> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment(
-                  0.8, 0.0), // 10% of the width, so there are ten blinds
+                  0.8, xIc1 * 0.015), // 10% of the width, so there are ten blinds
               colors: [const Color(0x20FFFFFF), const Color(0x00FFFFFF)],
             ),
           ),
