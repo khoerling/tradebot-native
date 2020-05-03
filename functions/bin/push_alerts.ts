@@ -13,46 +13,56 @@ admin.initializeApp({ credential: admin.credential.cert(adminConfig) });
 // ---------
 getUsers().then(async (users: Array<User>) => {
   for (let user of users) {
+    const alerts = [];
     for (let alert of user.alerts) {
       // test alert
       if (alert.exchange && alert.market.symbol && alert.timeframe) {
         switch (alert.name) {
           case "price":
-            await run(
-              alert,
-              user.pushToken,
-              `${path}/price -x ${alert.exchange} -m ${
-                alert.market.symbol
-              } -t ${alert.timeframe} ${
-                alert.params.price_horizon == "greater" ? "-g" : "-l"
-              } ema ${alert.params.price_amount}`
+            alerts.push(
+              run(
+                alert,
+                user.pushToken,
+                `${path}/price -x ${alert.exchange} -m ${
+                  alert.market.symbol
+                } -t ${alert.timeframe} ${
+                  alert.params.price_horizon == "greater" ? "-g" : "-l"
+                } ema ${alert.params.price_amount}`
+              )
             );
             break;
           case "divergence":
-            await run(
-              alert,
-              user.pushToken,
-              `${path}/divergence -x ${alert.exchange} -m ${
-                alert.market.symbol
-              } -t ${alert.timeframe} ${
-                alert.params.divergence_hidden ? "-H" : ""
-              } ${alert.params.divergence_bearish ? "-b" : ""}`
+            alerts.push(
+              run(
+                alert,
+                user.pushToken,
+                `${path}/divergence -x ${alert.exchange} -m ${
+                  alert.market.symbol
+                } -t ${alert.timeframe} ${
+                  alert.params.divergence_hidden ? "-H" : ""
+                } ${alert.params.divergence_bearish ? "-b" : ""}`
+              )
             );
             break;
           case "guppy":
-            await run(
-              alert,
-              user.pushToken,
-              `${path}/guppy -x ${alert.exchange} -m ${
-                alert.market.symbol
-              } -t ${alert.timeframe} --${alert.params.guppy}`
+            alerts.push(
+              run(
+                alert,
+                user.pushToken,
+                `${path}/guppy -x ${alert.exchange} -m ${
+                  alert.market.symbol
+                } -t ${alert.timeframe} --${alert.params.guppy}`
+              )
             );
             break;
         }
       }
     }
+    // run all alerts for user simultaneously & wait
+    // - TODO add concurrency limit
+    await Promise.all(alerts);
   }
-  setTimeout(() => process.exit(1), 100); // die
+  setTimeout(() => process.exit(1), 100); // die with slight yield
 });
 
 // ---------
