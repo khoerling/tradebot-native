@@ -18,7 +18,7 @@ getUsers().then(async (users: Array<User>) => {
       if (alert.exchange && alert.market.symbol && alert.timeframe) {
         switch (alert.name) {
           case "price":
-            run(
+            await run(
               alert,
               user.pushToken,
               `${path}/price -x ${alert.exchange} -m ${
@@ -29,7 +29,7 @@ getUsers().then(async (users: Array<User>) => {
             );
             break;
           case "divergence":
-            run(
+            await run(
               alert,
               user.pushToken,
               `${path}/divergence -x ${alert.exchange} -m ${
@@ -40,7 +40,7 @@ getUsers().then(async (users: Array<User>) => {
             );
             break;
           case "guppy":
-            run(
+            await run(
               alert,
               user.pushToken,
               `${path}/guppy -x ${alert.exchange} -m ${
@@ -51,9 +51,7 @@ getUsers().then(async (users: Array<User>) => {
         }
       }
     }
-    console.log("finished alerts");
   }
-  console.log("done.");
   setTimeout(() => process.exit(1), 100); // die
 });
 
