@@ -17,7 +17,7 @@ class Alert {
   Map market;
   String timeframe;
   List<DateTime> alerted = [];
-  Boolean isAlerted = false;
+  bool isAlerted = false;
   DateTime created;
   DateTime updated;
   Map<String, dynamic> params = {};
