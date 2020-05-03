@@ -15,10 +15,10 @@ export type Alert = {
   id: string;
   name: string;
   exchange: string;
-  market: object;
+  market: any;
   timeframe: string;
   alerted: Date;
-  params: Map<string, any>;
+  params: any;
   created: Date;
   updated: Date;
 };
