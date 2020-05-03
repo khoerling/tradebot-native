@@ -16,7 +16,12 @@ getUsers().then(async (users: Array<User>) => {
     const alerts = [];
     for (let alert of user.alerts) {
       // test alert
-      if (alert.exchange && alert.market.symbol && alert.timeframe) {
+      if (
+        alert.exchange &&
+        alert.market.symbol &&
+        alert.timeframe &&
+        !alert.isAlerted // don't test if currently alerted
+      ) {
         switch (alert.name) {
           case "price":
             alerts.push(
