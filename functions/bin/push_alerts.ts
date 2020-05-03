@@ -1,4 +1,4 @@
-import { admin, getUsers, User, Alert } from "../src/index";
+import { admin, getUsers, saveUser, User, Alert } from "../src/index";
 
 const util = require("util"),
   exec = util.promisify(require("child_process").exec),
@@ -21,8 +21,8 @@ getUsers().then(async (users: Array<User>) => {
           case "price":
             alerts.push(
               run(
+                user,
                 alert,
-                user.pushToken,
                 `${path}/price -x ${alert.exchange} -m ${
                   alert.market.symbol
                 } -t ${alert.timeframe} ${
@@ -34,8 +34,8 @@ getUsers().then(async (users: Array<User>) => {
           case "divergence":
             alerts.push(
               run(
+                user,
                 alert,
-                user.pushToken,
                 `${path}/divergence -x ${alert.exchange} -m ${
                   alert.market.symbol
                 } -t ${alert.timeframe} ${
@@ -47,8 +47,8 @@ getUsers().then(async (users: Array<User>) => {
           case "guppy":
             alerts.push(
               run(
+                user,
                 alert,
-                user.pushToken,
                 `${path}/guppy -x ${alert.exchange} -m ${
                   alert.market.symbol
                 } -t ${alert.timeframe} --${alert.params.guppy}`
@@ -66,7 +66,7 @@ getUsers().then(async (users: Array<User>) => {
 });
 
 // ---------
-async function run(alert: Alert, token: string, cmd: string) {
+async function run(user: User, alert: Alert, cmd: string) {
   try {
     console.log(`Running ${alert.name}: ${cmd}`);
     await exec(cmd);
@@ -76,14 +76,22 @@ async function run(alert: Alert, token: string, cmd: string) {
       alert.params && Object.keys(alert.params).length
         ? JSON.stringify(alert.params)
         : "no options.";
-    admin.messaging().sendToDevice(token, {
+    admin.messaging().sendToDevice(user.pushToken, {
       notification: {
         title: `${alert.name.toUpperCase()} ${alert.market.symbol.toUpperCase()}`,
         body: `${alert.exchange.toUpperCase()} triggered with ${opts}`
       }
     });
-    // set is_alerted
-    // update db that alerted @ time, etc...
+    user.alerts = user.alerts.map(a => {
+      if (a.id === alert.id) {
+        // set isAlerted
+        alert.isAlerted = true;
+        // add alerted time
+        alert.alerted.push(new Date());
+      }
+      return alert;
+    });
+    saveUser(user);
     return true;
   } catch {
     // didn't trigger, so-- do nothing (for now)

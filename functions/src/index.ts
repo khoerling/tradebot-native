@@ -17,7 +17,8 @@ export type Alert = {
   exchange: string;
   market: any;
   timeframe: string;
-  alerted: Date;
+  alerted: Array<Date>;
+  isAlerted: boolean;
   params: any;
   created: Date;
   updated: Date;
@@ -94,4 +95,12 @@ export const getAlerts = async () => {
     userAlerts.push(...doc.get("alerts"))
   );
   return userAlerts;
+};
+
+export const saveUser = async (user: User) => {
+  admin.firestore
+    .collection("users")
+    .doc(user.id)
+    .set(user);
+  return true;
 };
