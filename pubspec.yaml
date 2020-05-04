@@ -20,7 +20,7 @@ dependencies:
   animations: ^1.0.0+5
   cloud_firestore: ^0.13.4+2
   cloud_functions: ^0.4.2+3
-  confetti: ^0.4.0
+  confetti: ^0.5.0
   device_id: ^0.2.0
   enum_to_string: ^1.0.9
   firebase_messaging: ^6.0.13

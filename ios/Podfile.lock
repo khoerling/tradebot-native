@@ -393,7 +393,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
-  cloud_firestore: 31454d48df21f3e1a900015e36143c0d46a304b7
+  cloud_firestore: 56ea1a42d4a4b3c9cf22e0e0f73140b5d07376a8
   cloud_firestore_web: 9ec3dc7f5f98de5129339802d491c1204462bfec
   cloud_functions: cc76d33c7983c9057ef1163a560734595133091c
   cloud_functions_web: ec883775f4a3b3fad943918d2cdad4fbf51cdbf0
@@ -424,8 +424,8 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: dd1aaea7140debfe4dd0683fb8ef208e527ae153
   search_choices: b50731e8c425078048f681f39c34375c58d6ce8d
-  sensors: 4bd31219c4bf9d7d4401b392a1701ee3adc1a296
-  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
 
