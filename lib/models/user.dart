@@ -25,7 +25,7 @@ class User with ChangeNotifier {
     this.email,
     this.deviceId,
     this.pushToken,
-    this.alerts,
+    this.alerts= const [],
     this.created,
     this.updated,
   });
