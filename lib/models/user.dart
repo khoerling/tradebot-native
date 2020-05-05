@@ -25,7 +25,7 @@ class User with ChangeNotifier {
     this.email,
     this.deviceId,
     this.pushToken,
-    this.alerts= const [],
+    this.alerts = const [],
     this.created,
     this.updated,
   });
@@ -100,7 +100,7 @@ class User with ChangeNotifier {
   }
 
   Future<void> create() {
-    var future = _db.collection('users').document(id).setData(toJson());
+    final future = _db.collection('users').document(id).setData(toJson());
     try {
       created = updated = DateTime.now();
       future
@@ -128,9 +128,10 @@ class User with ChangeNotifier {
 
   save() async {
     final prefs = await SharedPreferences.getInstance();
+    final future = _db.collection('users').document(id).setData(toJson()); // don't wait
     // sort alerts alerted desc, created desc
     alerts.sort((a, b) {
-      // TODO alerted sort to top
+      // TODO alerted sort most recent to top
       if (a.created.microsecondsSinceEpoch < b.created.microsecondsSinceEpoch)
         return 1;
       if (a.created.microsecondsSinceEpoch > b.created.microsecondsSinceEpoch)

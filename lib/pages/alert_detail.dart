@@ -29,9 +29,7 @@ class AlertDetail extends StatelessWidget {
                       child: Hero(
                           tag: alert.id,
                           child: CryptoIcon(
-                              height: 100.0,
-                              width: 100.0,
-                              name: base)),
+                              height: 100.0, width: 100.0, name: base)),
                     ),
                     Center(
                         child: Text("TODO Alert ${alert.name} Details Screen")),

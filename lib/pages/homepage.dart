@@ -80,8 +80,8 @@ class _HomePageState extends State<HomePage>
     return Future.wait([_pushNotifications.getToken(), initDeviceId()])
         .then((List res) async {
       try {
-        String id = res[1];
-        // fetch latest User from remote
+        final id = res[1];
+        // freshen-- fetch latest User
         _user = await User.fromFirestore(id);
         setState(() {
           _user.pushToken = res[0];
