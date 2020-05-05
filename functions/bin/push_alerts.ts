@@ -89,20 +89,19 @@ async function run(user: User, alert: Alert, cmd: string) {
     });
     user.alerts = user.alerts.map(a => {
       if (a.id === alert.id) {
-        console.log(a.id);
         // set isAlerted
-        // alert.isAlerted = true;
+        a.isAlerted = true;
         // add alerted time
-        // alert.alerted.push(new Date());
+        a.alerted.push(new Date());
       }
-      return alert;
+      return a;
     });
     saveUser(user);
     return true;
   } catch (e) {
     // didn't trigger, so-- do nothing (for now)
     // - reset is_alerted state?
-    console.log(e);
+    console.log(`error running ${alert.name}: ${e}`);
   }
   return false;
 }
