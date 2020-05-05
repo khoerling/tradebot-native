@@ -36,16 +36,21 @@ class Alert {
 
   factory Alert.fromMap(Map data) {
     if (data == null) return Alert(); // guard
-    return Alert(
-        id: data['id'],
-        name: EnumToString.fromString(AlertName.values, data['name']),
-        exchange: data['exchange'],
-        market: data['market'],
-        timeframe: data['timeframe'],
-        alerted: data['alerted'] ?? [],
-        created: User.timeFor('created', data),
-        updated: User.timeFor('updated', data),
-        params: data['params'] ?? {});
+    try {
+      return Alert(
+          id: data['id'],
+          name: EnumToString.fromString(AlertName.values, data['name']),
+          exchange: data['exchange'],
+          market: data['market'],
+          timeframe: data['timeframe'],
+          alerted: data['alerted'].toList().cast<DateTime>() ?? <DateTime>[],
+          created: User.timeFor('created', data),
+          updated: User.timeFor('updated', data),
+          params: data['params'] ?? {});
+    } catch (e) {
+      print('Error Alert.fromMap $e');
+    }
+    return Alert();
   }
 
   Alert.fromDocument(DocumentSnapshot doc)
