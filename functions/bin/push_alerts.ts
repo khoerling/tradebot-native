@@ -1,8 +1,8 @@
-import { admin, getUsers, saveUser, User, Alert } from "../src/index";
+import { admin, getUsers, saveUser, User, Alert } from "../src/helpers";
 
 const util = require("util"),
   exec = util.promisify(require("child_process").exec),
-  path = "./bin/ta/bin";
+  path = "../../mad-scientists-lab/ta/bin";
 
 // init
 // ---------
@@ -89,18 +89,20 @@ async function run(user: User, alert: Alert, cmd: string) {
     });
     user.alerts = user.alerts.map(a => {
       if (a.id === alert.id) {
+        console.log(a.id);
         // set isAlerted
-        alert.isAlerted = true;
+        // alert.isAlerted = true;
         // add alerted time
-        alert.alerted.push(new Date());
+        // alert.alerted.push(new Date());
       }
       return alert;
     });
     saveUser(user);
     return true;
-  } catch {
+  } catch (e) {
     // didn't trigger, so-- do nothing (for now)
     // - reset is_alerted state?
+    console.log(e);
   }
   return false;
 }
