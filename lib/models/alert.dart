@@ -30,6 +30,7 @@ class Alert {
       this.market,
       this.timeframe,
       this.alerted,
+      this.isAlerted,
       this.created,
       this.updated,
       this.params});
@@ -43,6 +44,7 @@ class Alert {
           exchange: data['exchange'],
           market: data['market'],
           timeframe: data['timeframe'],
+          isAlerted: data['isAlerted'] ?? false,
           alerted: data['alerted'].toList().cast<DateTime>() ?? <DateTime>[],
           created: User.timeFor('created', data),
           updated: User.timeFor('updated', data),

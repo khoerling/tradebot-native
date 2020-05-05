@@ -23,6 +23,15 @@ class _AlertList extends State<AlertList> {
   @override
   Widget build(BuildContext context) {
     _user = Provider.of<User>(context);
+    // sort alerts alerted desc, created desc
+    _user.alerts.sort((a, b) {
+        // sort by alerted first
+        if (a.isAlerted && b.isAlerted) return b.alerted.last.compareTo(a.alerted.last);
+        if (a.isAlerted && !b.isAlerted) return 1;
+        if (b.isAlerted && !a.isAlerted) return -1;
+        // sort by created
+        return b.created.compareTo(a.created);
+    });
     return SizedBox.expand(
         child: ListView.separated(
             itemCount: _user.alerts?.length ?? 0,
@@ -60,7 +69,7 @@ class _AlertList extends State<AlertList> {
                           ', ' +
                           alert.timeframe.toString() +
                           "\n" +
-                          (alert.alerted != null && alert.alerted.isNotEmpty
+                          (alert.isAlerted
                               ? "Alerted ${alert.alerted[0].millisecondsSinceEpoch}"
                               : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}")),
                       trailing: Icon(Icons.keyboard_arrow_right,
