@@ -29,8 +29,8 @@ class _AlertList extends State<AlertList> {
       // sort by alerted first
       if (a.isAlerted && b.isAlerted)
         return b.alerted.last.compareTo(a.alerted.last);
-      if (a.isAlerted && !b.isAlerted) return 1;
-      if (b.isAlerted && !a.isAlerted) return -1;
+      if (a.isAlerted && !b.isAlerted) return -1;
+      if (b.isAlerted && !a.isAlerted) return 1;
       // sort by created
       return b.created.compareTo(a.created);
     });
