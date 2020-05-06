@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
-import 'package:confetti/confetti.dart';
-import 'package:device_id/device_id.dart';
-import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
-import 'package:tradebot_native/push_notifications.dart';
+import 'package:confetti/confetti.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
 import 'package:tradebot_native/models/user.dart';
@@ -25,8 +23,6 @@ class _HomePageState extends State<HomePage>
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
-  PushNotifications _pushNotifications = PushNotifications();
-  User _user;
   Random _random = Random();
 
   @override
@@ -52,21 +48,6 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  var _hasLoaded = false;
-  @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
-    final user = Provider.of<User>(context);
-    if (user != _user) {
-      _user = user;
-      // print("USER CHANGED $_user");
-      if (!_hasLoaded) {
-        _hasLoaded = true;
-        WidgetsBinding.instance.addPostFrameCallback(initAsyncState);
-      }
-    }
-  }
-
   @override
   void dispose() {
     _faders.forEach((controller) => controller.dispose());
@@ -74,34 +55,6 @@ class _HomePageState extends State<HomePage>
     _hide.dispose();
     _controllerBottomCenter.dispose();
     super.dispose();
-  }
-
-  void initAsyncState(Duration _) async {
-    return Future.wait([_pushNotifications.getToken(), initDeviceId()])
-        .then((List res) async {
-      try {
-        final id = res[1];
-        // freshen-- fetch latest User
-        _user = await User.fromFirestore(id);
-        setState(() {
-          _user.pushToken = res[0];
-          _user.deviceId = id;
-          if (_user?.id == null) {
-            // initial user creation
-            print('+ User');
-            _user.id = _user.deviceId;
-            // save remote & locally
-            _user.create();
-          }
-        });
-      } catch (err) {
-        print('error! $err');
-      }
-    });
-  }
-
-  Future<dynamic> initDeviceId() async {
-    return await DeviceId.getID;
   }
 
   int _next(int min, int max) => min + _random.nextInt(max - min);
@@ -163,6 +116,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: Scaffold(
@@ -230,7 +184,7 @@ class _HomePageState extends State<HomePage>
                     ? null
                     : Padding(
                         padding: EdgeInsets.only(top: 20),
-                        child: _user?.alerts != null && _user.alerts.length > 0
+                        child: user?.alerts != null && user.alerts.length > 0
                             ? BottomNavigation(
                                 index: _currentIndex, onTap: selectPage)
                             : Container()),

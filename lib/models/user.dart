@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_id/device_id.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tradebot_native/push_notifications.dart';
 import 'package:tradebot_native/models/alert.dart';
 
 const storageKey = 'tradebot:user6';
@@ -53,17 +55,37 @@ class User with ChangeNotifier {
     return User();
   }
 
-  static Future<User> fromFirestore(id) async {
-    Firestore db = Firestore.instance;
-    DocumentSnapshot doc = await db.collection('users').document(id).get();
-    return User.fromMap(doc.data);
-  }
-
-  static Future<User> restore() async {
-    final prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString(storageKey);
-    print('RESTORED $user');
-    return user == null ? User() : User.fromMap(json.decode(user));
+  static Future<User> fromLocalStorage() async {
+    // return quickly with local storage
+    print('restore');
+    final PushNotifications _pushNotifications = PushNotifications();
+    final _deviceId = () async {
+      return await DeviceId.getID;
+    };
+    return Future.wait([_pushNotifications.getToken(), _deviceId()])
+        .then((List res) async {
+            User user;
+      try {
+        final id = res[1],
+            prefs = await SharedPreferences.getInstance(),
+            restored = prefs.getString(storageKey);
+        if (restored == null) {
+          // create user
+          user = User(id: id, deviceId: id);
+          print('+ User');
+        } else {
+          // restore user
+          user = User.fromMap(json.decode(restored));
+          print('Restored User: $user');
+        }
+        user.pushToken = res[0];
+        user.deviceId = id;
+        return user;
+      } catch (err) {
+        print('Error creating User: $err');
+      }
+      return user;
+    });
   }
 
   static DateTime timeFor(String key, Map data) {
@@ -73,6 +95,17 @@ class User with ChangeNotifier {
     } catch (e) {
       return epoch;
     }
+  }
+
+  restore() async {
+    DocumentSnapshot doc = await _db.collection('users').document(id).get();
+    // restore these values from snapshot
+    print('Freshen User: ${doc.data}');
+    alerts = doc.data['alerts'];
+    email = doc.data['email'];
+    created = timeFor('created', doc.data);
+    updated = timeFor('updated', doc.data);
+    notifyListeners();
   }
 
   toJson() {
@@ -128,8 +161,10 @@ class User with ChangeNotifier {
 
   save() async {
     final prefs = await SharedPreferences.getInstance();
-    final future = _db.collection('users').document(id).setData(toJson()); // don't wait
+    final future =
+        _db.collection('users').document(id).setData(toJson()); // don't wait
     prefs.setString(storageKey, toString());
     notifyListeners();
+    return future;
   }
 }

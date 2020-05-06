@@ -10,7 +10,8 @@ final withOpacity = beppuTerminalBlue.withOpacity(.97);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
   // provide cached user object to all widgets
-  var user = await User.restore();
+  var user = await User.fromLocalStorage();
+  user.restore(); // freshen if able to connect
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
