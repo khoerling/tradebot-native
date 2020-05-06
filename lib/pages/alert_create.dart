@@ -261,11 +261,11 @@ class _CreateAlert extends State<AlertCreate> {
 
   bool info(title, message) {
     const displayIconFor = 100;
-    var displayFor = Duration(milliseconds: displayIconFor) + confettiTimer;
+    final displayFor = Duration(milliseconds: displayIconFor) + confettiTimer;
     if (_isVisibleWith == null || _isVisibleWith != title) {
       // error, so--
-      EventEmitter.publish('hideBottomNavigation', displayFor);
       _isVisibleWith = title;
+      EventEmitter.publish('hideBottomNavigation', displayFor);
       Timer(
           Duration(milliseconds: displayIconFor),
           () => Flushbar(
@@ -284,7 +284,8 @@ class _CreateAlert extends State<AlertCreate> {
                     color: Colors.white.withOpacity(.85),
                   ),
                 ),
-                backgroundColor: Color.fromRGBO(38, 41, 74, 1),
+                backgroundColor:
+                    Color.fromRGBO(58, 61, 94, 1), // slightly lighter
                 forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
                 icon: Icon(
                   Icons.visibility,
@@ -307,7 +308,6 @@ class _CreateAlert extends State<AlertCreate> {
                       }
                     case FlushbarStatus.IS_HIDING:
                       {
-                        _isVisibleWith = null;
                         break;
                       }
                     case FlushbarStatus.DISMISSED:
