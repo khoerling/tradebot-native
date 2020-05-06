@@ -56,7 +56,9 @@ getUsers().then(async (users: Array<User>) => {
                 alert,
                 `${path}/guppy -x ${alert.exchange} -m ${
                   alert.market.symbol
-                } -t ${alert.timeframe} --${alert.params.guppy}`
+                } -t ${alert.timeframe} --${
+                  alert.params.guppy == "grey" ? "gray" : alert.params.guppy
+                }`
               )
             );
             break;
