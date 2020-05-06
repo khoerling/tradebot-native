@@ -23,7 +23,6 @@ class _AlertList extends State<AlertList> {
   @override
   Widget build(BuildContext context) {
     _user = Provider.of<User>(context);
-    print('render');
     if (_user.alerts.isEmpty) return Container(); // guard
     // sort alerts alerted desc, created desc
     _user.alerts.sort((a, b) {
@@ -73,7 +72,7 @@ class _AlertList extends State<AlertList> {
                           alert.timeframe.toString() +
                           "\n" +
                           (alert.isAlerted
-                              ? "Alerted ${alert.alerted[0].millisecondsSinceEpoch}"
+                              ? "Alerted ${formatTime(alert.alerted[0].millisecondsSinceEpoch)}"
                               : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}")),
                       trailing: Icon(Icons.keyboard_arrow_right,
                           color: Colors.white.withOpacity(.1), size: 30.0)));
