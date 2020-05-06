@@ -72,7 +72,7 @@ class _AlertList extends State<AlertList> {
                           alert.timeframe.toString() +
                           "\n" +
                           (alert.isAlerted
-                              ? "Alerted ${formatTime(alert.alerted[0].millisecondsSinceEpoch)}"
+                              ? "Alerted ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
                               : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}")),
                       trailing: Icon(Icons.keyboard_arrow_right,
                           color: Colors.white.withOpacity(.1), size: 30.0)));
