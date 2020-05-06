@@ -57,14 +57,13 @@ class User with ChangeNotifier {
 
   static Future<User> fromLocalStorage() async {
     // return quickly with local storage
-    print('restore');
     final PushNotifications _pushNotifications = PushNotifications();
     final _deviceId = () async {
       return await DeviceId.getID;
     };
     return Future.wait([_pushNotifications.getToken(), _deviceId()])
         .then((List res) async {
-            User user;
+      User user;
       try {
         final id = res[1],
             prefs = await SharedPreferences.getInstance(),
@@ -76,7 +75,7 @@ class User with ChangeNotifier {
         } else {
           // restore user
           user = User.fromMap(json.decode(restored));
-          print('Restored User: $user');
+          print('Restored User');
         }
         user.pushToken = res[0];
         user.deviceId = id;
@@ -100,8 +99,10 @@ class User with ChangeNotifier {
   restore() async {
     DocumentSnapshot doc = await _db.collection('users').document(id).get();
     // restore these values from snapshot
-    print('Freshen User: ${doc.data}');
-    alerts = doc.data['alerts'];
+    alerts = doc['alerts']
+        .map((alert) => Alert.fromMap(alert))
+        .toList()
+        .cast<Alert>();
     email = doc.data['email'];
     created = timeFor('created', doc.data);
     updated = timeFor('updated', doc.data);

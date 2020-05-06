@@ -45,7 +45,11 @@ class Alert {
           market: data['market'],
           timeframe: data['timeframe'],
           isAlerted: data['isAlerted'] ?? false,
-          alerted: data['alerted'].toList().cast<DateTime>() ?? <DateTime>[],
+          alerted: data['alerted']
+                  .map((a) => a.toDate())
+                  .toList()
+                  .cast<DateTime>() ??
+              <DateTime>[],
           created: User.timeFor('created', data),
           updated: User.timeFor('updated', data),
           params: data['params'] ?? {});
