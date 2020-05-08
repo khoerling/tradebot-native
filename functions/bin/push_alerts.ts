@@ -1,4 +1,5 @@
 import { admin, getUsers, saveUser, User, Alert } from "../src/helpers";
+import * as P from "bluebird";
 
 const util = require("util"),
   exec = util.promisify(require("child_process").exec),
@@ -24,50 +25,46 @@ getUsers().then(async (users: Array<User>) => {
       ) {
         switch (alert.name) {
           case "price":
-            alerts.push(
-              run(
-                user,
-                alert,
-                `${path}/price -x ${alert.exchange} -m ${
-                  alert.market.symbol
-                } -t ${alert.timeframe} ${
-                  alert.params.price_horizon == "greater" ? "-g" : "-l"
-                } ema ${alert.params.price_amount}`
-              )
-            );
+            alerts.push([
+              alert,
+              `${path}/price -x ${alert.exchange} -m ${
+                alert.market.symbol
+              } -t ${alert.timeframe} ${
+                alert.params.price_horizon == "greater" ? "-g" : "-l"
+              } ema ${alert.params.price_amount}`
+            ]);
             break;
           case "divergence":
-            alerts.push(
-              run(
-                user,
-                alert,
-                `${path}/divergence -x ${alert.exchange} -m ${
-                  alert.market.symbol
-                } -t ${alert.timeframe} ${
-                  alert.params.divergence_hidden ? "-H" : ""
-                } ${alert.params.divergence_bearish ? "-b" : ""}`
-              )
-            );
+            alerts.push([
+              alert,
+              `${path}/divergence -x ${alert.exchange} -m ${
+                alert.market.symbol
+              } -t ${alert.timeframe} ${
+                alert.params.divergence_hidden ? "-H" : ""
+              } ${alert.params.divergence_bearish ? "-b" : ""}`
+            ]);
             break;
           case "guppy":
-            alerts.push(
-              run(
-                user,
-                alert,
-                `${path}/guppy -x ${alert.exchange} -m ${
-                  alert.market.symbol
-                } -t ${alert.timeframe} --${
-                  alert.params.guppy == "grey" ? "gray" : alert.params.guppy
-                }`
-              )
-            );
+            alerts.push([
+              alert,
+              `${path}/guppy -x ${alert.exchange} -m ${
+                alert.market.symbol
+              } -t ${alert.timeframe} --${
+                alert.params.guppy == "grey" ? "gray" : alert.params.guppy
+              }`
+            ]);
             break;
         }
       }
     }
     // run all alerts for user simultaneously & wait
-    // - TODO add concurrency limit
-    await Promise.all(alerts);
+    await P.map(
+      alerts,
+      async ([alert, cmd]) => {
+        await run(user, alert as Alert, cmd as string);
+      },
+      { concurrency: 10 } // maybe can be bumped up?
+    );
   }
   setTimeout(() => process.exit(1), 100); // die with slight yield
 });
@@ -102,8 +99,8 @@ async function run(user: User, alert: Alert, cmd: string) {
     return true;
   } catch (e) {
     // didn't trigger, so-- do nothing (for now)
-    // - reset is_alerted state?
-    console.log(`error running ${alert.name}: ${e}`);
+    // - reset is_alerted state? likely not...
+    // console.log(`error running ${alert.name}: ${e}`);
   }
   return false;
 }
