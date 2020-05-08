@@ -96,6 +96,13 @@ class User with ChangeNotifier {
     }
   }
 
+  resetAlert(Alert alert) async {
+    alert
+      ..isAlerted = false
+      ..updated = DateTime.now();
+    notifyListeners();
+  }
+
   restore() async {
     DocumentSnapshot doc = await _db.collection('users').document(id).get();
     // restore these values from snapshot

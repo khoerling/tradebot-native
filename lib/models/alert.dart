@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tradebot_native/models/user.dart';
@@ -9,7 +10,7 @@ enum AlertPrice { greater, less }
 // used to enum -> string <- enum
 const enums = [AlertGuppy, AlertName, AlertPrice];
 
-class Alert {
+class Alert with ChangeNotifier {
   String id;
   String key;
   AlertName name;
@@ -119,6 +120,11 @@ class Alert {
         break;
     }
     return true;
+  }
+
+  resetAlert() {
+    isAlerted = false;
+    notifyListeners();
   }
 
   toJson() {
