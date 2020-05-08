@@ -26,10 +26,10 @@ class _AlertList extends State<AlertList> {
       // sort alerts alerted desc, created desc
       user.alerts.sort((a, b) {
         if (a.isAlerted && b.isAlerted)
-          return b.alerted.last.compareTo(a.alerted.last);
+          return a.alerted.last.compareTo(b.alerted.last);
         if (a.isAlerted && !b.isAlerted) return -1;
         if (b.isAlerted && !a.isAlerted) return 1;
-        return b.created.compareTo(a.created);
+        return a.created.compareTo(b.created);
       });
 
       return SizedBox.expand(
