@@ -76,7 +76,7 @@ class _AlertList extends State<AlertList> {
                               ', ' +
                               alert.timeframe.toString() +
                               "\n" +
-                              (alert.alerted.isNotEmpty
+                              (alert?.alerted?.isNotEmpty
                                   ? "Last Alerted ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
                                   : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}"),
                           style: TextStyle(
