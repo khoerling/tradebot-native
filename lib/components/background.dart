@@ -29,13 +29,13 @@ class _BackgroundState extends State<Background> {
       _accelerometerValues = <double>[event.x, event.y, event.z];
       if ((_accelerometerValues[0] < 0)) {
         setState(() {
-          xIc1 = xIc1 < 0 ? xIc1 + .8 : 0.0;
-          xIc2 = xIc2 > -150 ? xIc2 - .01 : -150;
-          xIc3 = xIc3 > -150 ? xIc3 - 1.2 : -150;
+          xIc1 = xIc1 < 0 ? xIc1 + .2 : 0.0;
+          xIc2 = xIc2 > -50 ? xIc2 - .01 : -50;
+          xIc3 = xIc3 > -50 ? xIc3 - 1.2 : -50;
         });
       } else {
         setState(() {
-          xIc1 = xIc1 > -150 ? xIc1 - .8 : -150;
+          xIc1 = xIc1 > -50 ? xIc1 - .2 : -50;
           xIc2 = xIc2 < 0 ? xIc2 + .02 : 0.0;
           xIc3 = xIc3 < 0 ? xIc3 + 1.4 : 0.0;
         });
@@ -49,9 +49,9 @@ class _BackgroundState extends State<Background> {
       body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment(0.8,
-                  xIc1 * 0.005), // 10% of the width, so there are ten blinds
+              begin: Alignment.bottomRight,
+              end: Alignment(0.2,
+                (xIc1 + 30) * 0.015), // 10% of the width, so there are ten blinds
               colors: [const Color(0x20FFFFFF), const Color(0x00FFFFFF)],
             ),
           ),
