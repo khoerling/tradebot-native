@@ -65,6 +65,7 @@ getUsers().then(async (users: Array<User>) => {
       },
       { concurrency: 10 } // maybe can be bumped up?
     );
+    saveUser(user);
   }
   setTimeout(() => process.exit(1), 100); // die with slight yield
 });
@@ -95,7 +96,6 @@ async function run(user: User, alert: Alert, cmd: string) {
       }
       return a;
     });
-    saveUser(user);
     return true;
   } catch (e) {
     // didn't trigger, so-- do nothing (for now)
