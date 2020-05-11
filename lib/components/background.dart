@@ -50,9 +50,11 @@ class _BackgroundState extends State<Background> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomRight,
-              end: Alignment(0.2,
-                (xIc1 + 30) * 0.015), // 10% of the width, so there are ten blinds
-              colors: [const Color(0x20FFFFFF), const Color(0x00FFFFFF)],
+              end: Alignment(
+                  0.2,
+                  (xIc1 + 30) *
+                      0.025), // 10% of the width, so there are ten blinds
+              colors: [const Color(0x30FFFFFF), const Color(0x00FFFFFF)],
             ),
           ),
           height: MediaQuery.of(context).size.height,
