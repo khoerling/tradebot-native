@@ -25,9 +25,11 @@ class _AlertList extends State<AlertList> {
       if (user.alerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
       user.alerts.sort((a, b) {
-        if (a.isAlerted && b.isAlerted)
-          return a.alerted.last.compareTo(b.alerted.last);
-        return a.created.compareTo(b.created);
+        if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
+          return b.alerted.last.compareTo(a.alerted.last);
+        if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
+        if (b.alerted.isEmpty && a.alerted.isNotEmpty) return -1;
+        return b.created.compareTo(a.created);
       });
       return SizedBox.expand(
           child: ListView.separated(
