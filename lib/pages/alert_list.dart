@@ -25,6 +25,7 @@ class _AlertList extends State<AlertList> {
       if (user.alerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
       user.alerts.sort((a, b) {
+        if (a?.alerted == null) return 1; // guard
         if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
           return b.alerted.last.compareTo(a.alerted.last);
         if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
@@ -62,7 +63,7 @@ class _AlertList extends State<AlertList> {
         child: ListTile(
             onTap: () {
               Navigator.pushNamed(context, '/alert', arguments: alert);
-              Timer(Duration(milliseconds: 10), () {
+              Timer(Duration(milliseconds: 25), () {
                 user.resetAlert(alert);
                 setState(() {}); // refresh ui
               });
@@ -70,11 +71,10 @@ class _AlertList extends State<AlertList> {
             isThreeLine: true,
             leading: Hero(tag: alert.id, child: CryptoIcon(name: base)),
             title: Text(
-                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}"),
+                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}", style: TextStyle(fontWeight: alert.isAlerted ? FontWeight.bold : FontWeight.normal)),
             subtitle: Text(
               subtitleFor(alert.name, alert.params) +
                   ', ' +
-                  index.toString() +
                   alert.timeframe.toString() +
                   "\n" +
                   (alert?.alerted?.isNotEmpty ?? false
@@ -86,7 +86,7 @@ class _AlertList extends State<AlertList> {
                       : Colors.white.withOpacity(.5)),
             ),
             trailing: Icon(Icons.keyboard_arrow_right,
-                color: Colors.white.withOpacity(alert.isAlerted ? .8 : .1),
+                color: Colors.white.withOpacity(alert.isAlerted ? 1 : .1),
                 size: 30.0)));
   }
 
@@ -94,9 +94,9 @@ class _AlertList extends State<AlertList> {
     switch (name) {
       case AlertName.guppy:
         try {
-          return "Guppy is " + EnumToString.parse(params['guppy']);
+          return "Guppy is " + EnumToString.parse(params['guppy']).toUpperCase();
         } catch (e) {
-          return "Guppy is ${params['guppy']}";
+          return "Guppy is ${params['guppy'].toUpperCase()}";
         }
         break;
       case AlertName.divergence:
