@@ -37,22 +37,32 @@ class AlertDetail extends StatelessWidget {
                             height: 100.0, width: 100.0, name: base)),
                   ),
                   Positioned(
+                      top: 40,
+                      left: 160,
+                      child: Text(
+                        "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+                        style: TextStyle(fontSize: 20),
+                      )),
+                  Positioned(
                       top: 125,
                       left: 50,
                       child: SizedBox(
                           height: 300,
                           width: 500,
-                          child: ListView.builder(
-                              itemCount: alerted?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                DateTime time = alerted[index];
-                                return ListTile(
-                                    title: Text(formatTime(
-                                        time.millisecondsSinceEpoch)),
-                                    subtitle: Text(
-                                        DateFormat('MMMM d, yyyy @ HH:mm:ss')
+                          child: alerted?.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: alerted?.length ?? 0,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    DateTime time = alerted[index];
+                                    return ListTile(
+                                        title: Text(formatTime(
+                                            time.millisecondsSinceEpoch)),
+                                        subtitle: Text(DateFormat(
+                                                'MMMM d, yyyy @ HH:mm:ss')
                                             .format(time)));
-                              }))),
+                                  })
+                              : Text('Never alerted.'))),
                 ],
               )))
     ]));

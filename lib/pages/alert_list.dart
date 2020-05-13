@@ -71,7 +71,10 @@ class _AlertList extends State<AlertList> {
             isThreeLine: true,
             leading: Hero(tag: alert.id, child: CryptoIcon(name: base)),
             title: Text(
-                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}", style: TextStyle(fontWeight: alert.isAlerted ? FontWeight.bold : FontWeight.normal)),
+                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+                style: TextStyle(
+                    fontWeight:
+                        alert.isAlerted ? FontWeight.bold : FontWeight.normal)),
             subtitle: Text(
               subtitleFor(alert.name, alert.params) +
                   ', ' +
@@ -94,7 +97,8 @@ class _AlertList extends State<AlertList> {
     switch (name) {
       case AlertName.guppy:
         try {
-          return "Guppy is " + EnumToString.parse(params['guppy']).toUpperCase();
+          return "Guppy is " +
+              EnumToString.parse(params['guppy']).toUpperCase();
         } catch (e) {
           return "Guppy is ${params['guppy'].toUpperCase()}";
         }
