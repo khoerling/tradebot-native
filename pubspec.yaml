@@ -18,6 +18,7 @@ environment:
 
 dependencies:
   animations: ^1.0.0+5
+  bezier_chart: ^1.0.17+1
   cloud_firestore: ^0.13.4+2
   cloud_functions: ^0.4.2+3
   confetti: ^0.5.0
