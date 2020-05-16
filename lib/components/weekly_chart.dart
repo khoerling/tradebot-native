@@ -59,7 +59,6 @@ class WeeklyChart extends StatelessWidget {
             ),
           ],
           config: BezierChartConfig(
-            backgroundColor: Colors.white.withOpacity(.1),
             verticalIndicatorStrokeWidth: 3.0,
             verticalIndicatorColor: Colors.white.withOpacity(.1),
             showVerticalIndicator: true,
