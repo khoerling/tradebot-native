@@ -28,23 +28,24 @@ class AlertDetail extends StatelessWidget {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                       centerTitle: true,
-                      title: Row(children: [
-                        Positioned(
-                            top: 34,
-                            left: 50,
-                            child: Text(
-                              "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
-                              style: TextStyle(fontSize: 24),
-                            )),
-                        Hero(
+                      title: Hero(
                             tag: alert.id,
                             child: CryptoIcon(
                                 height: 50.0, width: 50.0, name: base)),
-                      ])),
-                ),
+                )),
               ];
             },
             body: Column(children: [
+                Center(
+                  child: Text(
+                    "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+                    style: TextStyle(fontSize: 24),
+                )),
+                Center(
+                  child: Text(
+                    "${alerted.length} Alerts",
+                    style: TextStyle(fontSize: 18),
+                )),
               WeeklyChart(alerted: alerted),
               alerted?.isNotEmpty
                   ? ListView.builder(
