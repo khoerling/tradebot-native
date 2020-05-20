@@ -25,7 +25,7 @@ class _AlertList extends State<AlertList> {
       if (user.alerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
       user.alerts.sort((a, b) {
-        if (a?.alerted == null) return 1; // guard
+        if (a?.alerted == null || b?.alerted == null) return 1; // guard
         if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
           return b.alerted.last.compareTo(a.alerted.last);
         if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
