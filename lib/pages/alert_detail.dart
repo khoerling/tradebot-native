@@ -23,44 +23,41 @@ class AlertDetail extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  expandedHeight: 100.0,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
+                    expandedHeight: 100.0,
+                    floating: false,
+                    pinned: true,
+                    flexibleSpace: FlexibleSpaceBar(
                       centerTitle: true,
                       title: Hero(
-                            tag: alert.id,
-                            child: CryptoIcon(
-                                height: 50.0, width: 50.0, name: base)),
-                )),
+                          tag: alert.id,
+                          child: CryptoIcon(
+                              height: 50.0, width: 50.0, name: base)),
+                    )),
               ];
             },
             body: Column(children: [
-                Center(
+              Center(
                   child: Text(
-                    "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
-                    style: TextStyle(fontSize: 24),
-                )),
-                Center(
+                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+                style: TextStyle(fontSize: 24),
+              )),
+              Center(
                   child: Text(
-                    "${alerted.length} Alerts",
-                    style: TextStyle(fontSize: 18),
-                )),
+                "${alerted.length == 0 ? 'No' : alerted.length} Alerts",
+                style: TextStyle(fontSize: 18),
+              )),
               WeeklyChart(alerted: alerted),
-              alerted?.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: alerted?.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        DateTime time = alerted[index];
-                        return ListTile(
-                            title:
-                                Text(formatTime(time.millisecondsSinceEpoch)),
-                            subtitle: Text(DateFormat('MMMM d, yyyy @ HH:mm:ss')
-                                .format(time)));
-                      })
-                  : Text('Never alerted.')
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: alerted?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    DateTime time = alerted[index];
+                    return ListTile(
+                        title: Text(formatTime(time.millisecondsSinceEpoch)),
+                        subtitle: Text(DateFormat('MMMM d, yyyy @ HH:mm:ss')
+                            .format(time)));
+                  }),
             ])));
   }
 }
