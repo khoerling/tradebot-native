@@ -24,14 +24,7 @@ class _AlertList extends State<AlertList> {
     return Consumer<User>(builder: (context, user, child) {
       if (user.alerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
-      user.alerts.sort((a, b) {
-        if (a?.alerted == null || b?.alerted == null) return 1; // guard
-        if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
-          return b.alerted.last.compareTo(a.alerted.last);
-        if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
-        if (b.alerted.isEmpty && a.alerted.isNotEmpty) return -1;
-        return b.created.compareTo(a.created);
-      });
+      user.alerts.sort(_sorter);
       return SizedBox.expand(
           child: ListView.separated(
               itemCount: user.alerts?.length ?? 0,
@@ -62,12 +55,14 @@ class _AlertList extends State<AlertList> {
             color: Colors.red),
         child: ListTile(
             onTap: () {
+              if (!hasAlerted(alert)) return; // guard
               Navigator.pushNamed(context, '/alert', arguments: alert);
               Timer(Duration(milliseconds: 25), () {
                 user.resetAlert(alert);
                 setState(() {}); // refresh ui
               });
             },
+            enabled: hasAlerted(alert),
             isThreeLine: true,
             leading: Hero(tag: alert.id, child: CryptoIcon(name: base)),
             title: Text(
@@ -80,17 +75,33 @@ class _AlertList extends State<AlertList> {
                   ', ' +
                   alert.timeframe.toString() +
                   "\n" +
-                  (alert?.alerted?.isNotEmpty ?? false
-                      ? "Last Alerted ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
+                  (hasAlerted(alert)
+                      ? "Alerted ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
                       : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}"),
-              style: TextStyle(
-                  color: alert.isAlerted
-                      ? Colors.white
-                      : Colors.white.withOpacity(.5)),
+              style: hasAlerted(alert)
+                  ? TextStyle(
+                      color:
+                          Colors.white.withOpacity(alert.isAlerted ? 1 : .75))
+                  : null,
             ),
-            trailing: Icon(Icons.keyboard_arrow_right,
-                color: Colors.white.withOpacity(alert.isAlerted ? 1 : .1),
-                size: 30.0)));
+            trailing: hasAlerted(alert)
+                ? Icon(Icons.keyboard_arrow_right,
+                    color: Colors.white.withOpacity(alert.isAlerted ? 1 : .1),
+                    size: 30.0)
+                : null));
+  }
+
+  int _sorter(Alert a, Alert b) {
+    if (a?.alerted == null || b?.alerted == null) return 1; // guard
+    if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
+      return b.alerted.last.compareTo(a.alerted.last);
+    if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
+    if (b.alerted.isEmpty && a.alerted.isNotEmpty) return -1;
+    return b.created.compareTo(a.created);
+  }
+
+  hasAlerted(alert) {
+    return alert?.alerted?.isNotEmpty ?? false;
   }
 
   subtitleFor(AlertName name, params) {
