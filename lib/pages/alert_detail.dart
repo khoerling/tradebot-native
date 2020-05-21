@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:time_formatter/time_formatter.dart';
-import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/components/crypto_icon.dart';
 import 'package:tradebot_native/components/weekly_chart.dart';
@@ -15,49 +13,58 @@ class AlertDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme tt = Theme.of(context).textTheme;
     String base = alert.market['base'].toLowerCase();
     List alerted = alert.alerted.reversed.toList();
     return Scaffold(
-        body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                    expandedHeight: 100.0,
-                    floating: false,
-                    pinned: true,
-                    flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: true,
-                      title: Hero(
-                          tag: alert.id,
-                          child: CryptoIcon(
-                              height: 50.0, width: 50.0, name: base)),
-                    )),
-              ];
-            },
-            body: Column(children: [
-              Center(
-                  child: Text(
-                "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
-                style: TextStyle(fontSize: 24),
-              )),
-              Center(
-                  child: Text(
-                "${alerted.length == 0 ? 'No' : alerted.length} Alerts",
-                style: TextStyle(fontSize: 18),
-              )),
-              WeeklyChart(alerted: alerted),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: alerted?.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    DateTime time = alerted[index];
-                    return ListTile(
-                        title: Text(formatTime(time.millisecondsSinceEpoch)),
-                        subtitle: Text(DateFormat('MMMM d, yyyy @ HH:mm:ss')
-                            .format(time)));
-                  }),
-            ])));
+        body: CustomScrollView(slivers: [
+      SliverAppBar(
+          expandedHeight: 125.0,
+          floating: false,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            title: Hero(
+                tag: alert.id,
+                child: CryptoIcon(height: 45.0, width: 45.0, name: base)),
+          )),
+      SliverFixedExtentList(
+        itemExtent: 40,
+        delegate: SliverChildListDelegate([
+          Center(
+              child: Text(
+            "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+            style: tt.headline4,
+          )),
+          Center(
+              child: Text(
+            "${alerted.length == 0 ? 'No' : alerted.length} ALERTS",
+            style: tt.headline6,
+          )),
+        ]),
+      ),
+      SliverToBoxAdapter(child: WeeklyChart(alerted: alerted)),
+      SliverToBoxAdapter(
+          child: Padding(
+              padding: EdgeInsets.only(top: 60, bottom: 20),
+              child: Center(child: Text("ALERTED ON", style: tt.bodyText2)))),
+      SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            DateTime time = alerted[index];
+            return ListTile(
+                subtitle: Text(formatTime(time.millisecondsSinceEpoch)),
+                title:
+                    Text(DateFormat('MMMM d, yyyy @ HH:mm:ss').format(time)));
+          },
+          childCount: alerted?.length ?? 0,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          padding: const EdgeInsets.all(24.0),
+        ),
+      ),
+    ]));
   }
 }
