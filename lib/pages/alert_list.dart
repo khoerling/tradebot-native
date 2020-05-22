@@ -28,7 +28,7 @@ class _AlertList extends State<AlertList> {
       return SizedBox.expand(
           child: ListView.separated(
               itemCount: user.alerts?.length ?? 0,
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) => Container(),
               itemBuilder: (BuildContext context, int index) {
                 return _buildItem(user, user.alerts[index], index);
               }));
@@ -39,6 +39,16 @@ class _AlertList extends State<AlertList> {
     final base = alert.market['base'].toLowerCase();
     return Dismissible(
         key: Key(alert.id),
+        confirmDismiss: (direction) {
+          if (direction == DismissDirection.startToEnd) {
+            // reset alert
+            HapticFeedback.selectionClick();
+            user.alerts.firstWhere((a) => a.id == alert.id).resetAlert();
+            setState(() {}); // refresh ui
+            return Future.value(false);
+          }
+          return Future.value(true);
+        },
         onDismissed: (direction) {
           HapticFeedback.selectionClick();
           user.alerts = user.alerts.where((a) => a.id != alert.id).toList();
@@ -51,8 +61,8 @@ class _AlertList extends State<AlertList> {
             color: Colors.red),
         background: Container(
             alignment: Alignment.centerLeft,
-            child: Icon(Icons.delete, color: Colors.white, size: 35),
-            color: Colors.red),
+            child: Icon(Icons.check, color: Colors.white, size: 35),
+            color: Colors.blue),
         child: ListTile(
             onTap: () {
               if (!hasAlerted(alert)) return; // guard
