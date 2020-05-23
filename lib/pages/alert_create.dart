@@ -56,6 +56,22 @@ class _CreateAlert extends State<AlertCreate> {
             error: 'Try again, later!'));
   }
 
+  int _timeSorter(a, b) {
+    var splitter = RegExp(r"([\d]+)(.+)");
+    var m1 = splitter.allMatches(a), m2 = splitter.allMatches(b);
+    var n1 = m1.first.group(1), n2 = m2.first.group(1);
+    var d1 = m1.first.group(2), d2 = m2.first.group(2);
+    if (d1 == d2) {
+      // compare numerical value
+      return int.parse(n1).compareTo(int.parse(n2));
+    } else {
+      // compare duration
+      var order = ['m', 'h', 'd', 'w', 'M'];
+      var i = order.indexOf(d1), j = order.indexOf(d2);
+      return i.compareTo(j);
+    }
+  }
+
   _fetchMarkets(String exchange) async {
     if (exchange.isEmpty) return _clearParams(); // guard
     // markets
@@ -67,12 +83,14 @@ class _CreateAlert extends State<AlertCreate> {
       if (data['success']) {
         // reset & translate timeframe into an array for selection
         timeframes.clear();
-        data['timeframes'].forEach((k, v) {
-          timeframes.add([k, v]);
-        });
+        data['timeframes'].keys.toList()
+          ..sort(_timeSorter)
+          ..forEach((k) {
+            timeframes.add([k, data['timeframes'][k]]);
+          });
         setState(() {
           markets = data['markets'];
-          _alert.timeframe = timeframes?.last[0] ?? '';
+          _alert.timeframe = timeframes?.first[0] ?? '';
         });
         if (markets.length < 1)
           warn(_alert.exchange.toUpperCase(), 'No active markets!');
