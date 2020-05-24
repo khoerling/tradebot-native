@@ -207,10 +207,13 @@ class _CreateAlert extends State<AlertCreate> {
                     setState(() {
                       _alert.exchange = value;
                     });
-                    if (value != null)
+                    if (value != null) {
                       _fetchMarkets(value);
-                    else
+                      info(_alert.exchange.toUpperCase(),
+                        'Now, Select a Market!');
+                    } else {
                       _clearParams();
+                    }
                   },
                   isExpanded: true,
                 ),
