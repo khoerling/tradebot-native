@@ -92,14 +92,23 @@ class _CreateAlert extends State<AlertCreate> {
           markets = data['markets'];
           _alert.timeframe = timeframes?.first[0] ?? '';
         });
-        if (markets.length < 1)
+        if (markets.length < 1) {
           warn(_alert.exchange.toUpperCase(), 'No active markets!');
+          _resetExchange();
+        }
       } else {
         _clearParams();
         var err = data['error'];
         warn("${exchange.toUpperCase()} is Offline", 'Choose another exchange!',
             error: err.containsKey('name') ? err['name'] : ''); // guard
+        _resetExchange();
       }
+    });
+  }
+
+  _resetExchange() {
+    setState(() {
+      _alert.exchange = null;
     });
   }
 
@@ -210,7 +219,7 @@ class _CreateAlert extends State<AlertCreate> {
                     if (value != null) {
                       _fetchMarkets(value);
                       info(_alert.exchange.toUpperCase(),
-                        'Now, Select a Market!');
+                          'Now, Select a Market!');
                     } else {
                       _clearParams();
                     }
