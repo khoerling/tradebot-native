@@ -7,7 +7,7 @@ import 'package:tradebot_native/pages/homepage.dart';
 
 class Intro extends StatelessWidget {
   _close(context) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => HomePage(),
@@ -24,23 +24,26 @@ class Intro extends StatelessWidget {
       builder: (context) => IntroViewsFlutter(
         [
           PageViewModel(
-              pageColor: const Color(0xFFFFCC00),
-              iconImageAssetPath: 'assets/images/dimension_icon.png',
-              bubble: Image.asset('assets/images/dimension_icon.png'),
-              body: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    'Step 1',
-                  )),
-              title: Text(
-                'Select a Market & Exchange!',
-              ),
-              titleTextStyle:
-              TextStyle(fontFamily: 'fira', fontWeight: FontWeight.bold, fontSize: 50, color: Colors.black),
-              bodyTextStyle:
-                  TextStyle(fontFamily: 'fira', fontSize: 28, color: Colors.black),
-                  mainImage: 
-                  Icon(Icons.visibility, color: Colors.black, size: 125),),
+            pageColor: const Color(0xFFFFCC00),
+            iconImageAssetPath: 'assets/images/dimension_icon.png',
+            bubble: Image.asset('assets/images/dimension_icon.png'),
+            body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  'Step 1',
+                )),
+            title: Text(
+              'Select a Market & Exchange!',
+            ),
+            titleTextStyle: TextStyle(
+                fontFamily: 'fira',
+                fontWeight: FontWeight.bold,
+                fontSize: 50,
+                color: Colors.black),
+            bodyTextStyle: TextStyle(
+                fontFamily: 'fira', fontSize: 28, color: Colors.black),
+            mainImage: Icon(Icons.visibility, color: Colors.black, size: 125),
+          ),
           PageViewModel(
             pageColor: const Color(0xFF9E281A),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
@@ -50,12 +53,14 @@ class Intro extends StatelessWidget {
                   'Step 2',
                 )),
             title: Text('Choose the Type of Alert!'),
-            mainImage:
-            Icon(Icons.visibility, color: Colors.white, size: 125),
-            titleTextStyle:
-            TextStyle(fontFamily: 'fira', fontWeight: FontWeight.bold, fontSize: 50, color: Colors.white),
-            bodyTextStyle:
-            TextStyle(fontFamily: 'fira', fontSize: 28, color: Colors.white),
+            mainImage: Icon(Icons.visibility, color: Colors.white, size: 125),
+            titleTextStyle: TextStyle(
+                fontFamily: 'fira',
+                fontWeight: FontWeight.bold,
+                fontSize: 50,
+                color: Colors.white),
+            bodyTextStyle: TextStyle(
+                fontFamily: 'fira', fontSize: 28, color: Colors.white),
           ),
           PageViewModel(
             // pageColor: const Color(0xFF607D8B),
@@ -65,16 +70,19 @@ class Intro extends StatelessWidget {
                 onTap: () => _close(context),
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      'Step 3'
-                    ))),
-            title: InkWell(onTap: () => _close(context), child: Text('Alerts Push to Your Device in Realtime!')),
-            mainImage: InkWell(
+                    child: Text('Step 3'))),
+            title: InkWell(
                 onTap: () => _close(context),
-                child:
-                Icon(Icons.visibility, color: Colors.white, size: 125),),
-            titleTextStyle: 
-            TextStyle(fontFamily: 'fira', fontWeight: FontWeight.bold, fontSize: 50, color: Colors.white),
+                child: Text('Alerts Push in Realtime!')),
+            mainImage: InkWell(
+              onTap: () => _close(context),
+              child: Icon(Icons.visibility, color: Colors.white, size: 125),
+            ),
+            titleTextStyle: TextStyle(
+                fontFamily: 'fira',
+                fontWeight: FontWeight.bold,
+                fontSize: 50,
+                color: Colors.white),
             bodyTextStyle: TextStyle(fontFamily: 'fira', color: Colors.white),
           ),
         ],
