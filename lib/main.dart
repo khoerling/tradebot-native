@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'fira',
           brightness: Brightness.dark,
           backgroundColor: beppuTerminalBlue,
           scaffoldBackgroundColor: withOpacity,
