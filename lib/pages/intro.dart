@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:tradebot_native/pages/pages.dart';
@@ -12,11 +13,13 @@ class Intro extends StatelessWidget {
         builder: (context) => HomePage(),
       ),
     );
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values); // show
   }
 
   // final TPage page;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]); // hide
     return Builder(
       builder: (context) => IntroViewsFlutter(
         [
