@@ -3,11 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CryptoIcon extends StatelessWidget {
   const CryptoIcon(
-      {Key key, this.name, this.height, this.width, this.onPressed})
+      {Key key, this.name, this.height, this.width, this.color, this.onPressed})
       : super(key: key);
   final name;
   final height;
   final width;
+  final color;
   final onPressed;
 
   @override
@@ -16,7 +17,7 @@ class CryptoIcon extends StatelessWidget {
         assets.containsKey(name)
             ? "assets/cryptofont/SVG/$name.svg"
             : "assets/cryptofont/SVG/btc.svg",
-        color: Colors.white,
+        color: color ?? Colors.white,
         height: height ?? 50.0,
         width: width ?? 50.0);
   }
