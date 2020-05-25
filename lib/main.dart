@@ -38,7 +38,10 @@ class MyApp extends StatelessWidget {
           cardColor: beppuTerminalBlue,
           primaryColor: beppuTerminalBlue,
           accentColor: Colors.white,
-          textTheme: TextTheme(),
+          textTheme: TextTheme(
+            headline4: TextStyle(fontSize: 35.0, color: Colors.white),
+            headline5: TextStyle(fontWeight: FontWeight.w100)
+          ),
         ),
         home: Intro(),
       ),

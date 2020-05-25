@@ -218,8 +218,8 @@ class _CreateAlert extends State<AlertCreate> {
                     });
                     if (value != null) {
                       _fetchMarkets(value);
-                      info(_alert.exchange.toUpperCase(),
-                          'Now, Select a Market!');
+                      info("${_alert.exchange.toUpperCase()}!",
+                          'Now, Select a Market.');
                     } else {
                       _clearParams();
                     }

@@ -82,9 +82,10 @@ async function run(user: User, alert: Alert, cmd: string) {
         ? JSON.stringify(alert.params)
         : "no options.";
     admin.messaging().sendToDevice(user.pushToken, {
+      // TODO break out opts into human-friendly msg
       notification: {
-        title: `${alert.name.toUpperCase()} ${alert.market.symbol.toUpperCase()}`,
-        body: `${alert.exchange.toUpperCase()} triggered with ${opts}`
+        title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
+        body: `${alert.exchange.toUpperCase()} alerted with ${opts}`
       }
     });
     user.alerts = user.alerts.map(a => {

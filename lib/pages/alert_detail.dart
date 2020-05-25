@@ -33,13 +33,8 @@ class AlertDetail extends StatelessWidget {
         delegate: SliverChildListDelegate([
           Center(
               child: Text(
-            "${alert.market['quote']} ➤ ${alert.exchange.toUpperCase()}",
+            "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
             style: tt.headline4,
-          )),
-          Center(
-              child: Text(
-            "${alerted.length == 0 ? 'No' : alerted.length} ALERTS",
-            style: tt.headline6,
           )),
         ]),
       ),
@@ -47,7 +42,10 @@ class AlertDetail extends StatelessWidget {
       SliverToBoxAdapter(
           child: Padding(
               padding: EdgeInsets.only(top: 60, bottom: 20),
-              child: Center(child: Text("ALERTED ON", style: tt.bodyText2)))),
+              child: Center(
+                  child: Text(
+                      "${alerted.length == 0 ? 'No' : alerted.length} ALERT${alerted.length < 2 ? '' : 'S'}",
+                      style: tt.headline5)))),
       SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

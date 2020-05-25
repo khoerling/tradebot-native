@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 
 class WeeklyChart extends StatelessWidget {
-  const WeeklyChart({Key key, List<DateTime> this.alerted}) : super(key: key);
+  const WeeklyChart({Key key, this.alerted}) : super(key: key);
   final alerted;
   int dayOfYear(DateTime date) {
     return int.parse(DateFormat("D").format(date));
