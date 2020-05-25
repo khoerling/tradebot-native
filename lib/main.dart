@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:tradebot_native/pages/pages.dart';
+import 'package:tradebot_native/pages/intro.dart';
 import 'package:tradebot_native/models/user.dart';
 
 const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.white,
           textTheme: TextTheme(),
         ),
-        home: HomePage(),
+        home: Intro(),
       ),
     );
   }
