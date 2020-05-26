@@ -96,6 +96,12 @@ class User with ChangeNotifier {
     }
   }
 
+  List<Alert> get activeAlerts {
+    return alerts != null
+        ? alerts.where((alert) => alert?.id != null && alert?.market != null).toList()
+        : [];
+  }
+
   resetAlert(Alert alert) async {
     alert
       ..isAlerted = false

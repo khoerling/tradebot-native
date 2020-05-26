@@ -22,15 +22,15 @@ class _AlertList extends State<AlertList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(builder: (context, user, child) {
-      if (user.alerts.isEmpty) return Container(); // guard
+      if (user.activeAlerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
-      user.alerts.sort(_sorter);
+      user.activeAlerts.sort(_sorter);
       return SizedBox.expand(
           child: ListView.separated(
-              itemCount: user.alerts?.length ?? 0,
+              itemCount: user.activeAlerts?.length ?? 0,
               separatorBuilder: (context, index) => Container(),
               itemBuilder: (BuildContext context, int index) {
-                return _buildItem(user, user.alerts[index], index);
+                return _buildItem(user, user.activeAlerts[index], index);
               }));
     });
   }
@@ -43,7 +43,7 @@ class _AlertList extends State<AlertList> {
           if (direction == DismissDirection.startToEnd) {
             // reset alert
             HapticFeedback.selectionClick();
-            user.alerts.firstWhere((a) => a.id == alert.id).resetAlert();
+            user.activeAlerts.firstWhere((a) => a.id == alert.id).resetAlert();
             setState(() {}); // refresh ui
             return Future.value(false);
           }
@@ -53,7 +53,7 @@ class _AlertList extends State<AlertList> {
           HapticFeedback.selectionClick();
           user.alerts = user.alerts.where((a) => a.id != alert.id).toList();
           user.save();
-          if (user.alerts.length < 1) EventEmitter.publish('selectPage', 0);
+          if (user.activeAlerts.length < 1) EventEmitter.publish('selectPage', 0);
         },
         secondaryBackground: Container(
             alignment: Alignment.centerRight,
