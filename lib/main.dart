@@ -39,9 +39,8 @@ class MyApp extends StatelessWidget {
           primaryColor: beppuTerminalBlue,
           accentColor: Colors.white,
           textTheme: TextTheme(
-            headline4: TextStyle(fontSize: 35.0, color: Colors.white),
-            headline5: TextStyle(fontWeight: FontWeight.w100)
-          ),
+              headline4: TextStyle(fontSize: 35.0, color: Colors.white),
+              headline5: TextStyle(fontWeight: FontWeight.w100)),
         ),
         home: Intro(),
       ),

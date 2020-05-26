@@ -25,7 +25,7 @@ class Intro extends StatelessWidget {
       builder: (context) => IntroViewsFlutter(
         [
           PageViewModel(
-            pageColor: const Color(0xFFFFCCFF),
+            pageColor: const Color(0xFF0FFCFF),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             bubble: Image.asset('assets/images/dimension_icon.png'),
             bubbleBackgroundColor: const Color(0x88000000),
@@ -72,13 +72,13 @@ class Intro extends StatelessWidget {
           PageViewModel(
             // pageColor: const Color(0xFF607D8B),
             bubbleBackgroundColor: const Color(0x88000000),
-            pageColor: Color.fromRGBO(255, 21, 54, 1),
+            pageColor: Color.fromRGBO(255, 21, 254, 1),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             body: InkWell(
                 onTap: () => _close(context),
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Text('Step 3'))),
+                    child: Text('GOT IT'))),
             title: InkWell(
                 onTap: () => _close(context),
                 child: Text('Get Notified Realtime!', style: TextStyle(color: Colors.black))),
