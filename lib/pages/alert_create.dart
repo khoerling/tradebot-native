@@ -51,7 +51,7 @@ class _CreateAlert extends State<AlertCreate> {
         setState(() => exchanges = data['exchanges']);
       else
         warn('Exchanges are Down', 'Try again later!');
-    }).timeout(Duration(seconds: 4),
+    }).timeout(Duration(seconds: 5),
         onTimeout: () => warn('Internet Connection', 'Are you online?',
             error: 'Try again, later!'));
   }
