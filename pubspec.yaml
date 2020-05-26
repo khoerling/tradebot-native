@@ -14,7 +14,7 @@ description: Crypto Trading Alerts
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   animations: ^1.0.0+5
