@@ -77,6 +77,7 @@ class User with ChangeNotifier {
           user = User.fromMap(json.decode(restored));
           print('Restored User');
         }
+        user.id = id;
         user.pushToken = res[0];
         user.deviceId = id;
         return user;
