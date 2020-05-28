@@ -42,12 +42,12 @@ class User with ChangeNotifier {
           email: data['email'],
           deviceId: data['deviceId'],
           pushToken: data['pushToken'],
-          alerts: alerts != null
-              ? alerts
-                  .map((alert) => Alert.fromMap(alert))
-                  .toList()
-                  .cast<Alert>()
-              : [],
+          seenIntro: data['seenIntro'],
+          alerts: alerts
+                  ?.map((alert) => Alert.fromMap(alert))
+                  ?.toList()
+                  ?.cast<Alert>() ??
+              [],
           created: timeFor('created', data),
           updated: timeFor('updated', data));
     } catch (e) {
@@ -83,7 +83,7 @@ class User with ChangeNotifier {
         user.deviceId = id;
         return user;
       } catch (err) {
-        print('Error creating User: $err');
+        print('User.fromLocalStorage: $err');
       }
       return user;
     });
@@ -138,15 +138,21 @@ class User with ChangeNotifier {
   }
 
   toJson() {
-    return {
-      'id': id,
-      'email': email,
-      'deviceId': deviceId,
-      'pushToken': pushToken,
-      'alerts': alerts != null ? alerts.map((a) => a.toJson()).toList() : [],
-      'created': created?.toIso8601String(),
-      'updated': updated?.toIso8601String(),
-    };
+    try {
+      return {
+        'id': id,
+        'email': email,
+        'deviceId': deviceId,
+        'pushToken': pushToken,
+        'seenIntro': seenIntro,
+        'alerts': alerts?.map((a) => a.toJson())?.toList() ?? [],
+        'created': created?.toIso8601String(),
+        'updated': updated?.toIso8601String(),
+      };
+    } catch (e) {
+      print("User.toJson: $e");
+    }
+    return {};
   }
 
   toString() {
@@ -169,13 +175,13 @@ class User with ChangeNotifier {
           .then((_) => save())
           .catchError((e) => print("Error creating User: $e"));
     } catch (e) {
-      print("Exception creating User: $e");
+      print("User.create: $e");
     }
     return future;
   }
 
   Future<void> createAlert(Alert alert) {
-    print('+ alert');
+    print('+ Alert');
     if (alert == null) return Future.value(false); // guard
     alert.id = Uuid().v4();
     alert.created = alert.updated = DateTime.now();
@@ -189,11 +195,16 @@ class User with ChangeNotifier {
   }
 
   save() async {
-    final prefs = await SharedPreferences.getInstance();
-    final future =
-        _db.collection('users').document(id).setData(toJson()); // don't wait
-    prefs.setString(storageKey, toString());
-    notifyListeners();
-    return future;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final future =
+          _db.collection('users').document(id).setData(toJson()); // don't wait
+      prefs.setString(storageKey, toString());
+      notifyListeners();
+      print('USER' + toString());
+      return future;
+    } catch (e) {
+      print("User.save: $e");
+    }
   }
 }
