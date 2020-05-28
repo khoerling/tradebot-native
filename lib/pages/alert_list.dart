@@ -39,12 +39,17 @@ class _AlertList extends State<AlertList> {
     final base = alert.market['base'].toLowerCase();
     return Dismissible(
         key: Key(alert.id),
+        direction: alert.isAlerted
+            ? DismissDirection.horizontal
+            : DismissDirection.endToStart,
         confirmDismiss: (direction) {
           if (direction == DismissDirection.startToEnd) {
             // reset alert
-            HapticFeedback.selectionClick();
-            user.activeAlerts.firstWhere((a) => a.id == alert.id).resetAlert();
-            setState(() {}); // refresh ui
+            if (alert.isAlerted) {
+              HapticFeedback.selectionClick();
+              alert.resetAlert();
+              setState(() {}); // refresh ui
+            }
             return Future.value(false);
           }
           return Future.value(true);
@@ -53,7 +58,8 @@ class _AlertList extends State<AlertList> {
           HapticFeedback.selectionClick();
           user.alerts = user.alerts.where((a) => a.id != alert.id).toList();
           user.save();
-          if (user.activeAlerts.length < 1) EventEmitter.publish('selectPage', 0);
+          if (user.activeAlerts.length < 1)
+            EventEmitter.publish('selectPage', 0);
         },
         secondaryBackground: Container(
             alignment: Alignment.centerRight,
