@@ -1,4 +1,11 @@
-import { admin, getUsers, saveUser, User, Alert } from "../src/helpers";
+import {
+  admin,
+  getUsers,
+  saveUser,
+  msgFromAlert,
+  User,
+  Alert
+} from "../src/helpers";
 import * as P from "bluebird";
 
 const util = require("util"),
@@ -75,17 +82,15 @@ async function run(user: User, alert: Alert, cmd: string) {
   try {
     console.log(`Running ${alert.name}: ${cmd}`);
     await exec(cmd);
-    console.log(`ALERT ${alert.name}!`);
     // send push notification
-    const opts =
-      alert.params && Object.keys(alert.params).length
-        ? JSON.stringify(alert.params)
-        : "no options.";
+    console.log(
+      `ALERT ${alert.exchange.toUpperCase()}: ${msgFromAlert(alert)}`
+    );
     admin.messaging().sendToDevice(user.pushToken, {
-      // TODO break out opts into human-friendly msg
+      // break opts out into human-friendly msg
       notification: {
         title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
-        body: `${alert.exchange.toUpperCase()} alerted with ${opts}`
+        body: `${alert.exchange.toUpperCase()} alerted ${msgFromAlert(alert)}`
       }
     });
     user.alerts = user.alerts.map(a => {
@@ -93,7 +98,9 @@ async function run(user: User, alert: Alert, cmd: string) {
         // set isAlerted
         a.isAlerted = true;
         // add alerted time
-        a.alerted.push(new Date());
+        const now = new Date();
+        a.updated = now;
+        a.alerted.push(now);
       }
       return a;
     });

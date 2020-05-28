@@ -63,3 +63,19 @@ export const saveUser = async (user: User) => {
     .set(user);
   return true;
 };
+
+export const msgFromAlert = (alert: Alert) => {
+  switch (alert.name) {
+    case "price":
+      return `${alert.timeframe} Price ${alert.params.price_horizon} than ${
+        alert.params.price_amount
+      }.`;
+    case "divergence":
+      return `${alert.timeframe} ${
+        alert.params.divergence_hidden ? "hidden" : ""
+      } ${alert.params.divergence_bearish ? "Bearish" : "Bullish"} Divergence.`;
+    case "guppy":
+      return `${alert.timeframe} Guppy is ${alert.params.guppy.toUpperCase()}.`;
+  }
+  return `${alert.timeframe} on an Upcoming, Secret Trigger;  good luck!`;
+};
