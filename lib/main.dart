@@ -12,7 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
   // provide cached user object to all widgets
   var user = await User.fromLocalStorage();
-  user.restore(); // freshen if able to connect
+  user.restore((user) {
+    // set intro as seen
+    user.seenIntro = 1;
+  }); // freshen if able to connect
   runApp(MyApp(user: user));
 }
 
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
               headline4: TextStyle(fontSize: 35.0, color: Colors.white),
               headline5: TextStyle(fontWeight: FontWeight.w100)),
         ),
-        home: Intro(),
+        home: user.seenIntro < 1 ? Intro() : HomePage(),
       ),
     );
   }

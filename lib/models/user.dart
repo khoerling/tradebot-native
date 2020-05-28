@@ -19,6 +19,7 @@ class User with ChangeNotifier {
   List<Alert> alerts;
   DateTime created;
   DateTime updated;
+  int seenIntro;
   final Firestore _db = Firestore.instance;
 
   User({
@@ -30,10 +31,10 @@ class User with ChangeNotifier {
     this.alerts = const [],
     this.created,
     this.updated,
+    this.seenIntro = 0,
   });
 
   factory User.fromMap(Map<String, dynamic> data) {
-    if (data == null) return User(); // guard
     var alerts = data['alerts'];
     try {
       return User(
@@ -110,17 +111,20 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
-  restore() async {
+  restore(cb) async {
     DocumentSnapshot doc = await _db.collection('users').document(id).get();
     // restore these values from snapshot
     alerts = doc['alerts']
-        .map((alert) => Alert.fromMap(alert))
-        .toList()
-        .cast<Alert>();
+            ?.map((alert) => Alert.fromMap(alert))
+            ?.toList()
+            ?.cast<Alert>() ??
+        [];
     email = doc.data['email'];
     created = timeFor('created', doc.data);
     updated = timeFor('updated', doc.data);
     notifyListeners();
+    cb(this);
+    save();
   }
 
   toJson() {
