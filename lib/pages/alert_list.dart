@@ -49,6 +49,7 @@ class _AlertList extends State<AlertList> {
               HapticFeedback.selectionClick();
               alert.resetAlert();
               setState(() {}); // refresh ui
+              user.save();
             }
             return Future.value(false);
           }
@@ -56,8 +57,9 @@ class _AlertList extends State<AlertList> {
         },
         onDismissed: (direction) {
           HapticFeedback.selectionClick();
-          user.alerts = user.alerts.where((a) => a.id != alert.id).toList();
-          user.save();
+          user
+            ..alerts = user.alerts.where((a) => a.id != alert.id).toList()
+            ..save();
           if (user.activeAlerts.length < 1)
             EventEmitter.publish('selectPage', 0);
         },
