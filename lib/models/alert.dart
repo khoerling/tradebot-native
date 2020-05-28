@@ -30,15 +30,15 @@ class Alert with ChangeNotifier {
       this.exchange,
       this.market,
       this.timeframe,
-      this.alerted,
+      this.alerted = const [],
       this.isAlerted = false,
       this.created,
       this.updated,
       this.params});
 
   factory Alert.fromMap(Map data) {
-    if (data == null) return Alert(); // guard
     try {
+      var alerted = data['alerted'];
       return Alert(
           id: data['id'],
           name: EnumToString.fromString(AlertName.values, data['name']),
@@ -46,11 +46,11 @@ class Alert with ChangeNotifier {
           market: data['market'],
           timeframe: data['timeframe'],
           isAlerted: data['isAlerted'] ?? false,
-          alerted: data['alerted']
-                  .map((a) => a.toDate())
-                  .toList()
-                  .cast<DateTime>() ??
-              <DateTime>[],
+          alerted: alerted
+                  ?.map((a) => a is String ? DateTime.parse(a) : a.toDate())
+                  ?.toList()
+                  ?.cast<DateTime>() ??
+              [],
           created: User.timeFor('created', data),
           updated: User.timeFor('updated', data),
           params: data['params'] ?? {});
@@ -124,6 +124,7 @@ class Alert with ChangeNotifier {
 
   resetAlert() {
     isAlerted = false;
+    updated = DateTime.now();
     notifyListeners();
   }
 
@@ -136,7 +137,7 @@ class Alert with ChangeNotifier {
       'market': market,
       'timeframe': timeframe,
       'isAlerted': isAlerted ?? false,
-      'alerted': alerted ?? [],
+      'alerted': alerted?.map((a) => a.toIso8601String())?.toList() ?? [],
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
       'name': EnumToString.parse(name),

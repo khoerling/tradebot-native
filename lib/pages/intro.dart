@@ -81,7 +81,8 @@ class Intro extends StatelessWidget {
                     child: Text('GOT IT'))),
             title: InkWell(
                 onTap: () => _close(context),
-                child: Text('Get Notified Realtime!', style: TextStyle(color: Colors.black))),
+                child: Text('Get Notified Realtime!',
+                    style: TextStyle(color: Colors.black))),
             mainImage: InkWell(
               onTap: () => _close(context),
               child: Icon(Icons.notifications_active,

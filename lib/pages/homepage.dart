@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage>
                     ? null
                     : Padding(
                         padding: EdgeInsets.only(top: 20),
-                        child: user?.activeAlerts != null && user.activeAlerts.length > 0
+                        child: user.activeAlerts.length > 0
                             ? BottomNavigation(
                                 index: _currentIndex, onTap: selectPage)
                             : Container()),
