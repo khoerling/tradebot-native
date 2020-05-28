@@ -99,9 +99,19 @@ class User with ChangeNotifier {
   }
 
   List<Alert> get activeAlerts {
-    return alerts != null
-        ? alerts.where((alert) => alert?.id != null && alert?.market != null).toList()
-        : [];
+    alerts.sort(_sorter);
+    return alerts;
+  }
+
+  int _sorter(Alert a, Alert b) {
+    // isAlerted to top
+    if (a.isAlerted && !b.isAlerted) return -1;
+    if (!a.isAlerted && b.isAlerted) return 1;
+    // last alerted
+    int r = b.updated.compareTo(a.updated);
+    if (r != 0) return r;
+    // created by
+    return b.created.compareTo(a.created);
   }
 
   resetAlert(Alert alert) async {

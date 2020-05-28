@@ -24,7 +24,6 @@ class _AlertList extends State<AlertList> {
     return Consumer<User>(builder: (context, user, child) {
       if (user.activeAlerts.isEmpty) return Container(); // guard
       // sort alerts alerted desc, created desc
-      user.activeAlerts.sort(_sorter);
       return SizedBox.expand(
           child: ListView.separated(
               itemCount: user.activeAlerts?.length ?? 0,
@@ -107,15 +106,6 @@ class _AlertList extends State<AlertList> {
                     color: Colors.white.withOpacity(alert.isAlerted ? 1 : .1),
                     size: 30.0)
                 : null));
-  }
-
-  int _sorter(Alert a, Alert b) {
-    if (a?.alerted == null || b?.alerted == null) return 1; // guard
-    if (a.alerted.isNotEmpty && b.alerted.isNotEmpty)
-      return b.alerted.last.compareTo(a.alerted.last);
-    if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
-    if (b.alerted.isEmpty && a.alerted.isNotEmpty) return -1;
-    return b.created.compareTo(a.created);
   }
 
   hasAlerted(alert) {
