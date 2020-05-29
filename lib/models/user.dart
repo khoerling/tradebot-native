@@ -108,10 +108,13 @@ class User with ChangeNotifier {
     // isAlerted to top
     if (a.isAlerted && !b.isAlerted) return -1;
     if (!a.isAlerted && b.isAlerted) return 1;
-    // last alerted
+    // has EVER alerted
+    if (a.alerted.isEmpty && b.alerted.isNotEmpty) return 1;
+    if (a.alerted.isNotEmpty && b.alerted.isEmpty) return -1;
+    // last alerted DESC
     int r = b.updated.compareTo(a.updated);
     if (r != 0) return r;
-    // created by
+    // created by DESC
     return b.created.compareTo(a.created);
   }
 
