@@ -45,6 +45,9 @@ class _HomePageState extends State<HomePage>
         _hide.reverse();
         Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
       }));
+    // ask for push notifications
+    final user = Provider.of<User>(context, listen: false);
+    if (user.pushToken == null) user.requestPushToken;
     super.initState();
   }
 

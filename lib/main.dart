@@ -12,11 +12,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
   // provide cached user object to all widgets
   var user = await User.fromLocalStorage();
-  user.restore((user) {
-    // set intro as seen
-    user.seenIntro = 1;
-  }); // freshen if able to connect
   runApp(MyApp(user: user));
+  // freshen if able to connect
+  user.restore((user) {
+    user.seenIntro = 1;
+  });
 }
 
 class MyApp extends StatelessWidget {

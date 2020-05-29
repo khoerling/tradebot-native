@@ -57,17 +57,10 @@ class User with ChangeNotifier {
   }
 
   static Future<User> fromLocalStorage() async {
-    // return quickly with local storage
-    final PushNotifications _pushNotifications = PushNotifications();
-    final _deviceId = () async {
-      return await DeviceId.getID;
-    };
-    return Future.wait([_pushNotifications.getToken(), _deviceId()])
-        .then((List res) async {
+    return DeviceId.getID.then((id) async {
       User user;
       try {
-        final id = res[1],
-            prefs = await SharedPreferences.getInstance(),
+        final prefs = await SharedPreferences.getInstance(),
             restored = prefs.getString(storageKey);
         if (restored == null) {
           // create user
@@ -79,7 +72,6 @@ class User with ChangeNotifier {
           print('Restored User');
         }
         user.id = id;
-        user.pushToken = res[0];
         user.deviceId = id;
         return user;
       } catch (err) {
@@ -96,6 +88,15 @@ class User with ChangeNotifier {
     } catch (e) {
       return epoch;
     }
+  }
+
+  Future<String> get requestPushToken async {
+    final PushNotifications _pushNotifications = PushNotifications();
+    return _pushNotifications.getToken().then((token) {
+      pushToken = token;
+      save();
+      return token;
+    });
   }
 
   List<Alert> get activeAlerts {
@@ -115,18 +116,22 @@ class User with ChangeNotifier {
   }
 
   restore(cb) async {
-    DocumentSnapshot doc = await _db.collection('users').document(id).get();
-    // restore these values from snapshot
-    alerts = doc['alerts']
-            ?.map((alert) => Alert.fromMap(alert))
-            ?.toList()
-            ?.cast<Alert>() ??
-        [];
-    email = doc.data['email'];
-    created = timeFor('created', doc.data);
-    updated = timeFor('updated', doc.data);
-    notifyListeners();
+    try {
+      DocumentSnapshot doc = await _db.collection('users').document(id).get();
+      // restore these values from snapshot
+      alerts = doc['alerts']
+              ?.map((alert) => Alert.fromMap(alert))
+              ?.toList()
+              ?.cast<Alert>() ??
+          [];
+      email = doc.data['email'];
+      created = timeFor('created', doc.data);
+      updated = timeFor('updated', doc.data);
+    } catch (e) {
+      print("User.restore: $e");
+    }
     cb(this);
+    notifyListeners();
     save();
   }
 

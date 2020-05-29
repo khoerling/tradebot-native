@@ -170,7 +170,7 @@ class _CreateAlert extends State<AlertCreate> {
         try {
           // add alert
           _user.createAlert(_alert);
-          // success, so--
+          // success, so-- reset for next
           _alert = Alert(
               name: _alert.name,
               exchange: _alert.exchange,
