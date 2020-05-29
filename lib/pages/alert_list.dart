@@ -75,7 +75,7 @@ class _AlertList extends State<AlertList> {
               if (!hasAlerted(alert)) return; // guard
               Navigator.pushNamed(context, '/alert', arguments: alert);
               Timer(Duration(milliseconds: 25), () {
-                user.resetAlert(alert);
+                alert.resetAlert();
                 setState(() {}); // refresh ui
               });
             },

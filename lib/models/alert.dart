@@ -142,9 +142,11 @@ class Alert with ChangeNotifier {
   }
 
   resetAlert() {
-    isAlerted = false;
-    updated = DateTime.now();
-    notifyListeners();
+    if (isAlerted) {
+      isAlerted = false;
+      updated = DateTime.now();
+      notifyListeners();
+    }
   }
 
   toJson() {

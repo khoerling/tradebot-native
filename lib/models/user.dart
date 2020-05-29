@@ -114,13 +114,6 @@ class User with ChangeNotifier {
     return b.created.compareTo(a.created);
   }
 
-  resetAlert(Alert alert) async {
-    alert
-      ..isAlerted = false
-      ..updated = DateTime.now();
-    notifyListeners();
-  }
-
   restore(cb) async {
     DocumentSnapshot doc = await _db.collection('users').document(id).get();
     // restore these values from snapshot
