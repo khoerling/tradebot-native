@@ -36,6 +36,11 @@ class AlertDetail extends StatelessWidget {
             "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
             style: tt.headline4,
           )),
+          Center(
+              child: Text(
+            alert.subtitle(),
+            style: tt.headline6,
+          )),
         ]),
       ),
       SliverToBoxAdapter(child: WeeklyChart(alerted: alerted)),

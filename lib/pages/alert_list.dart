@@ -88,7 +88,7 @@ class _AlertList extends State<AlertList> {
                     fontWeight:
                         alert.isAlerted ? FontWeight.bold : FontWeight.normal)),
             subtitle: Text(
-              subtitleFor(alert.name, alert.params) +
+              alert.subtitle() +
                   ', ' +
                   alert.timeframe.toString() +
                   "\n" +
@@ -110,24 +110,5 @@ class _AlertList extends State<AlertList> {
 
   hasAlerted(alert) {
     return alert?.alerted?.isNotEmpty ?? false;
-  }
-
-  subtitleFor(AlertName name, params) {
-    switch (name) {
-      case AlertName.guppy:
-        try {
-          return "Guppy is " +
-              EnumToString.parse(params['guppy']).toUpperCase();
-        } catch (e) {
-          return "Guppy is ${params['guppy'].toUpperCase()}";
-        }
-        break;
-      case AlertName.divergence:
-        return "${params['divergence_bearish'] != null ? 'Bearish' : 'Bullish'} ${params['divergence_hidden'] != null ? 'Hidden ' : ''}Divergence";
-      case AlertName.price:
-        return "Price ${params['price_horizon'] == 'greater' ? '↑' : '↓'} ${params['price_amount']}";
-    }
-
-    return "";
   }
 }
