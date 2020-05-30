@@ -36,6 +36,7 @@ class _AlertList extends State<AlertList> {
 
   Widget _buildItem(User user, Alert alert, int index) {
     final base = alert.market['base'].toLowerCase();
+    final len = alert.alerted.length;
     return Dismissible(
         key: Key(alert.id),
         direction: alert.isAlerted
@@ -93,7 +94,7 @@ class _AlertList extends State<AlertList> {
                   alert.timeframe.toString() +
                   "\n" +
                   (hasAlerted(alert)
-                      ? "Alerted ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
+                      ? "Alerted ${len < 2 ? 'once' : len.toString() + '⨉'}, ${formatTime(alert.alerted.last.millisecondsSinceEpoch)}"
                       : "Created ${formatTime(alert.created.millisecondsSinceEpoch)}"),
               style: hasAlerted(alert)
                   ? TextStyle(
