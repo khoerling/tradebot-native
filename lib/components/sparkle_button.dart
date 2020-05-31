@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:tradebot_native/components/button.dart';
 
 class SparkleButton extends StatefulWidget {
