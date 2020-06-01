@@ -35,7 +35,7 @@ class User with ChangeNotifier {
   });
 
   factory User.fromMap(Map<String, dynamic> data) {
-    var alerts = data['alerts'];
+    final alerts = data['alerts'];
     try {
       return User(
           id: data['id'],
@@ -82,7 +82,7 @@ class User with ChangeNotifier {
   }
 
   static DateTime timeFor(String key, Map data) {
-    var epoch = DateTime.fromMicrosecondsSinceEpoch(0);
+    final epoch = DateTime.fromMicrosecondsSinceEpoch(0);
     try {
       return DateTime.parse(data[key]) ?? epoch;
     } catch (e) {
@@ -120,24 +120,23 @@ class User with ChangeNotifier {
     return b.created.compareTo(a.created);
   }
 
-  restore(cb) async {
+  stream() async {
     try {
-      DocumentSnapshot doc = await _db.collection('users').document(id).get();
-      // restore these values from snapshot
-      alerts = doc['alerts']
-              ?.map((alert) => Alert.fromMap(alert))
-              ?.toList()
-              ?.cast<Alert>() ??
-          [];
-      email = doc.data['email'];
-      created = timeFor('created', doc.data);
-      updated = timeFor('updated', doc.data);
+      // then, stream
+      _db.collection('users').document(id).snapshots().listen((doc) {
+        final user = User.fromMap(doc.data);
+        // freshen these values:
+        alerts = user.alerts;
+        email = user.email;
+        created = user.created;
+        updated = user.updated;
+        // ...and, save locally + broadcast
+        save();
+        notifyListeners();
+      });
     } catch (e) {
       print("User.restore: $e");
     }
-    cb(this);
-    notifyListeners();
-    save();
   }
 
   toJson() {
@@ -162,14 +161,6 @@ class User with ChangeNotifier {
     return json.encode(this);
   }
 
-  Stream<User> stream(String id) {
-    return _db
-        .collection('users')
-        .document(id)
-        .snapshots()
-        .map((snap) => User.fromMap(snap.data));
-  }
-
   Future<void> create() {
     final future = _db.collection('users').document(id).setData(toJson());
     try {
@@ -192,7 +183,7 @@ class User with ChangeNotifier {
       alerts += [alert];
     else
       alerts = [alert];
-    var future = _db.collection('users').document(id).setData(toJson());
+    final future = _db.collection('users').document(id).setData(toJson());
     future.then((_) => save());
     return future;
   }

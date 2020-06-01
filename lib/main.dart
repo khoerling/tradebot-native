@@ -11,12 +11,13 @@ final withOpacity = beppuTerminalBlue.withOpacity(.95);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
   // provide cached user object to all widgets
-  var user = await User.fromLocalStorage();
+  final user = await User.fromLocalStorage();
   runApp(MyApp(user: user));
   // freshen if able to connect
-  user.restore((user) {
-    user.seenIntro = 1;
-  });
+  user
+    ..seenIntro = 1
+    ..save()
+    ..stream();
 }
 
 class MyApp extends StatelessWidget {
