@@ -29,28 +29,36 @@ class AlertDetail extends StatelessWidget {
                 child: CryptoIcon(height: 45.0, width: 45.0, name: base)),
           )),
       SliverFixedExtentList(
-        itemExtent: 40,
-        delegate: SliverChildListDelegate([
-          Center(
-              child: Text(
-            "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
-            style: tt.headline4,
-          )),
-          Center(
-              child: Text(
-            alert.subtitle(),
-            style: tt.headline6,
-          )),
-        ]),
-      ),
+          itemExtent: 40,
+          delegate: SliverChildListDelegate([
+            Center(
+                child: Text(
+              "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
+              style: tt.headline4,
+            )),
+            Center(
+                child: Text(
+              alert.subtitle(),
+              style: tt.headline6,
+            )),
+          ])),
       SliverToBoxAdapter(child: WeeklyChart(alerted: alerted)),
       SliverToBoxAdapter(
           child: Padding(
-              padding: EdgeInsets.only(top: 60, bottom: 20),
+              padding: EdgeInsets.only(top: 75, bottom: 5),
               child: Center(
                   child: Text(
                       "${alerted.length == 0 ? 'No' : alerted.length} ALERT${alerted.length < 2 ? '' : 'S'}",
                       style: tt.headline5)))),
+      SliverToBoxAdapter(
+          child: Padding(
+              padding: EdgeInsets.only(bottom: 25),
+              child: Center(
+                child: Text(
+                  "Created ${formatTime(alert.created.millisecondsSinceEpoch)}",
+                  style: tt.headline6,
+                ),
+              ))),
       SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -65,7 +73,7 @@ class AlertDetail extends StatelessWidget {
       ),
       SliverToBoxAdapter(
         child: Container(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.only(bottom: 75),
         ),
       ),
     ]));
