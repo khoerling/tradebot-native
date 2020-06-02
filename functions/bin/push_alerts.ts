@@ -3,6 +3,7 @@ import {
   getUsers,
   saveUser,
   msgFromAlert,
+  titleCase,
   User,
   Alert
 } from "../src/helpers";
@@ -90,7 +91,7 @@ async function run(user: User, alert: Alert, cmd: string) {
       // break opts out into human-friendly msg
       notification: {
         title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
-        body: `${alert.exchange.toUpperCase()} alerted ${msgFromAlert(alert)}`
+        body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`
       }
     });
     user.alerts = user.alerts.map(a => {

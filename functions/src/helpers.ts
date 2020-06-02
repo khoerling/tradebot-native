@@ -67,15 +67,27 @@ export const saveUser = async (user: User) => {
 export const msgFromAlert = (alert: Alert) => {
   switch (alert.name) {
     case "price":
-      return `${alert.timeframe} Price ${alert.params.price_horizon} than ${
+      return `${alert.timeframe}, Price ${alert.params.price_horizon} than ${
         alert.params.price_amount
       }.`;
     case "divergence":
-      return `${alert.timeframe} ${
+      return `${alert.timeframe}, ${
         alert.params.divergence_hidden ? "hidden" : ""
       } ${alert.params.divergence_bearish ? "Bearish" : "Bullish"} Divergence.`;
     case "guppy":
-      return `${alert.timeframe} Guppy is ${alert.params.guppy.toUpperCase()}.`;
+      return `${
+        alert.timeframe
+      }, Guppy is ${alert.params.guppy.toUpperCase()}.`;
   }
-  return `${alert.timeframe} on an Upcoming, Secret Trigger;  good luck!`;
+  return `${alert.timeframe}, on a Secret Trigger;  good luck!`;
+};
+
+export const titleCase = (title: string) => {
+  return title
+    .toLowerCase()
+    .split(" ")
+    .map(function(word) {
+      return word.replace(word[0], word[0].toUpperCase());
+    })
+    .join(" ");
 };
