@@ -14,10 +14,7 @@ void main() async {
   final user = await User.fromLocalStorage();
   runApp(MyApp(user: user));
   // freshen if able to connect
-  user
-    ..seenIntro = 1
-    ..save()
-    ..stream();
+  user.stream();
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +45,7 @@ class MyApp extends StatelessWidget {
               headline6: TextStyle(
                   fontSize: 18, color: Colors.white.withOpacity(.85))),
         ),
-        home: user.seenIntro < 1 ? Intro() : HomePage(),
+        home: user.seenIntro < 2 ? Intro() : HomePage(),
       ),
     );
   }

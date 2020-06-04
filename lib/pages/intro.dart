@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
+import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/components/crypto_icon.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/pages/homepage.dart';
 
 class Intro extends StatelessWidget {
   _close(context) {
+    // set intro as seen
+    final user = Provider.of<User>(context, listen: false);
+    user
+      ..seenIntro = 2
+      ..save();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
