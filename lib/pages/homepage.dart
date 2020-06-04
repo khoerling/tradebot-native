@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage>
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
   Random _random = Random();
+  Timer _timer;
 
   @override
   void initState() {
@@ -42,8 +43,10 @@ class _HomePageState extends State<HomePage>
       ..add(EventEmitter.subscribe('confetti', (_) => doConfetti()))
       ..add(EventEmitter.subscribe('selectPage', (i) => selectPage(i)))
       ..add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
+        if (_timer != null) _timer.cancel();
         _hide.reverse();
-        Timer(duration + Duration(milliseconds: 1000), () => _hide.forward());
+        _timer = Timer(
+            duration + Duration(milliseconds: 1000), () => _hide.forward());
       }));
     // ask for push notifications
     final user = Provider.of<User>(context, listen: false);
