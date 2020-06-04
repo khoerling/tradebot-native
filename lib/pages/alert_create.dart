@@ -12,8 +12,6 @@ import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
 
-// TODO
-// - divergence, look for bullish or bearish + thresholds, --gap = 1 candle up to 50
 const confettiTimer = Duration(milliseconds: 2000);
 
 class AlertCreate extends StatefulWidget {
@@ -29,31 +27,49 @@ class _CreateAlert extends State<AlertCreate> {
   final db = Firestore.instance;
   User _user;
   Alert _alert = Alert(name: AlertName.price, params: {});
-  List exchanges = [], markets = [], timeframes = [];
+  List exchanges = [
+        // generated using bin/cull_exchanges
+        'acx', 'aofex',
+        'bequant', 'bibox', 'bigone',
+        'binance', 'binanceje', 'binanceus',
+        'bit2c', 'bitbank', 'bitbay',
+        'bitfinex', 'bitfinex2', 'bitflyer',
+        'bitforex', 'bithumb', 'bitkk',
+        'bitmart', 'bitmax', 'bitmex',
+        'bitso', 'bitstamp', 'bitstamp1',
+        'bittrex', 'bitz', 'bl3p',
+        'bleutrade', 'braziliex', 'btcalpha',
+        'btcbox', 'btcmarkets', 'btctradeua',
+        'bw', 'bybit', 'bytetrade',
+        'cex', 'chilebit', 'coinbase',
+        'coinbaseprime', 'coinbasepro', 'coinex',
+        'coinfalcon', 'coinfloor', 'coinmate',
+        'coinone', 'coinspot', 'crex24',
+        'deribit', 'digifinex', 'dsx',
+        'exmo', 'exx', 'foxbit',
+        'ftx', 'gateio', 'gemini',
+        'hitbtc', 'hollaex', 'huobipro',
+        'huobiru', 'ice3x', 'idex',
+        'independentreserve', 'indodax', 'itbit',
+        'kraken', 'kucoin', 'kuna',
+        'lakebtc', 'latoken', 'lbank',
+        'liquid', 'livecoin', 'luno',
+        'lykke', 'mercado', 'mixcoins',
+        'oceanex', 'okcoin', 'okex',
+        'poloniex', 'rightbtc', 'southxchange',
+        'stex', 'surbitcoin', 'therock',
+        'tidebit', 'tidex', 'timex',
+        'upbit', 'vbtc', 'whitebit',
+        'yobit', 'zaif', 'zb'
+      ],
+      markets = [],
+      timeframes = [];
   bool _isCreating = false;
   String _isVisibleWith;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchExchanges());
-  }
-
-  _fetchExchanges() async {
-    // exchanges
-    final HttpsCallable fetchExchanges =
-        CloudFunctions.instance.getHttpsCallable(
-      functionName: 'exchanges',
-    );
-    fetchExchanges.call().then((res) {
-      var data = res.data;
-      if (data['success'])
-        setState(() => exchanges = data['exchanges']);
-      else
-        warn('Exchanges are Down', 'Try again later!');
-    }).timeout(Duration(seconds: 5),
-        onTimeout: () => warn('Internet Connection', 'Are you online?',
-            error: 'Try again, later!'));
   }
 
   int _timeSorter(a, b) {
@@ -103,7 +119,9 @@ class _CreateAlert extends State<AlertCreate> {
             error: err.containsKey('name') ? err['name'] : ''); // guard
         _resetExchange();
       }
-    });
+    }).timeout(Duration(seconds: 5),
+        onTimeout: () => warn('Internet Connection', 'Are you online?',
+            error: 'Try again, later!'));
   }
 
   _resetExchange() {

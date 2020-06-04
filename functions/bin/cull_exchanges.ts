@@ -1,5 +1,4 @@
 import { ccxt, createExchange } from "../src/helpers";
-// import * as P from "bluebird";
 
 // main
 // ---------
@@ -9,7 +8,7 @@ const exchanges: Array<string> = [];
     try {
       const exchange = createExchange(e);
       const mkts = await exchange.fetchMarkets();
-      if (mkts.length) exchanges.push(e);
+      if (mkts.length > 1) exchanges.push(e);
     } catch (e) {}
   }
   console.log(exchanges);
