@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "204106465828",
+    "firebase_url": "https://tradebot-bca01.firebaseio.com",
+    "project_id": "tradebot-bca01",
+    "storage_bucket": "tradebot-bca01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204106465828:android:b0d55afe964df720b18eb1",
+        "android_client_info": {
+          "package_name": "com.dimensionsoftware.tradebotNative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204106465828-l10cua0t589m3buf1qd6l5cln9puinkg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4TmcITcQgOg1ZWnq60Khcn1ad-ngdrPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204106465828-l10cua0t589m3buf1qd6l5cln9puinkg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "204106465828-uuco25e5m8dp1t9t6fndeshcmgou2vor.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dimensionsoftware.tradebotNative"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
