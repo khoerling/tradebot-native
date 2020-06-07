@@ -32,86 +32,85 @@ class Intro extends StatelessWidget {
       builder: (context) => IntroViewsFlutter(
         [
           PageViewModel(
-            pageColor: const Color(0xFF0FFCFF),
+            pageColor: const Color(0xFF0F9FFF),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             bubble: Image.asset('assets/images/dimension_icon.png'),
-            bubbleBackgroundColor: const Color(0x88000000),
+            bubbleBackgroundColor: const Color(0xFFFFFFFF),
             body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  'Step 1',
+                  'Step 1:  Select your favorite combinations.',
                 )),
             title: Text(
-              'Select a Market & Exchange!',
+              'Exchanges & Markets',
             ),
             titleTextStyle: TextStyle(
                 fontFamily: 'fira',
                 fontWeight: FontWeight.w400,
-                letterSpacing: 3,
-                fontSize: 60,
-                color: Colors.black),
+                fontSize: 35,
+                color: Colors.white),
             bodyTextStyle: TextStyle(
-                fontFamily: 'fira', fontSize: 28, color: Colors.black),
+                fontFamily: 'fira', fontSize: 20, color: Colors.white),
             mainImage: CryptoIcon(
-                height: 145.0, width: 145.0, color: Colors.black, name: 'BTC'),
+                height: 145.0, width: 145.0, color: Colors.white, name: 'BTC'),
           ),
           PageViewModel(
-            pageColor: const Color(0xFF9EFF1A),
-            bubbleBackgroundColor: const Color(0x88000000),
+            pageColor: Color.fromRGBO(15, 205, 04, 1),
+            bubbleBackgroundColor: const Color(0xFFFFFFFF),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  'Step 2',
+                  'Step 2: Configure your parameters.',
                 )),
-            title: Text('Configure Your Alert!',
-                style: TextStyle(color: Colors.black)),
-            mainImage: Icon(Icons.visibility, color: Colors.black, size: 145),
+            title: Text('Alerts', style: TextStyle(color: Colors.white)),
+            mainImage: Icon(Icons.visibility, color: Colors.white, size: 145),
             titleTextStyle: TextStyle(
                 fontFamily: 'fira',
                 fontWeight: FontWeight.w400,
                 letterSpacing: 3,
-                fontSize: 60,
-                color: Colors.black),
+                fontSize: 35,
+                color: Colors.white),
             bodyTextStyle: TextStyle(
-                fontFamily: 'fira', fontSize: 28, color: Colors.black),
+                fontFamily: 'fira', fontSize: 20, color: Colors.white),
           ),
           PageViewModel(
-            // pageColor: const Color(0xFF607D8B),
-            bubbleBackgroundColor: const Color(0x88000000),
-            pageColor: Color.fromRGBO(255, 21, 254, 1),
+            bubbleBackgroundColor: const Color(0xFFFFFFFF),
+            pageColor: Color.fromRGBO(255, 21, 154, 1),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             body: InkWell(
                 onTap: () => _close(context),
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Text('GOT IT'))),
+                    child: Text('Step 3:  Get notified in realtime!'))),
             title: InkWell(
                 onTap: () => _close(context),
-                child: Text('Get Notified Realtime!',
-                    style: TextStyle(color: Colors.black))),
+                child: Text('Notifications',
+                    style: TextStyle(color: Colors.white))),
             mainImage: InkWell(
               onTap: () => _close(context),
               child: Icon(Icons.notifications_active,
-                  color: Colors.black, size: 145),
+                  color: Colors.white, size: 145),
             ),
             titleTextStyle: TextStyle(
                 fontFamily: 'fira',
                 fontWeight: FontWeight.w400,
                 letterSpacing: 3,
-                fontSize: 60,
-                color: Colors.black),
-            bodyTextStyle: TextStyle(fontFamily: 'fira', color: Colors.black),
+                fontSize: 35,
+                color: Colors.white),
+            bodyTextStyle: TextStyle(fontFamily: 'fira', color: Colors.white),
           ),
         ],
-        showNextButton: false,
+        showNextButton: true,
+        fullTransition: 150,
         showBackButton: false,
         showSkipButton: false,
         onTapDoneButton: () => _close(context),
-        doneText: Text(" → "),
+        doneText: Text("OK"),
+        nextText: Text(" → "),
         pageButtonTextStyles: TextStyle(
-          color: Colors.black,
-          fontSize: 28.0,
+          color: Colors.white,
+          fontSize: 20.0,
         ),
       ),
     );
