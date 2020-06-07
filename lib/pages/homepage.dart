@@ -50,7 +50,11 @@ class _HomePageState extends State<HomePage>
       }));
     // ask for push notifications
     final user = Provider.of<User>(context, listen: false);
-    if (user.pushToken == null) user.requestPushToken;
+    Timer(Duration(milliseconds: 250), () {
+      if (user.pushToken == null) user.requestPushToken;
+      // show white statusbar
+      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    });
     super.initState();
   }
 
@@ -126,79 +130,83 @@ class _HomePageState extends State<HomePage>
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: Scaffold(
-          body: Stack(children: [
-        Stack(
-          fit: StackFit.expand,
-          children: allPages.map((TPage destination) {
-            final Widget view = FadeTransition(
-              opacity: _faders[destination.index]
-                  .drive(CurveTween(curve: Curves.fastOutSlowIn)),
-              child: KeyedSubtree(
-                key: _pageKeys[destination.index],
-                child: PagesView(
-                  page: destination,
-                  onNavigation: () {
-                    if (_currentIndex == destination.index) return; // guard
-                    _hide.forward();
-                  },
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: Stack(children: [
+              Stack(
+                fit: StackFit.expand,
+                children: allPages.map((TPage destination) {
+                  final Widget view = FadeTransition(
+                    opacity: _faders[destination.index]
+                        .drive(CurveTween(curve: Curves.fastOutSlowIn)),
+                    child: KeyedSubtree(
+                      key: _pageKeys[destination.index],
+                      child: PagesView(
+                        page: destination,
+                        onNavigation: () {
+                          if (_currentIndex == destination.index)
+                            return; // guard
+                          _hide.forward();
+                        },
+                      ),
+                    ),
+                  );
+                  if (destination.index == _currentIndex) {
+                    _faders[destination.index].forward();
+                    return view;
+                  } else {
+                    _faders[destination.index].reverse();
+                    // ignore pointer events during transition
+                    if (_faders[destination.index].isAnimating) {
+                      return IgnorePointer(child: view);
+                    }
+                    return Offstage(child: view);
+                  }
+                }).toList(),
+              ),
+              Stack(children: [
+                // bottom center
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ConfettiWidget(
+                    confettiController: _controllerBottomCenter,
+                    blastDirection: -pi / 2,
+                    emissionFrequency: 0.02,
+                    numberOfParticles: 10,
+                    maxBlastForce: 400,
+                    minBlastForce: 50,
+                    shouldLoop: false,
+                    colors: [
+                      Color.fromRGBO(38, 41, 74, 1),
+                      Colors.grey,
+                      Colors.white,
+                    ],
+                    gravity: 0.5,
+                  ),
                 ),
-              ),
-            );
-            if (destination.index == _currentIndex) {
-              _faders[destination.index].forward();
-              return view;
-            } else {
-              _faders[destination.index].reverse();
-              // ignore pointer events during transition
-              if (_faders[destination.index].isAnimating) {
-                return IgnorePointer(child: view);
-              }
-              return Offstage(child: view);
-            }
-          }).toList(),
-        ),
-        Stack(children: [
-          // bottom center
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ConfettiWidget(
-              confettiController: _controllerBottomCenter,
-              blastDirection: -pi / 2,
-              emissionFrequency: 0.02,
-              numberOfParticles: 10,
-              maxBlastForce: 400,
-              minBlastForce: 50,
-              shouldLoop: false,
-              colors: [
-                Color.fromRGBO(38, 41, 74, 1),
-                Colors.grey,
-                Colors.white,
-              ],
-              gravity: 0.5,
-            ),
-          ),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: ClipRect(
-              child: SizeTransition(
-                sizeFactor: _hide
-                    .drive(CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
-                axisAlignment: -1.0,
-                child: _keyboardIsVisible()
-                    ? null
-                    : Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: user.activeAlerts.length > 0
-                            ? BottomNavigation(
-                                index: _currentIndex, onTap: selectPage)
-                            : Container()),
-              ),
-            ),
-          ),
-        ])
-      ])),
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: ClipRect(
+                    child: SizeTransition(
+                      sizeFactor: _hide.drive(
+                          CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
+                      axisAlignment: -1.0,
+                      child: _keyboardIsVisible()
+                          ? null
+                          : Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: user.activeAlerts.length > 0
+                                  ? BottomNavigation(
+                                      index: _currentIndex, onTap: selectPage)
+                                  : Container()),
+                    ),
+                  ),
+                ),
+              ])
+            ])),
+      ),
     );
   }
 }

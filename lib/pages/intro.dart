@@ -21,7 +21,6 @@ class Intro extends StatelessWidget {
         builder: (context) => HomePage(),
       ),
     );
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values); // show
   }
 
   // final TPage page;
