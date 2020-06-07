@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
               headline6: TextStyle(
                   fontSize: 18, color: Colors.white.withOpacity(.85))),
         ),
-        home: user.seenIntro < 4 ? Intro() : HomePage(),
+        home: user.seenIntro < 3 ? Intro() : HomePage(),
       ),
     );
   }

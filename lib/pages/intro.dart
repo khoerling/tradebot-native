@@ -13,7 +13,7 @@ class Intro extends StatelessWidget {
     // set intro as seen
     final user = Provider.of<User>(context, listen: false);
     user
-      ..seenIntro = 2
+      ..seenIntro = 3
       ..save();
     Navigator.pushReplacement(
       context,
