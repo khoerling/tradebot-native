@@ -27,7 +27,7 @@ class _AlertList extends State<AlertList> {
       return SizedBox.expand(
           child: ListView.separated(
               itemCount: user.activeAlerts?.length ?? 0,
-              separatorBuilder: (context, index) => Container(),
+              separatorBuilder: (context, index) => Divider(),
               itemBuilder: (BuildContext context, int index) {
                 return _buildItem(user, user.activeAlerts[index], index);
               }));
