@@ -135,7 +135,7 @@ class Alert with ChangeNotifier {
       case AlertName.divergence:
         return "${params['divergence_bearish'] != null ? 'Bearish' : 'Bullish'} ${params['divergence_hidden'] != null ? 'Hidden ' : ''}Divergence";
       case AlertName.price:
-        return "Price ${params['price_horizon'] == 'greater' ? '↑' : '↓'} ${params['price_amount']}";
+        return "Price ${params['price_horizon'] == 'greater' ? '▲' : '▼'} ${params['price_amount']}";
     }
 
     return "";

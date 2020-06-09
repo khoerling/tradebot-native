@@ -33,7 +33,7 @@ class AlertDetail extends StatelessWidget {
           delegate: SliverChildListDelegate([
             Center(
                 child: Text(
-              "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
+              "${alert.market['quote']} » ${alert.exchange.toUpperCase()}",
               style: tt.headline4,
             )),
             Center(

@@ -177,6 +177,7 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   Future<bool> _createAlert() async {
+    FocusScope.of(context).focusedChild.unfocus();
     if (_formKey.currentState.validate()) {
       if (!_alert.validate(info)) return false; // guard
       HapticFeedback.lightImpact();
@@ -217,6 +218,7 @@ class _CreateAlert extends State<AlertCreate> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SearchChoices.single(
+                  underline: Divider(height: 0),
                   items: [
                     for (var e in exchanges)
                       DropdownMenuItem(
@@ -251,6 +253,7 @@ class _CreateAlert extends State<AlertCreate> {
                         children: <Widget>[
                             Expanded(
                                 child: SearchChoices.single(
+                              underline: Divider(height: 0),
                               items: [
                                 for (var m in markets)
                                   DropdownMenuItem(
@@ -273,6 +276,7 @@ class _CreateAlert extends State<AlertCreate> {
                             Container(
                                 width: 100,
                                 child: SearchChoices.single(
+                                  underline: Divider(height: 0),
                                   items: [
                                     for (var t in timeframes)
                                       DropdownMenuItem(
@@ -333,7 +337,7 @@ class _CreateAlert extends State<AlertCreate> {
                   ),
                 ),
                 backgroundColor:
-                    Color.fromRGBO(58, 61, 94, 1), // slightly lighter
+                    Color.fromRGBO(20, 20, 20, 1), // slightly lighter
                 forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
                 icon: Icon(
                   Icons.visibility,

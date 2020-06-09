@@ -22,7 +22,6 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
     Tab(text: 'DIVERGENCE'),
     Tab(text: 'GUPPY')
   ];
-  final FocusNode focusNode = FocusNode();
   final amountFormatter =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
 
@@ -60,16 +59,18 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
             child: Column(children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.white10))),
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Colors.white.withOpacity(0.05)))),
                 child: Padding(
                     padding: EdgeInsets.only(top: 35.0),
                     child: TabBar(
                         controller: _tabController,
-                        indicatorColor: Colors.white10,
+                        // indicatorColor: Colors.white.withOpacity(.01),
                         indicator: UnderlineTabIndicator(
                             borderSide: BorderSide(
                                 color: Colors.white.withOpacity(.3),
-                                width: 1.0)),
+                                width: 0.5)),
                         onTap: (i) {
                           // so we know which alert to create
                           setAlert(i);
@@ -82,9 +83,24 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                       child: TabBarView(controller: _tabController, children: [
                         Row(children: <Widget>[
                           // greater or less radios
+                          SizedBox(
+                              width: 100,
+                              height: 220,
+                              child: TextFormField(
+                                controller: amountFormatter,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 0.0),
+                                ),
+                                onChanged: (value) => setState(() =>
+                                    params['price_amount'] =
+                                        amountFormatter.numberValue),
+                              )),
                           ...[
-                            ['Greater', AlertPrice.greater],
-                            ['Less', AlertPrice.less]
+                            ['More ▲', AlertPrice.greater],
+                            ['Less ▼', AlertPrice.less]
                           ].map((radio) => SizedBox(
                               width: 120,
                               height: 120,
@@ -96,25 +112,6 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                 onChanged: (value) => setState(
                                     () => params['price_horizon'] = value),
                               ))),
-                          SizedBox(
-                              width: 100,
-                              height: 220,
-                              child: TextFormField(
-                                controller: amountFormatter,
-                                onSaved: (_) => print('saved'),
-                                focusNode: focusNode,
-                                textInputAction: TextInputAction.done,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 0.0),
-                                ),
-                                onChanged: (value) => setState(() =>
-                                    params['price_amount'] =
-                                        amountFormatter.numberValue),
-                                onEditingComplete: () {
-                                  focusNode.unfocus();
-                                },
-                              ))
                         ]),
                         // bearish and hidden checks
                         Column(

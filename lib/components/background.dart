@@ -49,12 +49,12 @@ class _BackgroundState extends State<Background> {
       body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.bottomRight,
+              begin: Alignment.topLeft,
               end: Alignment(
                   0.2,
-                  (xIc1 + 30) *
+                  (xIc1 - 0) *
                       0.025), // 10% of the width, so there are ten blinds
-              colors: [const Color(0x30FFFFFF), const Color(0x00FFFFFF)],
+              colors: [const Color(0x05FFFFFF), const Color(0x00FFFFFF)],
             ),
           ),
           height: MediaQuery.of(context).size.height,
@@ -80,7 +80,7 @@ class _BackgroundState extends State<Background> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       colorFilter: ColorFilter.mode(
-                          Colors.white.withOpacity(0.015), BlendMode.dstATop),
+                          Colors.white.withOpacity(0.025), BlendMode.dstATop),
                       fit: BoxFit.cover,
                       image: AssetImage('assets/images/bg.png'))),
             )),

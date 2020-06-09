@@ -84,7 +84,7 @@ class _AlertList extends State<AlertList> {
             isThreeLine: true,
             leading: Hero(tag: alert.id, child: CryptoIcon(name: base)),
             title: Text(
-                "${alert.market['quote']} → ${alert.exchange.toUpperCase()}",
+                "${alert.market['quote']} » ${alert.exchange.toUpperCase()}",
                 style: TextStyle(
                     fontWeight:
                         alert.isAlerted ? FontWeight.bold : FontWeight.normal)),
