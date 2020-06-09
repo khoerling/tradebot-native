@@ -5,6 +5,8 @@ firebase-debug.log
 functions/bin/ta
 functions/firebase-debug.log
 functions/service-account.json
+android/.idea
+keys
 .flutter-plugins-dependencies
 .flutter-plugins
 .firebaserc
