@@ -16,6 +16,12 @@ class Params extends StatefulWidget {
 
 class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   String _token;
+  TabController _tabController;
+  List<Widget> tabs = [
+    Tab(text: 'PRICE'),
+    Tab(text: 'DIVERGENCE'),
+    Tab(text: 'GUPPY')
+  ];
   final FocusNode focusNode = FocusNode();
   final amountFormatter =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
@@ -23,6 +29,11 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: tabs.length)
+      ..addListener(() {
+        // update active alert
+        setAlert(_tabController.index);
+      });
     _token = EventEmitter.subscribe(
         'didClearParams', (_) => amountFormatter.updateValue(0.0));
   }
@@ -30,16 +41,18 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     EventEmitter.unsubscribe(_token);
+    _tabController.dispose();
     super.dispose();
+  }
+
+  setAlert(index) {
+    widget.alert.name = AlertName.values[index];
+    _tabController.animateTo(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    var tabHeader = (String name) => Padding(
-            padding: EdgeInsets.only(top: 25, bottom: 15),
-            child: Text(name.toUpperCase(), style: TextStyle(fontSize: 12))),
-        alert = widget.alert,
-        params = alert.params;
+    var alert = widget.alert, params = alert.params;
     return DefaultTabController(
         length: 3,
         child: SizedBox(
@@ -51,6 +64,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                 child: Padding(
                     padding: EdgeInsets.only(top: 35.0),
                     child: TabBar(
+                        controller: _tabController,
                         indicatorColor: Colors.white10,
                         indicator: UnderlineTabIndicator(
                             borderSide: BorderSide(
@@ -58,18 +72,14 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                 width: 1.0)),
                         onTap: (i) {
                           // so we know which alert to create
-                          alert.name = AlertName.values[i];
+                          setAlert(i);
                         },
-                        tabs: [
-                          tabHeader('Price'),
-                          tabHeader('Divergence'),
-                          tabHeader('Guppy'),
-                        ])),
+                        tabs: tabs ?? [])),
               ),
               Expanded(
                   child: Padding(
                       padding: EdgeInsets.only(top: 15.0),
-                      child: TabBarView(children: [
+                      child: TabBarView(controller: _tabController, children: [
                         Row(children: <Widget>[
                           // greater or less radios
                           ...[
