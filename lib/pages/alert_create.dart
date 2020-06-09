@@ -177,7 +177,13 @@ class _CreateAlert extends State<AlertCreate> {
   }
 
   Future<bool> _createAlert() async {
-    FocusScope.of(context).focusedChild.unfocus();
+    // immediately unfocus keyboard
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus &&
+      currentFocus.focusedChild != null) {
+      currentFocus.focusedChild.unfocus();
+    }
+    // validate alert
     if (_formKey.currentState.validate()) {
       if (!_alert.validate(info)) return false; // guard
       HapticFeedback.lightImpact();
