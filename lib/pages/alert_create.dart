@@ -12,7 +12,7 @@ import 'package:tradebot_native/components/params.dart';
 import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
 
-const confettiTimer = Duration(milliseconds: 2000);
+const confettiTimer = Duration(milliseconds: 2000), grid = 32.0;
 
 class AlertCreate extends StatefulWidget {
   const AlertCreate({
@@ -176,11 +176,16 @@ class _CreateAlert extends State<AlertCreate> {
     if (user != _user) _user = user;
   }
 
+  shouldCreateAlert() {
+    return _alert.exchange != null &&
+        _alert.market != null &&
+        _alert.timeframe != null;
+  }
+
   Future<bool> _createAlert() async {
     // immediately unfocus keyboard
     FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus &&
-      currentFocus.focusedChild != null) {
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
       currentFocus.focusedChild.unfocus();
     }
     // validate alert
@@ -217,13 +222,13 @@ class _CreateAlert extends State<AlertCreate> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SearchChoices.single(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(left: grid, right: grid),
+                child: SearchChoices.single(
                   underline: Divider(height: 0),
                   items: [
                     for (var e in exchanges)
@@ -251,8 +256,10 @@ class _CreateAlert extends State<AlertCreate> {
                     }
                   },
                   isExpanded: true,
-                ),
-                _alert.exchange != null
+                )),
+            Padding(
+                padding: const EdgeInsets.only(left: grid, right: grid),
+                child: _alert.exchange != null
                     ? Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -303,17 +310,26 @@ class _CreateAlert extends State<AlertCreate> {
                                   isExpanded: true,
                                 ))
                           ])
-                    : Container(),
-                _alert.exchange != null && _alert.market != null
-                    ? Params(alert: _alert)
-                    : Container(),
-                Padding(
-                    padding: EdgeInsets.only(top: 75.0),
-                    child: SparkleButton(
-                      onPressed: _createAlert,
-                      title: 'CREATE ALERT',
-                    )),
-              ])),
+                    : Container()),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, top: grid),
+              child: _alert.exchange != null && _alert.market != null
+                  ? Params(alert: _alert)
+                  : Container(),
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 75.0),
+                child: SparkleButton(
+                  onPressed: _createAlert,
+                  style: shouldCreateAlert()
+                      ? TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontWeight: FontWeight.bold)
+                      : TextStyle(
+                          color: Colors.white.withOpacity(.3),
+                          fontWeight: FontWeight.bold),
+                )),
+          ]),
     );
   }
 

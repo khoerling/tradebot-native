@@ -102,9 +102,9 @@ class Alert with ChangeNotifier {
           var amount = params['price_amount'],
               horizon = params['price_horizon'];
           if (test(amount == null || amount == 0.0, 'Enter a Price!',
-              'Greater or Less than what price?')) return false;
+              'More or Less than what price?')) return false;
           if (test(horizon == null, 'Select a Price Horizon!',
-              "Greater or Less than $amount?")) return false;
+              "More or Less than $amount?")) return false;
         }
         break;
       case AlertName.guppy:

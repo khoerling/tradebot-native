@@ -5,10 +5,11 @@ import 'package:flutter/rendering.dart';
 import 'package:tradebot_native/components/button.dart';
 
 class SparkleButton extends StatefulWidget {
-  SparkleButton({Key key, @required this.onPressed, this.title})
+  SparkleButton({Key key, @required this.onPressed, this.title, this.style})
       : super(key: key);
   final String title;
   final Function onPressed;
+  final TextStyle style;
 
   @override
   _SparkleButtonState createState() => _SparkleButtonState();
@@ -195,7 +196,7 @@ class _SparkleButtonState extends State<SparkleButton>
           child: Text(
             "CREATE ALERT",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: widget.style,
           )),
     );
   }
@@ -204,7 +205,7 @@ class _SparkleButtonState extends State<SparkleButton>
   Widget build(BuildContext context) {
     return Stack(children: [
       Padding(
-          padding: EdgeInsets.only(right: 20.0),
+          padding: EdgeInsets.only(left: 15, right: 15.0),
           child: Stack(
             alignment: FractionalOffset.center,
             overflow: Overflow.visible,
