@@ -4,11 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import 'package:tradebot_native/pages/intro.dart';
 import 'package:tradebot_native/models/user.dart';
-
-// const beppuTerminalBlue = Color.fromRGBO(18, 21, 54, 1);
-const backgroundColor = Color.fromRGBO(0, 0, 0, 1),
-    themeColor = Color.fromRGBO(157, 67, 253, 1);
-final withOpacity = backgroundColor.withOpacity(.95);
+import 'custom_color_scheme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // mandatory when awaiting on main
@@ -25,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     return MultiProvider(
         providers: [ChangeNotifierProvider<User>(create: (context) => user)],
         child: GestureDetector(
@@ -41,15 +38,15 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               fontFamily: 'fira',
               brightness: Brightness.dark,
-              backgroundColor: backgroundColor,
-              scaffoldBackgroundColor: withOpacity,
+              backgroundColor: theme.backgroundColor,
+              scaffoldBackgroundColor: theme.backgroundColor.withOpacity(.95),
               errorColor: Colors.white,
-              hintColor: themeColor,
+              hintColor: theme.themeColor,
               toggleableActiveColor: Colors.white,
               highlightColor: Colors.white.withOpacity(.1),
-              cardColor: backgroundColor,
-              primaryColor: backgroundColor,
-              accentColor: themeColor,
+              cardColor: theme.backgroundColor,
+              primaryColor: theme.backgroundColor,
+              accentColor: theme.themeColor,
               textTheme: TextTheme(
                   headline4: TextStyle(fontSize: 35.0, color: Colors.white),
                   headline5: TextStyle(fontWeight: FontWeight.w100),
