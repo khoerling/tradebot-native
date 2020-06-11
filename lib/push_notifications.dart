@@ -1,4 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 
 class PushNotifications {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -7,6 +9,20 @@ class PushNotifications {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        try {
+          var msg = message["aps"]["alert"];
+          if (msg != null) {
+            // emit push notification received
+            HapticFeedback.lightImpact();
+            EventEmitter.publish("showInfo", {
+              "title": msg["title"].toString(),
+              "body": msg["body"].toString()
+            });
+          }
+        } catch (e) {
+          // error
+          print("Error onMessage: $e");
+        }
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");

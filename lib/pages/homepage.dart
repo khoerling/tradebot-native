@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage>
     // ask for push notifications
     final user = Provider.of<User>(context, listen: false);
     Timer(Duration(milliseconds: 250), () {
-      if (user.pushToken == null) user.requestPushToken;
+      // always setup messaging
+      user.requestPushToken;
       // show white statusbar
       SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     });

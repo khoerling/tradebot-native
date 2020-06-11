@@ -25,6 +25,7 @@ class AlertCreate extends StatefulWidget {
 class _CreateAlert extends State<AlertCreate> {
   final _formKey = GlobalKey<FormState>();
   final db = Firestore.instance;
+  String _token;
   User _user;
   Alert _alert = Alert(name: AlertName.price, params: {});
   List exchanges = [
@@ -70,6 +71,16 @@ class _CreateAlert extends State<AlertCreate> {
   @override
   void initState() {
     super.initState();
+    _token = EventEmitter.subscribe("showInfo", (msg) {
+      // render info dialog on emit
+      info(msg["title"], msg["body"]);
+    });
+  }
+
+  @override
+  void dispose() {
+    EventEmitter.unsubscribe(_token);
+    super.dispose();
   }
 
   int _timeSorter(a, b) {
