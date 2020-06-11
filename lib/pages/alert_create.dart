@@ -318,7 +318,7 @@ class _CreateAlert extends State<AlertCreate> {
                   : Container(),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 75.0),
+                padding: EdgeInsets.only(top: 50.0),
                 child: SparkleButton(
                   onPressed: _createAlert,
                   style: shouldCreateAlert()
@@ -348,7 +348,7 @@ class _CreateAlert extends State<AlertCreate> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
-                    color: Colors.white.withOpacity(.95),
+                    color: Colors.white,
                   ),
                 ),
                 messageText: Text(
@@ -358,8 +358,7 @@ class _CreateAlert extends State<AlertCreate> {
                     color: Colors.white.withOpacity(.85),
                   ),
                 ),
-                backgroundColor:
-                    Color.fromRGBO(20, 20, 20, 1), // slightly lighter
+                backgroundColor: Theme.of(context).accentColor,
                 forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
                 icon: Icon(
                   Icons.visibility,

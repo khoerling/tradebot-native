@@ -82,7 +82,9 @@ class _AlertList extends State<AlertList> {
             },
             enabled: hasAlerted(alert),
             isThreeLine: true,
-            leading: Hero(tag: alert.id, child: CryptoIcon(name: base)),
+            leading: Hero(
+                tag: alert.id,
+                child: CryptoIcon(color: Colors.white, name: base)),
             title: Text(
                 "${alert.market['quote']} » ${alert.exchange.toUpperCase()}",
                 style: TextStyle(
@@ -104,7 +106,9 @@ class _AlertList extends State<AlertList> {
             ),
             trailing: hasAlerted(alert)
                 ? Icon(Icons.keyboard_arrow_right,
-                    color: Colors.white.withOpacity(alert.isAlerted ? 1 : .1),
+                    color: alert.isAlerted
+                        ? Theme.of(context).accentColor
+                        : Colors.white.withOpacity(.2),
                     size: 30.0)
                 : null));
   }

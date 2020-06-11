@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage>
                     minBlastForce: 50,
                     shouldLoop: false,
                     colors: [
-                      Color.fromRGBO(38, 41, 74, 1),
+                      Theme.of(context).accentColor,
                       Colors.grey,
                       Colors.white,
                     ],

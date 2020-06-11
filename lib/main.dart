@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: theme.backgroundColor.withOpacity(.95),
               errorColor: Colors.white,
               hintColor: theme.themeColor,
-              toggleableActiveColor: Colors.white,
+              toggleableActiveColor: theme.themeColor,
               highlightColor: Colors.white.withOpacity(.1),
               cardColor: theme.backgroundColor,
               primaryColor: theme.backgroundColor,

@@ -53,7 +53,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     var alert = widget.alert, params = alert.params;
     return Card(
-        color: Colors.white.withOpacity(.02),
+        color: Colors.white.withOpacity(.025),
         child: DefaultTabController(
             length: 3,
             child: SizedBox(
@@ -71,7 +71,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                             // indicatorColor: Colors.white.withOpacity(.01),
                             indicator: UnderlineTabIndicator(
                                 borderSide: BorderSide(
-                                    color: Colors.white.withOpacity(.3),
+                                    color: Theme.of(context).accentColor,
                                     width: 0.5)),
                             onTap: (i) {
                               // so we know which alert to create
@@ -97,9 +97,9 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                       labelText: "Amount",
                                       labelStyle: TextStyle(
                                           color: const Color(0xFF424242)),
-                                      // border: InputBorder.none,
+                                      border: InputBorder.none,
                                     ),
-                                    style: TextStyle(fontSize: 17),
+                                    style: TextStyle(fontSize: 18),
                                     textInputAction: TextInputAction.done,
                                     onChanged: (value) => setState(() =>
                                         params['price_amount'] =
