@@ -13,7 +13,7 @@ class Intro extends StatelessWidget {
     // set intro as seen
     final user = Provider.of<User>(context, listen: false);
     user
-      ..seenIntro = 3
+      ..seenIntro = 4
       ..save();
     Navigator.pushReplacement(
       context,
@@ -31,7 +31,8 @@ class Intro extends StatelessWidget {
       builder: (context) => IntroViewsFlutter(
         [
           PageViewModel(
-            pageColor: const Color(0xFF0F9FFF),
+            // pageColor: const Color(0xFF0F9FFF),
+            pageColor: Theme.of(context).accentColor,
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             bubble: Image.asset('assets/images/dimension_icon.png'),
             bubbleBackgroundColor: const Color(0xFFFFFFFF),
@@ -54,7 +55,7 @@ class Intro extends StatelessWidget {
                 height: 145.0, width: 145.0, color: Colors.white, name: 'BTC'),
           ),
           PageViewModel(
-            pageColor: Color.fromRGBO(15, 205, 04, 1),
+            pageColor: Colors.black,
             bubbleBackgroundColor: const Color(0xFFFFFFFF),
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             body: Padding(
@@ -75,7 +76,7 @@ class Intro extends StatelessWidget {
           ),
           PageViewModel(
             bubbleBackgroundColor: const Color(0xFFFFFFFF),
-            pageColor: Color.fromRGBO(255, 21, 154, 1),
+            pageColor: Theme.of(context).accentColor,
             iconImageAssetPath: 'assets/images/dimension_icon.png',
             body: InkWell(
                 onTap: () => _close(context),
