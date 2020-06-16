@@ -258,6 +258,7 @@ class _CreateAlert extends State<AlertCreate> {
                   onChanged: (value) {
                     setState(() {
                       _alert.exchange = value;
+                      _alert.market = null;
                     });
                     if (value != null) {
                       _fetchMarkets(value);
