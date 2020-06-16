@@ -240,6 +240,7 @@ class _CreateAlert extends State<AlertCreate> {
             Padding(
                 padding: const EdgeInsets.only(left: grid, right: grid),
                 child: SearchChoices.single(
+                  displayClearIcon: false,
                   underline: Divider(height: 0),
                   items: [
                     for (var e in exchanges)
@@ -277,6 +278,7 @@ class _CreateAlert extends State<AlertCreate> {
                         children: <Widget>[
                             Expanded(
                                 child: SearchChoices.single(
+                              displayClearIcon: false,
                               underline: Divider(height: 0),
                               items: [
                                 for (var m in markets)
