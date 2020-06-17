@@ -53,7 +53,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     var alert = widget.alert, params = alert.params;
     return Card(
-        color: Colors.white.withOpacity(.025),
+        color: Colors.black.withOpacity(.1),
         child: DefaultTabController(
             length: 3,
             child: SizedBox(
@@ -88,7 +88,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                             Row(children: <Widget>[
                               // greater or less radios
                               SizedBox(
-                                  width: 100,
+                                  width: 65,
                                   height: 220,
                                   child: TextFormField(
                                     controller: amountFormatter,
@@ -136,7 +136,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
                                     ],
                                     [
                                       'Hidden',
-                                      'Search Hidden ∇',
+                                      'Search Hidden',
                                       'divergence_hidden'
                                     ]
                                   ].map(

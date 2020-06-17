@@ -332,7 +332,7 @@ class _CreateAlert extends State<AlertCreate> {
                   : Container(),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 50.0),
+                padding: EdgeInsets.only(left: 15, right: 15, top: 50.0),
                 child: SparkleButton(
                   onPressed: _createAlert,
                   style: shouldCreateAlert()
@@ -340,7 +340,7 @@ class _CreateAlert extends State<AlertCreate> {
                           color: Theme.of(context).accentColor,
                           fontWeight: FontWeight.bold)
                       : TextStyle(
-                          color: Colors.white.withOpacity(.3),
+                          color: Colors.white.withOpacity(.2),
                           fontWeight: FontWeight.bold),
                 )),
           ]),

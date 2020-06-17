@@ -80,7 +80,7 @@ class _BackgroundState extends State<Background> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       colorFilter: ColorFilter.mode(
-                          Colors.white.withOpacity(0.025), BlendMode.dstATop),
+                          Colors.white.withOpacity(0.04), BlendMode.dstATop),
                       fit: BoxFit.cover,
                       image: AssetImage('assets/images/bg.png'))),
             )),
