@@ -250,6 +250,7 @@ class _CreateAlert extends State<AlertCreate> {
                   searchHint: "Select Exchange",
                   onClear: () => setState(() => _alert.market = null),
                   onChanged: (value) {
+                    HapticFeedback.lightImpact();
                     setState(() {
                       _alert.exchange = value;
                       _alert.market = null;
@@ -289,6 +290,7 @@ class _CreateAlert extends State<AlertCreate> {
                               onClear: _clearParams,
                               searchHint: "Select Market",
                               onChanged: (value) {
+                                HapticFeedback.lightImpact();
                                 setState(() => _alert.market = value);
                                 _alert.market = value;
                               },
@@ -312,6 +314,7 @@ class _CreateAlert extends State<AlertCreate> {
                                   searchHint: "Select Candle Timeframe",
                                   displayClearIcon: false,
                                   onChanged: (value) {
+                                    HapticFeedback.lightImpact();
                                     setState(() => _alert.timeframe = value);
                                     _alert.timeframe = value;
                                   },

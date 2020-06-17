@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage>
   bool _keyboardIsVisible() {
     // immediately show & hide based on keyboard position
     bool isVisible = !(MediaQuery.of(context).viewInsets.bottom == 0.0);
-    if (!isVisible) HapticFeedback.lightImpact();
     return isVisible;
   }
 

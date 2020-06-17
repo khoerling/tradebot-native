@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +55,7 @@ class _AlertList extends State<AlertList> {
           return Future.value(true);
         },
         onDismissed: (direction) {
-          HapticFeedback.selectionClick();
+          HapticFeedback.lightImpact();
           user
             ..alerts = user.alerts.where((a) => a.id != alert.id).toList()
             ..save();
