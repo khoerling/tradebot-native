@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:async';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage>
   List<String> _emitterTokens = [];
   Random _random = Random();
   Timer _timer;
+  String _isVisibleWith;
 
   @override
   void initState() {
@@ -40,6 +42,8 @@ class _HomePageState extends State<HomePage>
     _hide =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _emitterTokens
+      ..add(EventEmitter.subscribe(
+          'showInfo', (msg) => info(msg["title"], msg["body"])))
       ..add(EventEmitter.subscribe('confetti', (_) => doConfetti()))
       ..add(EventEmitter.subscribe('selectPage', (i) => selectPage(i)))
       ..add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
@@ -67,8 +71,6 @@ class _HomePageState extends State<HomePage>
     _controllerBottomCenter.dispose();
     super.dispose();
   }
-
-  int _next(int min, int max) => min + _random.nextInt(max - min);
 
   bool _keyboardIsVisible() {
     // immediately show & hide based on keyboard position
@@ -99,21 +101,10 @@ class _HomePageState extends State<HomePage>
   }
 
   doConfetti() {
-    HapticFeedback.selectionClick();
     _hide.reverse();
     _controllerBottomCenter.play();
-    Future.delayed(Duration(milliseconds: 500), () {
-      _faders[_currentIndex].reverse();
-      HapticFeedback.lightImpact();
-    });
-    Timer.periodic(Duration(milliseconds: _next(25, 150)), (Timer timer) {
-      HapticFeedback.heavyImpact();
-      Timer(Duration(milliseconds: _next(100, 400)), () {
-        HapticFeedback.lightImpact();
-        timer.cancel();
-      });
-    });
-    Future.delayed(Duration(milliseconds: 2250), () {
+    _faders[_currentIndex].reverse();
+    Future.delayed(Duration(milliseconds: 3000), () {
       _faders[_currentIndex].forward();
       _hide.forward();
     });
@@ -209,5 +200,67 @@ class _HomePageState extends State<HomePage>
             ])),
       ),
     );
+  }
+
+  bool info(title, message) {
+    const displayIconFor = 100;
+    final displayFor = Duration(milliseconds: displayIconFor) + confettiTimer;
+    if (_isVisibleWith == null || _isVisibleWith != title) {
+      // error, so--
+      _isVisibleWith = title;
+      EventEmitter.publish('hideBottomNavigation', displayFor);
+      Timer(
+          Duration(milliseconds: displayIconFor),
+          () => Flushbar(
+                titleText: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  ),
+                ),
+                messageText: Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.white.withOpacity(.85),
+                  ),
+                ),
+                backgroundColor: Theme.of(context).accentColor,
+                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+                icon: Icon(
+                  Icons.visibility,
+                  color: Colors.white,
+                ),
+                flushbarPosition: FlushbarPosition.BOTTOM,
+                flushbarStyle: FlushbarStyle.GROUNDED,
+                duration: displayFor,
+                isDismissible: true,
+              )
+                ..onStatusChanged = (FlushbarStatus status) {
+                  switch (status) {
+                    case FlushbarStatus.SHOWING:
+                      {
+                        break;
+                      }
+                    case FlushbarStatus.IS_APPEARING:
+                      {
+                        break;
+                      }
+                    case FlushbarStatus.IS_HIDING:
+                      {
+                        break;
+                      }
+                    case FlushbarStatus.DISMISSED:
+                      {
+                        _isVisibleWith = null;
+                        break;
+                      }
+                  }
+                }
+                ..show(context));
+    }
+    return true;
   }
 }

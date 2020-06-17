@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
@@ -66,15 +65,10 @@ class _CreateAlert extends State<AlertCreate> {
       markets = [],
       timeframes = [];
   bool _isCreating = false;
-  String _isVisibleWith;
 
   @override
   void initState() {
     super.initState();
-    _token = EventEmitter.subscribe("showInfo", (msg) {
-      // render info dialog on emit
-      info(msg["title"], msg["body"]);
-    });
   }
 
   @override
@@ -347,65 +341,7 @@ class _CreateAlert extends State<AlertCreate> {
     );
   }
 
-  bool info(title, message) {
-    const displayIconFor = 100;
-    final displayFor = Duration(milliseconds: displayIconFor) + confettiTimer;
-    if (_isVisibleWith == null || _isVisibleWith != title) {
-      // error, so--
-      _isVisibleWith = title;
-      EventEmitter.publish('hideBottomNavigation', displayFor);
-      Timer(
-          Duration(milliseconds: displayIconFor),
-          () => Flushbar(
-                titleText: Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: Colors.white,
-                  ),
-                ),
-                messageText: Text(
-                  message,
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    color: Colors.white.withOpacity(.85),
-                  ),
-                ),
-                backgroundColor: Theme.of(context).accentColor,
-                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-                icon: Icon(
-                  Icons.visibility,
-                  color: Colors.white,
-                ),
-                flushbarPosition: FlushbarPosition.BOTTOM,
-                flushbarStyle: FlushbarStyle.GROUNDED,
-                duration: displayFor,
-                isDismissible: true,
-              )
-                ..onStatusChanged = (FlushbarStatus status) {
-                  switch (status) {
-                    case FlushbarStatus.SHOWING:
-                      {
-                        break;
-                      }
-                    case FlushbarStatus.IS_APPEARING:
-                      {
-                        break;
-                      }
-                    case FlushbarStatus.IS_HIDING:
-                      {
-                        break;
-                      }
-                    case FlushbarStatus.DISMISSED:
-                      {
-                        _isVisibleWith = null;
-                        break;
-                      }
-                  }
-                }
-                ..show(context));
-    }
-    return true;
+  info(title, body) {
+    EventEmitter.publish('showInfo', {"title": title, "body": body});
   }
 }

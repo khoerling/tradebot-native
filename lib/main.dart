@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'fira',
               brightness: Brightness.dark,
               backgroundColor: theme.backgroundColor,
-              scaffoldBackgroundColor: theme.backgroundColor.withOpacity(.95),
+              scaffoldBackgroundColor: theme.backgroundColor.withOpacity(.94),
               errorColor: Colors.white,
               hintColor: theme.themeColor,
               toggleableActiveColor: theme.themeColor,
