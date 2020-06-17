@@ -20,6 +20,7 @@ class User with ChangeNotifier {
   DateTime created;
   DateTime updated;
   int seenIntro;
+  bool hasRefreshed;
   final Firestore _db = Firestore.instance;
 
   User({
@@ -32,6 +33,7 @@ class User with ChangeNotifier {
     this.created,
     this.updated,
     this.seenIntro = 0,
+    this.hasRefreshed = false,
   });
 
   factory User.fromMap(Map<String, dynamic> data) {
@@ -130,8 +132,12 @@ class User with ChangeNotifier {
         email = user.email;
         created = user.created;
         updated = user.updated;
-        // ...and, save locally + broadcast
-        save();
+        if (!hasRefreshed) {
+          // initial data might've been stale, so-- save locally, too
+          hasRefreshed = true;
+          save();
+        }
+        // broadcast
         notifyListeners();
       });
     } catch (e) {
