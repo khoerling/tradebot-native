@@ -19,6 +19,7 @@ class Alert with ChangeNotifier {
   String timeframe;
   List<DateTime> alerted = [];
   bool isAlerted = false;
+  bool isSilenced = false;
   DateTime created;
   DateTime updated;
   Map<String, dynamic> params = {};
@@ -32,6 +33,7 @@ class Alert with ChangeNotifier {
       this.timeframe,
       this.alerted = const [],
       this.isAlerted = false,
+      this.isSilenced = false,
       this.created,
       this.updated,
       this.params});
@@ -46,6 +48,7 @@ class Alert with ChangeNotifier {
           market: data['market'],
           timeframe: data['timeframe'],
           isAlerted: data['isAlerted'] ?? false,
+          isSilenced: data['isSilenced'] ?? false,
           alerted: alerted
                   ?.map((a) => a is String ? DateTime.parse(a) : a.toDate())
                   ?.toList()
@@ -67,6 +70,7 @@ class Alert with ChangeNotifier {
         market = doc.data['market'],
         timeframe = doc.data['timeframe'],
         isAlerted = doc.data['isAlerted'],
+        isSilenced = doc.data['isSilenced'],
         alerted = doc.data['alerted'] ?? [],
         created = User.timeFor('created', doc.data),
         updated = User.timeFor('updated', doc.data),
@@ -144,6 +148,7 @@ class Alert with ChangeNotifier {
   resetAlert() {
     if (isAlerted) {
       isAlerted = false;
+      // TODO set isSilenced according to User.plan
       updated = DateTime.now();
       notifyListeners();
     }
@@ -158,6 +163,7 @@ class Alert with ChangeNotifier {
       'market': market,
       'timeframe': timeframe,
       'isAlerted': isAlerted ?? false,
+      'isSilenced': isSilenced ?? false,
       'alerted': alerted?.map((a) => a.toIso8601String())?.toList() ?? [],
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
