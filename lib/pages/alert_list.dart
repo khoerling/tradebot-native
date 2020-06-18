@@ -6,8 +6,8 @@ import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
 import 'package:time_formatter/time_formatter.dart';
 import 'package:tradebot_native/components/crypto_icon.dart';
-import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
+import 'package:tradebot_native/models/user.dart';
 
 class AlertList extends StatefulWidget {
   const AlertList({
@@ -54,11 +54,9 @@ class _AlertList extends State<AlertList> {
           }
           return Future.value(true);
         },
-        onDismissed: (direction) {
+        onDismissed: (direction) async {
           HapticFeedback.lightImpact();
-          user
-            ..alerts = user.alerts.where((a) => a.id != alert.id).toList()
-            ..save();
+          await user.deleteAlert(alert.id);
           if (user.activeAlerts.length < 1)
             EventEmitter.publish('selectPage', 0);
         },

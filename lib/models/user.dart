@@ -194,6 +194,11 @@ class User with ChangeNotifier {
     return future;
   }
 
+  Future<void> deleteAlert(String id) {
+    alerts = alerts.where((a) => a.id != id).toList();
+    return save();
+  }
+
   save() async {
     try {
       final prefs = await SharedPreferences.getInstance();
