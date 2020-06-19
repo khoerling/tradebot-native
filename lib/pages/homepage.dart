@@ -215,14 +215,14 @@ class _HomePageState extends State<HomePage>
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                    fontSize: 17.0,
                     color: Colors.white,
                   ),
                 ),
                 messageText: Text(
                   message,
                   style: TextStyle(
-                    fontSize: 13.0,
+                    fontSize: 14.0,
                     color: Colors.white.withOpacity(.85),
                   ),
                 ),

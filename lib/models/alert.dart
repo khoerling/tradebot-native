@@ -94,27 +94,28 @@ class Alert with ChangeNotifier {
       return false;
     };
     var test = (c, t, m) => tester(c, t, m, onError);
-    if (test(exchange == null, 'Select an Exchange!',
-        'Which Exchange should this alert track?')) return false;
-    if (test(market == null, 'Select a Market!',
-        'We recommend also choosing a candle timeframe.')) return false;
-    if (test(timeframe == null, 'Select a Timeframe!',
-        'Select a candle timeframe for this alert.')) return false;
+    if (test(exchange == null, 'Pro Tip', 'Select an Exchange for this Alert.'))
+      return false;
+    if (test(market == null, 'Pro Tip', 'Select a Market & Timeframe.'))
+      return false;
+    if (test(timeframe == null, 'Pro Tip',
+        'Select a Candle Timeframe for this Alert.')) return false;
     switch (name) {
       case AlertName.price:
         {
           var amount = params['price_amount'],
               horizon = params['price_horizon'];
-          if (test(amount == null || amount == 0.0, 'Enter a Price!',
-              'More or Less than what price?')) return false;
+          if (test(
+              amount == null || amount == 0.0, 'Pro Tip', 'Enter a Price.'))
+            return false;
           if (test(horizon == null, 'Select a Price Horizon!',
               "More or Less than $amount?")) return false;
         }
         break;
       case AlertName.guppy:
         {
-          if (test(params['guppy'] == null, 'Select a Color!',
-              'Which color signal should be alerted?')) return false;
+          if (test(params['guppy'] == null, 'Pro Tip',
+              'Select a Guppy Color Signal to Alert.')) return false;
         }
         break;
       case AlertName.divergence:
