@@ -8,6 +8,7 @@ import 'package:time_formatter/time_formatter.dart';
 import 'package:tradebot_native/components/crypto_icon.dart';
 import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/models/user.dart';
+import '../custom_color_scheme.dart';
 
 class AlertList extends StatefulWidget {
   const AlertList({
@@ -34,6 +35,7 @@ class _AlertList extends State<AlertList> {
   }
 
   Widget _buildItem(User user, Alert alert, int index) {
+    final cs = Theme.of(context).colorScheme;
     final base = alert.market['base'].toLowerCase();
     final len = alert.alerted.length;
     return Dismissible(
@@ -63,11 +65,11 @@ class _AlertList extends State<AlertList> {
         secondaryBackground: Container(
             alignment: Alignment.centerRight,
             child: Icon(Icons.delete, color: Colors.white, size: 35),
-            color: Colors.red),
+            color: cs.danger),
         background: Container(
             alignment: Alignment.centerLeft,
             child: Icon(Icons.check, color: Colors.white, size: 35),
-            color: Colors.blue),
+            color: cs.themeColor),
         child: ListTile(
             onTap: () {
               if (!hasAlerted(alert)) return; // guard
