@@ -323,7 +323,7 @@ class _CreateAlert extends State<AlertCreate> {
                           ])
                     : Container()),
             Padding(
-              padding: EdgeInsets.only(left: 10, right: 10, top: grid),
+              padding: EdgeInsets.only(left: 20, right: 20, top: grid),
               child: _alert.exchange != null && _alert.market != null
                   ? Params(alert: _alert)
                   : Container(),

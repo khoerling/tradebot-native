@@ -96,7 +96,7 @@ class Alert with ChangeNotifier {
     var test = (c, t, m) => tester(c, t, m, onError);
     if (test(exchange == null, 'Pro Tip', 'Select an Exchange for this Alert.'))
       return false;
-    if (test(market == null, 'Pro Tip', 'Select a Market & Timeframe.'))
+    if (test(market == null, 'Pro Tip', 'Select a Market & Candle Timeframe.'))
       return false;
     if (test(timeframe == null, 'Pro Tip',
         'Select a Candle Timeframe for this Alert.')) return false;
