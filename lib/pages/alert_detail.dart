@@ -33,11 +33,12 @@ class _AlertDetail extends State<AlertDetail> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).accentColor,
               title: Text("Really Delete?"),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('YES', style: TextStyle(color: cs.danger)),
+                  child: Text('YES',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   onPressed: () {
                     user.deleteAlert(widget.alert.id);
                     Navigator.of(context).pop();

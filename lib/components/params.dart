@@ -53,7 +53,7 @@ class _ParamsState extends State<Params> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     var alert = widget.alert, params = alert.params;
     return Card(
-        color: Colors.black.withOpacity(.01),
+        color: Colors.black.withOpacity(.1),
         child: DefaultTabController(
             length: 3,
             child: SizedBox(

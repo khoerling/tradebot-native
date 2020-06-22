@@ -102,6 +102,7 @@ class _HomePageState extends State<HomePage>
   doConfetti() {
     _hide.reverse();
     _controllerBottomCenter.play();
+    // FIXME fade out isn't working?
     _faders[_currentIndex].reverse();
     Future.delayed(Duration(milliseconds: 3000), () {
       _faders[_currentIndex].forward();
