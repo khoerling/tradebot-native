@@ -4,22 +4,28 @@ import 'package:time_formatter/time_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:tradebot_native/models/user.dart';
 import 'package:tradebot_native/models/alert.dart';
+import 'package:tradebot_native/components/linked_label_checkbox.dart';
 import 'package:tradebot_native/components/crypto_icon.dart';
 import 'package:tradebot_native/components/weekly_chart.dart';
 import 'package:tradebot_native/pages/pages.dart';
 import '../custom_color_scheme.dart';
 
-class AlertDetail extends StatelessWidget {
+class AlertDetail extends StatefulWidget {
   const AlertDetail({Key key, this.page, this.alert}) : super(key: key);
   final TPage page;
   final Alert alert;
 
   @override
+  _AlertDetail createState() => _AlertDetail();
+}
+
+class _AlertDetail extends State<AlertDetail> {
+  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
-    final base = alert.market['base'].toLowerCase();
-    final alerted = alert.alerted.reversed.toList();
+    final base = widget.alert.market['base'].toLowerCase();
+    final alerted = widget.alert.alerted.reversed.toList();
 
     return Consumer<User>(builder: (context, user, child) {
       Future<void> confirm(Function cb) async {
@@ -33,7 +39,7 @@ class AlertDetail extends StatelessWidget {
                 FlatButton(
                   child: Text('YES', style: TextStyle(color: cs.danger)),
                   onPressed: () {
-                    user.deleteAlert(alert.id);
+                    user.deleteAlert(widget.alert.id);
                     Navigator.of(context).pop();
                     cb();
                   },
@@ -59,7 +65,7 @@ class AlertDetail extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Hero(
-                  tag: alert.id,
+                  tag: widget.alert.id,
                   child: CryptoIcon(height: 45.0, width: 45.0, name: base)),
             )),
         SliverFixedExtentList(
@@ -67,14 +73,27 @@ class AlertDetail extends StatelessWidget {
             delegate: SliverChildListDelegate([
               Center(
                   child: Text(
-                "${alert.market['quote']} » ${alert.exchange.toUpperCase()}",
+                "${widget.alert.market['quote']} » ${widget.alert.exchange.toUpperCase()}",
                 style: tt.headline4,
               )),
               Center(
                   child: Text(
-                alert.subtitle(),
+                widget.alert.subtitle(),
                 style: tt.headline6,
               )),
+              Center(
+                  child: SizedBox(
+                      width: 120,
+                      height: 18,
+                      child: LinkedLabelCheckbox(
+                          label: "Silenced",
+                          padding: EdgeInsets.symmetric(horizontal: 1.0),
+                          value: widget.alert.isSilenced,
+                          onChanged: (value) {
+                            widget.alert.isSilenced = !widget.alert.isSilenced;
+                            user.save();
+                            setState(() => {});
+                          }))),
             ])),
         SliverToBoxAdapter(child: WeeklyChart(alerted: alerted)),
         SliverToBoxAdapter(
@@ -89,7 +108,7 @@ class AlertDetail extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 25),
                 child: Center(
                   child: Text(
-                    "Created ${formatTime(alert.created.millisecondsSinceEpoch)}",
+                    "Created ${formatTime(widget.alert.created.millisecondsSinceEpoch)}",
                     style: tt.headline6,
                   ),
                 ))),

@@ -25,6 +25,7 @@ export type Alert = {
   timeframe: string;
   alerted: Array<Date>;
   isAlerted: boolean;
+  isSilenced: boolean;
   params: any;
   created: Date;
   updated: Date;

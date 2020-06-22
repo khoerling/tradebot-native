@@ -25,12 +25,7 @@ getUsers().then(async (users: Array<User>) => {
     const alerts = [];
     for (let alert of user.alerts) {
       // test alert
-      if (
-        alert.exchange &&
-        alert.market.symbol &&
-        alert.timeframe &&
-        !alert.isAlerted // don't test if currently alerted
-      ) {
+      if (alert.exchange && alert.market.symbol && alert.timeframe) {
         switch (alert.name) {
           case "price":
             alerts.push([
@@ -87,13 +82,14 @@ async function run(user: User, alert: Alert, cmd: string) {
     console.log(
       `ALERT ${alert.exchange.toUpperCase()}: ${msgFromAlert(alert)}`
     );
-    admin.messaging().sendToDevice(user.pushToken, {
-      // break opts out into human-friendly msg
-      notification: {
-        title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
-        body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`
-      }
-    });
+    if (!alert.isSilenced)
+      admin.messaging().sendToDevice(user.pushToken, {
+        // TODO break opts out into human-friendly msg
+        notification: {
+          title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
+          body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`
+        }
+      });
     user.alerts = user.alerts.map(a => {
       if (a.id === alert.id) {
         // set isAlerted
