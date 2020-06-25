@@ -19,8 +19,8 @@ environment:
 dependencies:
   animations: ^1.0.0+5
   bezier_chart: ^1.0.17+1
-  cloud_firestore: ^0.13.4+2
-  cloud_functions: ^0.4.2+3
+  cloud_firestore: ^0.13.7
+  cloud_functions: ^0.5.0
   confetti: ^0.5.0
   device_id: ^0.2.0
   enum_to_string: ^1.0.9
