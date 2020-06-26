@@ -17,6 +17,7 @@ class User with ChangeNotifier {
   String deviceId;
   String pushToken;
   List<Alert> alerts;
+  Map<String, bool> info;
   DateTime created;
   DateTime updated;
   int seenIntro;
@@ -30,6 +31,7 @@ class User with ChangeNotifier {
     this.deviceId,
     this.pushToken,
     this.alerts = const [],
+    this.info,
     this.created,
     this.updated,
     this.seenIntro = 0,
@@ -50,6 +52,7 @@ class User with ChangeNotifier {
                   ?.toList()
                   ?.cast<Alert>() ??
               [],
+          info: Map<String, bool>.from(data['info'] ?? {}),
           created: timeFor('created', data),
           updated: timeFor('updated', data));
     } catch (e) {
@@ -75,6 +78,9 @@ class User with ChangeNotifier {
         }
         user.id = id;
         user.deviceId = id;
+        print('from local');
+        // init
+        if (user.info == null) user.info = Map<String, bool>.from({});
         return user;
       } catch (err) {
         print('User.fromLocalStorage: $err');
@@ -129,6 +135,7 @@ class User with ChangeNotifier {
         final user = User.fromMap(doc.data);
         // freshen these values:
         alerts = user.alerts;
+        info = user.info;
         email = user.email;
         created = user.created;
         updated = user.updated;
@@ -154,6 +161,7 @@ class User with ChangeNotifier {
         'pushToken': pushToken,
         'seenIntro': seenIntro,
         'alerts': alerts?.map((a) => a.toJson())?.toList() ?? [],
+        'info': info,
         'created': created?.toIso8601String(),
         'updated': updated?.toIso8601String(),
       };

@@ -1,5 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_eventemitter/flutter_eventemitter.dart';
+import 'package:provider/provider.dart';
+import 'package:tradebot_native/models/user.dart';
+import 'package:tradebot_native/models/alert.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -48,6 +53,32 @@ class _BottomNavigationState extends State<BottomNavigation> {
         setState(() {
           _page = index;
         });
+        if (index == 1) {
+          final user = Provider.of<User>(context, listen: false);
+          // on list view, so-- show these one at a time
+          if (!user.info.containsKey("hasDismissed")) {
+            // show swipe-to-delete tip
+            EventEmitter.publish("showInfo", {
+              "title": "Pro Tip",
+              "body": "Swipe LEFT to delete alerts.",
+            });
+            user.info["hasDismissed"] = true;
+            user.save();
+          } else {
+            // show swipe-to-reset tip
+            final hasAlertedAlert =
+                user.alerts.firstWhere((a) => a.isAlerted, orElse: () => null);
+            if (!user.info.containsKey("hasAlerted") &&
+                hasAlertedAlert != null) {
+              EventEmitter.publish("showInfo", {
+                "title": "Pro Tip",
+                "body": "Swipe RIGHT to reset alerts.",
+              });
+              user.info["hasAlerted"] = true;
+              user.save();
+            }
+          }
+        }
         widget.onTap(_page);
       },
     );
