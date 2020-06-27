@@ -201,7 +201,8 @@ class _CreateAlert extends State<AlertCreate> {
       _isCreating = true;
       Timer(confettiTimer, () => _isCreating = false); // rate-limit creation
       EventEmitter.publish('confetti', 1);
-      Future.delayed(Duration(milliseconds: 0), () async {
+      // allow animation fx to finish before adding
+      Future.delayed(Duration(milliseconds: 3500), () async {
         try {
           // add alert
           _user.createAlert(_alert);
@@ -215,6 +216,7 @@ class _CreateAlert extends State<AlertCreate> {
           _clearParams();
         } catch (e) {
           print("Error creating alert $e");
+          info('Error Creating Alert', e);
         }
       });
     } else {

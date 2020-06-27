@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage>
   int _currentIndex = 0;
   ConfettiController _controllerBottomCenter;
   List<String> _emitterTokens = [];
-  Random _random = Random();
   Timer _timer;
   String _isVisibleWith;
 
@@ -101,12 +100,13 @@ class _HomePageState extends State<HomePage>
 
   doConfetti() {
     _hide.reverse();
-    _controllerBottomCenter.play();
-    // FIXME fade out isn't working?
     _faders[_currentIndex].reverse();
-    Future.delayed(Duration(milliseconds: 3000), () {
+    _controllerBottomCenter.play();
+    Future.delayed(Duration(milliseconds: 2750), () {
       _faders[_currentIndex].forward();
-      _hide.forward();
+      Future.delayed(Duration(milliseconds: 150), () {
+          _hide.forward();
+      });
     });
   }
 
