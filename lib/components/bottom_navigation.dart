@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:provider/provider.dart';
 import 'package:tradebot_native/models/user.dart';
-import 'package:tradebot_native/models/alert.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -40,8 +39,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Icon(Icons.list, color: Colors.white, size: 33),
         // Icon(Icons.perm_identity, color: Colors.black, size: 33),
       ],
-      color: Colors.white.withOpacity(.06),
-      buttonBackgroundColor: Colors.white.withOpacity(.06),
+      color: Theme.of(context).accentColor.withOpacity(.16),
+      buttonBackgroundColor: Theme.of(context).accentColor.withOpacity(.16),
       backgroundColor: Colors.transparent,
       animationCurve: Curves.easeOutExpo,
       animationDuration: Duration(milliseconds: 500),

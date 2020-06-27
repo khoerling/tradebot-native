@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tradebot_native/components/button.dart';
 
 class SparkleButton extends StatefulWidget {
   SparkleButton({Key key, @required this.onPressed, this.title, this.style})
@@ -191,12 +190,23 @@ class _SparkleButtonState extends State<SparkleButton>
     return GestureDetector(
       onTapUp: onTapUp,
       onTapDown: onTapDown,
-      child: Button(
-          onPressed: () => true,
-          child: Text(
-            "CREATE ALERT",
-            textAlign: TextAlign.center,
-            style: widget.style,
+      child: ButtonTheme(
+          minWidth: double.infinity,
+          height: 55.0,
+          child: FlatButton(
+            onPressed: () => true,
+            child: Text(
+              "CREATE ALERT",
+              textAlign: TextAlign.center,
+              style: widget.style,
+            ),
+            color: Colors.transparent,
+            // textColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(35),
+                side: BorderSide(
+                    color: Theme.of(context).accentColor.withOpacity(.2),
+                    width: 1)),
           )),
     );
   }

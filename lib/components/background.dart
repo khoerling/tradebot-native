@@ -54,7 +54,7 @@ class _BackgroundState extends State<Background> {
                   0.2,
                   (xIc1 - 0) *
                       0.025), // 10% of the width, so there are ten blinds
-              colors: [const Color(0x05FFFFFF), const Color(0x00FFFFFF)],
+              colors: [const Color(0x09FFFFFF), const Color(0x00FFFFFF)],
             ),
           ),
           height: MediaQuery.of(context).size.height,
@@ -80,7 +80,8 @@ class _BackgroundState extends State<Background> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       colorFilter: ColorFilter.mode(
-                          Colors.white.withOpacity(0.04), BlendMode.dstATop),
+                          Theme.of(context).accentColor.withOpacity(0.05),
+                          BlendMode.dstATop),
                       fit: BoxFit.cover,
                       image: AssetImage('assets/images/bg.png'))),
             )),

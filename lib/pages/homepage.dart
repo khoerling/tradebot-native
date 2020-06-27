@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage>
     Future.delayed(Duration(milliseconds: 2750), () {
       _faders[_currentIndex].forward();
       Future.delayed(Duration(milliseconds: 150), () {
-          _hide.forward();
+        _hide.forward();
       });
     });
   }

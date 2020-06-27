@@ -148,13 +148,12 @@ class _CreateAlert extends State<AlertCreate> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: Text(title),
+          backgroundColor: Theme.of(context).accentColor,
+          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(msg),
-                Text('', style: TextStyle(fontSize: 5)),
                 Text(error,
                     style: TextStyle(fontSize: 12, color: Colors.white54)),
               ],
@@ -339,7 +338,7 @@ class _CreateAlert extends State<AlertCreate> {
                           color: Theme.of(context).accentColor,
                           fontWeight: FontWeight.bold)
                       : TextStyle(
-                          color: Colors.white.withOpacity(.2),
+                          color: Theme.of(context).accentColor.withOpacity(.3),
                           fontWeight: FontWeight.bold),
                 )),
           ]),
