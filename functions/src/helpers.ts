@@ -73,8 +73,8 @@ export const msgFromAlert = (alert: Alert) => {
       }.`;
     case "divergence":
       return `${alert.timeframe}, ${
-        alert.params.divergence_hidden ? "hidden" : ""
-      } ${alert.params.divergence_bearish ? "Bearish" : "Bullish"} Divergence.`;
+        alert.params.divergence_hidden ? "hidden " : ""
+      }${alert.params.divergence_bearish ? "Bearish" : "Bullish"} Divergence.`;
     case "guppy":
       return `${
         alert.timeframe
