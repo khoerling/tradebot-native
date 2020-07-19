@@ -26,9 +26,13 @@ class PushNotifications {
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        // TODO select alert
+        EventEmitter.publish('selectPage', 1);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        // TODO select alert
+        EventEmitter.publish('selectPage', 1);
       },
     );
     _firebaseMessaging.requestNotificationPermissions(

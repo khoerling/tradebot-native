@@ -84,10 +84,10 @@ async function run(user: User, alert: Alert, cmd: string) {
     );
     if (!alert.isSilenced)
       admin.messaging().sendToDevice(user.pushToken, {
-        // TODO break opts out into human-friendly msg
         notification: {
           title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
-          body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`
+          body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`,
+          click_action: "FLUTTER_NOTIFICATION_CLICK"
         }
       });
     user.alerts = user.alerts.map(a => {
