@@ -90,7 +90,7 @@ class Alert with ChangeNotifier {
 
   bool validate(onError) {
     var tester = (condition, title, message, onError) {
-      if (condition) return onError(title, message);
+      if (condition) return !!onError(title, message);
       return false;
     };
     var test = (c, t, m) => tester(c, t, m, onError);
