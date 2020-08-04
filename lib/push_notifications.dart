@@ -26,13 +26,11 @@ class PushNotifications {
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        // TODO select alert
-        EventEmitter.publish('selectPage', 1);
+        doSelection(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        // TODO select alert
-        EventEmitter.publish('selectPage', 1);
+        doSelection(message);
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
@@ -41,6 +39,16 @@ class PushNotifications {
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
+  }
+
+  void doSelection(message) {
+    var data = message['data'];
+    if (data['alert_id'] != null)
+      // select alert screen
+      EventEmitter.publish('selectAlert', data['alert_id']);
+    else
+      // select detail screen
+      EventEmitter.publish('selectPage', 1);
   }
 
   Future<dynamic> getToken() async {

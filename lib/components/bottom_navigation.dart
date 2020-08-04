@@ -17,15 +17,30 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  String _token;
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+    _token = EventEmitter.subscribe(
+        'selectAlertDetail',
+        // select correct bottom navigation panel
+        (alert) => {
+              setState(() {
+                _page = 1;
+              })
+            });
     setState(() {
       _page = widget.index;
     });
+  }
+
+  @override
+  void dispose() {
+    EventEmitter.unsubscribe(_token);
+    super.dispose();
   }
 
   @override

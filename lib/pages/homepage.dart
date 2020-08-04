@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter_eventemitter/flutter_eventemitter.dart';
 import 'package:tradebot_native/pages/pages.dart';
+import 'package:tradebot_native/models/alert.dart';
 import 'package:tradebot_native/components/bottom_navigation.dart';
 import 'package:tradebot_native/models/user.dart';
 
@@ -45,6 +46,7 @@ class _HomePageState extends State<HomePage>
           'showInfo', (msg) => info(msg["title"], msg["body"])))
       ..add(EventEmitter.subscribe('confetti', (_) => doConfetti()))
       ..add(EventEmitter.subscribe('selectPage', (i) => selectPage(i)))
+      ..add(EventEmitter.subscribe('selectAlert', (id) => selectAlert(id)))
       ..add(EventEmitter.subscribe('hideBottomNavigation', (duration) {
         if (_timer != null) _timer.cancel();
         _hide.reverse();
@@ -108,6 +110,16 @@ class _HomePageState extends State<HomePage>
         _hide.forward();
       });
     });
+  }
+
+  selectAlert(id) {
+    // selectPage(1);
+    final user = Provider.of<User>(context, listen: false);
+    Alert alert = user.activeAlerts.firstWhere((a) => a.id == id);
+    setState(() {
+      _currentIndex = 1;
+    });
+    if (alert != null) EventEmitter.publish('selectAlertDetail', alert);
   }
 
   selectPage(index) {

@@ -19,6 +19,21 @@ class AlertList extends StatefulWidget {
 }
 
 class _AlertList extends State<AlertList> {
+  String _token;
+
+  @override
+  void initState() {
+    super.initState();
+    _token = EventEmitter.subscribe('selectAlertDetail',
+        (alert) => Navigator.pushNamed(context, '/alert', arguments: alert));
+  }
+
+  @override
+  void dispose() {
+    EventEmitter.unsubscribe(_token);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(builder: (context, user, child) {

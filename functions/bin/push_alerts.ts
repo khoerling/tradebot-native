@@ -87,6 +87,7 @@ async function run(user: User, alert: Alert, cmd: string) {
         notification: {
           title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
           body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`,
+          data: { alert_id: alert.id },
           click_action: "FLUTTER_NOTIFICATION_CLICK"
         }
       });
