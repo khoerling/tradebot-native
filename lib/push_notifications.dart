@@ -42,7 +42,7 @@ class PushNotifications {
   }
 
   void doSelection(message) {
-    var data = message['data'];
+    var data = message['data'] ?? message;
     if (data['alert_id'] != null)
       // select alert screen
       EventEmitter.publish('selectAlert', data['alert_id']);
