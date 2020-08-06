@@ -132,9 +132,9 @@ class Alert with ChangeNotifier {
       case AlertName.guppy:
         try {
           return "Guppy is " +
-              EnumToString.parse(params['guppy']).toUpperCase();
+              EnumToString.parse(params['guppy'])?.toUpperCase();
         } catch (e) {
-          return "Guppy is ${params['guppy'].toUpperCase()}";
+          return "Guppy is ${params['guppy']?.toUpperCase()}";
         }
         break;
       case AlertName.divergence:

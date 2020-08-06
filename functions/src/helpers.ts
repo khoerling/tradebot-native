@@ -78,7 +78,7 @@ export const msgFromAlert = (alert: Alert) => {
     case "guppy":
       return `${
         alert.timeframe
-      }, Guppy is ${alert.params.guppy.toUpperCase()}.`;
+      }, Guppy is ${alert.params?.guppy?.toUpperCase()}.`;
   }
   return `${alert.timeframe}, on a Secret Trigger;  good luck!`;
 };
@@ -88,7 +88,7 @@ export const titleCase = (title: string) => {
     .toLowerCase()
     .split(" ")
     .map(function(word) {
-      return word.replace(word[0], word[0].toUpperCase());
+      return word.replace(word[0], word[0]?.toUpperCase());
     })
     .join(" ");
 };
