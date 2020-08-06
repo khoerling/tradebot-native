@@ -191,6 +191,7 @@ class User with ChangeNotifier {
   Future<void> createAlert(Alert alert) {
     print('+ Alert');
     if (alert == null) return Future.value(false); // guard
+    if (!alert.validate(() => {})) return Future.value(false); // guard
     alert.id = Uuid().v4();
     alert.created = alert.updated = DateTime.now();
     if (alerts != null)

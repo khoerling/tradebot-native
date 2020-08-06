@@ -24,8 +24,10 @@ class _AlertList extends State<AlertList> {
   @override
   void initState() {
     super.initState();
-    _token = EventEmitter.subscribe('selectAlertDetail',
-        (alert) => Navigator.pushNamed(context, '/alert', arguments: alert));
+    _token = EventEmitter.subscribe('selectAlertDetail', (alert) {
+      EventEmitter.publish('selectPage', 1);
+      Navigator.pushNamed(context, '/alert', arguments: alert);
+    });
   }
 
   @override

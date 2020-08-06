@@ -25,11 +25,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void initState() {
     super.initState();
     _token = EventEmitter.subscribe(
-        'selectAlertDetail',
+        'selectPage',
         // select correct bottom navigation panel
-        (alert) => {
+        (index) => {
               setState(() {
-                _page = 1;
+                _page = index;
               })
             });
     setState(() {
