@@ -17,26 +17,26 @@ environment:
   sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
-  animations: ^1.0.0+5
+  animations: ^1.1.2
   bezier_chart: ^1.0.17+1
   cloud_firestore: ^0.13.7
   cloud_functions: ^0.5.0
-  confetti: ^0.5.0
+  confetti: ^0.5.4
   device_id: ^0.2.0
   enum_to_string: ^1.0.9
   firebase_messaging: ^6.0.13
   flushbar: ^1.10.0
   flutter_eventemitter: ^0.1.1
   flutter_masked_text: ^0.8.0
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   intl: ^0.16.1
   time_formatter: ^1.0.0
   intro_views_flutter: ^2.8.1
-  provider: ^4.0.5
+  provider: ^4.3.2
   search_choices: ^1.0.13
   sensors: ^0.4.1+10
   shared_preferences: ^0.5.6+3
-  uuid: 2.1.0
+  uuid: 2.2.0
   curved_navigation_bar:
     path: ./curved_navigation_bar
   flutter:
