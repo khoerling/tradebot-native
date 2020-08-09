@@ -83,26 +83,15 @@ async function run(user: User, alert: Alert, cmd: string) {
       `ALERT ${alert.exchange.toUpperCase()}: ${msgFromAlert(alert)}`
     );
     if (!alert.isSilenced) {
-      console.log("SENDING SMS TO: " + user.pushToken, {
-        notification: {
-          title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
-          body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`,
-          data: {
-            click_action: "FLUTTER_NOTIFICATION_CLICK",
-            alert_id: alert.id
-          },
-          click_action: "FLUTTER_NOTIFICATION_CLICK"
-        }
-      });
       admin.messaging().sendToDevice(user.pushToken, {
         notification: {
           title: `${alert.name.toUpperCase()} on ${alert.market.symbol.toUpperCase()}`,
           body: `${titleCase(alert.exchange)} alerted ${msgFromAlert(alert)}`,
-          data: {
-            click_action: "FLUTTER_NOTIFICATION_CLICK",
-            alert_id: alert.id
-          },
           click_action: "FLUTTER_NOTIFICATION_CLICK"
+        },
+        data: {
+          click_action: "FLUTTER_NOTIFICATION_CLICK",
+          alert_id: `${alert.id}`
         }
       });
     }
