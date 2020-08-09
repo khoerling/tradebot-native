@@ -109,7 +109,8 @@ class User with ChangeNotifier {
 
   List<Alert> get activeAlerts {
     return alerts
-      ..where((a) => a?.exchange != null && a?.name != null && a?.market != null)
+      ..where(
+          (a) => a?.exchange != null && a?.name != null && a?.market != null)
       ..sort(_sorter);
   }
 
